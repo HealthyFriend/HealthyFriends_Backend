@@ -22,4 +22,8 @@ public class FoodRecord extends BaseEntity {
     private String body;
 
     private LocalDate date;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="user_id",referencedColumnName = "id")
+    private User user;
 }
