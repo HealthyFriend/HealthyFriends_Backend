@@ -1,6 +1,7 @@
 package server.healthyFriends.domain;
 
 import lombok.*;
+import server.healthyFriends.domain.common.BaseEntity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -12,7 +13,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Entity(name="Objective")
 @Table(name="objective")
-public class Objective {
+public class Objective extends BaseEntity {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

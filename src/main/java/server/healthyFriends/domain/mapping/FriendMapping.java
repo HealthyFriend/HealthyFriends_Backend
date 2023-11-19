@@ -2,6 +2,7 @@ package server.healthyFriends.domain.mapping;
 
 import lombok.*;
 import server.healthyFriends.domain.User;
+import server.healthyFriends.domain.common.BaseEntity;
 
 import javax.persistence.*;
 
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity(name="FriendMapping")
 @Table(name="friend_mapping")
-public class FriendMapping {
+public class FriendMapping extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

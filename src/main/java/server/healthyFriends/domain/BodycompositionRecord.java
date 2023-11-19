@@ -1,6 +1,7 @@
 package server.healthyFriends.domain;
 
 import lombok.*;
+import server.healthyFriends.domain.common.BaseEntity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Entity(name="BodycompositionRecord")
 @Table(name="bodycomposition_record")
-public class BodycompositionRecord {
+public class BodycompositionRecord extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
