@@ -35,3 +35,9 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# Ignore application.properties
+application.properties
+
+# Ignore all files named application.properties in any subdirectory
+**/application.properties
