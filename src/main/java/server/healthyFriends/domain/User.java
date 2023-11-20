@@ -3,6 +3,7 @@ package server.healthyFriends.domain;
 import lombok.*;
 import server.healthyFriends.domain.common.BaseEntity;
 import server.healthyFriends.domain.enums.Gender;
+import server.healthyFriends.domain.enums.Role;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -33,7 +34,7 @@ public class User extends BaseEntity {
     private Integer age;
 
     @Column(nullable = false, length = 20)
-    private String email;
+    private String loginId;
 
     @Column(nullable = false, length = 20)
     private String password;
@@ -41,5 +42,7 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
+    @Enumerated(EnumType.STRING)
+    private Role Role;
 
 }
