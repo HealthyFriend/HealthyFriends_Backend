@@ -35,7 +35,7 @@ public class ObjectiveController {
 
             objectiveSerivce.createObjective(userId, objectiveRequest);
 
-            return ResponseUtil.success("목표 설정 성공",null);
+            return ResponseUtil.created("목표 설정 성공",null);
 
         } catch (Exception e) {
             throw e;
