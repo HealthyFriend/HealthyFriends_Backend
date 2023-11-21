@@ -36,13 +36,13 @@ public class User extends BaseEntity {
     @Column(nullable = false, length = 20)
     private String loginId;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 100)
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
     @Enumerated(EnumType.STRING)
-    private Role Role;
+    private Role role;
 
 }
