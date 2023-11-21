@@ -18,10 +18,15 @@ public class JwtTokenUtil {
         claims.put("loginId", loginId);
 
         return Jwts.builder()
+                //토큰에 넣을 클레임(정보) 설정
                 .setClaims(claims)
+                //토큰 발급 시간
                 .setIssuedAt(new Date(System.currentTimeMillis()))
+                //토큰 만료 시간
                 .setExpiration(new Date(System.currentTimeMillis()+expireTime))
+                //토큰 서명 설정
                 .signWith(SignatureAlgorithm.HS256, key)
+                //문자열로 압축
                 .compact();
     }
 
