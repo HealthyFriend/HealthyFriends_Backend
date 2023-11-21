@@ -41,7 +41,7 @@ public class UserController {
             }
 
             userService.join(joinRequest);
-            return ResponseUtil.success("회원가입에 성공하셨습니다.",null);
+            return ResponseUtil.created("회원가입에 성공하셨습니다.",null);
 
         } catch(Exception e) {
             throw e;
