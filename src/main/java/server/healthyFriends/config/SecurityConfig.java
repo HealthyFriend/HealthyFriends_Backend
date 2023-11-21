@@ -21,16 +21,10 @@ import server.healthyFriends.service.UserServiceImpl;
 //Spring Security의 웹 보안 지원 활성화, Spring MVC와 통합 제공
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
     private final UserService userService;
     private static String secretKey = "my-secret-key-20220121";
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        // BCryptPasswordEncoder를 사용하여 비밀번호를 안전하게 저장
-        return new BCryptPasswordEncoder();
-    }
 
     // securityFilterChain 이름의 SecurityFilterChain 타입의 빈 반환
     @Bean
@@ -61,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 ///jwt-login/info 엔드포인트에 대한 인증 필요
                 //.antMatchers("/").authenticated()
                 //ADMIN 권한 가진 사용자에게 /jwt-login/admin/ 하우의 모든 URL에 액세스할 권한 필요
-                .antMatchers("/jwt-login/admin/**").hasAuthority(Role.ADMIN.name())
+                .antMatchers("/users/admin/**").hasAuthority(Role.ADMIN.name())
                 .and().build();
     }
 }
