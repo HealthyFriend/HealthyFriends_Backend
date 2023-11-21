@@ -1,6 +1,7 @@
 package server.healthyFriends;
 
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import server.healthyFriends.domain.User;
 import server.healthyFriends.domain.enums.Gender;
@@ -15,9 +16,11 @@ import java.math.BigInteger;
 public class DataInitializer implements CommandLineRunner {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder encoder;
 
-    public DataInitializer(UserRepository userRepository) {
+    public DataInitializer(UserRepository userRepository, PasswordEncoder encoder) {
         this.userRepository = userRepository;
+        this.encoder = encoder;
     }
 
     @Override
@@ -28,7 +31,7 @@ public class DataInitializer implements CommandLineRunner {
                 .height(new BigDecimal("178.3"))
                 .age(27)
                 .loginId("더구더구@example.com")
-                .password("password123")
+                .password(encoder.encode("password123"))
                 .gender(Gender.MALE)
                 .role(Role.USER)
                 .build();
