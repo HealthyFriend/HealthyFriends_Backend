@@ -1,8 +1,11 @@
 package server.healthyFriends.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import server.healthyFriends.domain.User;
+import server.healthyFriends.domain.dto.JoinRequest;
 import server.healthyFriends.domain.dto.LoginRequest;
 import server.healthyFriends.repository.UserRepository;
 
@@ -15,14 +18,21 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder encoder;
 
-    /**
-     * loginId 중복 체크
-     * 회원가입 기능 구현 시 사용
-     * 중복되면 true return
-     */
+    //loginId 중복 체크
     public boolean checkLoginIdDuplicate(String loginId) {
         return userRepository.existsByLoginId(loginId);
+    }
+
+    //닉네임 중복 체크
+    public boolean checkNicknameDuplicate(String nickname) {
+        return userRepository.existsByNickname(nickname);
+    }
+
+    // 회원가입
+    public void join(JoinRequest req) {
+        userRepository.save(req.toEntity(encoder.encode(req.getPassword())));
     }
 
     /**
