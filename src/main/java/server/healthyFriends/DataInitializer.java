@@ -30,7 +30,7 @@ public class DataInitializer implements CommandLineRunner {
                 .loginId("더구더구@example.com")
                 .password("password123")
                 .gender(Gender.MALE)
-                .Role(Role.USER)
+                .role(Role.USER)
                 .build();
 
         userRepository.save(user);
