@@ -13,4 +13,6 @@ public interface UserService {
     public User getLoginUserById(Long userId);
     public User getLoginUserByLoginId(String loginId);
 
+    public User getUserById(Long id);
+
 }

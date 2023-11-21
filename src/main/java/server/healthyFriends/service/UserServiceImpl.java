@@ -87,4 +87,11 @@ public class UserServiceImpl implements UserService {
 
         return optionalUser.get();
     }
+
+    public User getUserById(Long id) {
+        if(id == null) return null;
+
+        return userRepository.findById(id).orElse(null);
+    }
 }
+
