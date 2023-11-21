@@ -49,5 +49,19 @@ public class JoinRequest {
                 .role(Role.USER)
                 .build();
     }
+
+    /**
+     * Request 예시
+     * {
+     *     "loginId" : "하은하은@example.com",
+     *     "password" : "password123",
+     *     "passwordCheck" : "password123",
+     *     "nickname" : "하은콩",
+     *     "name" : "멈무",
+     *     "height" : 161.1,
+     *     "age" : 24,
+     *     "gender" : "FEMALE"
+     * }
+     */
 }
 
