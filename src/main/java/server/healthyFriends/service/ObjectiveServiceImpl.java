@@ -17,7 +17,6 @@ public class ObjectiveServiceImpl implements ObjectiveSerivce{
 
     private final ObjectiveRepository objectiveRepository;
     private final UserService userService;
-    private final EntityManager entityManager;
 
     // 목표 생성
     public Objective createObjective(Long userId, ObjectiveRequest objectiveRequest) {

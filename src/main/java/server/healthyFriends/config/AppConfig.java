@@ -30,8 +30,8 @@ public class AppConfig {
     }
 
     @Bean
-    public ObjectiveSerivce objectiveSerivce(ObjectiveRepository objectiveRepository, UserService userService, EntityManager entityManager) {
-        return new ObjectiveServiceImpl(objectiveRepository,userService,entityManager);
+    public ObjectiveSerivce objectiveSerivce(ObjectiveRepository objectiveRepository, UserService userService) {
+        return new ObjectiveServiceImpl(objectiveRepository,userService);
     }
 
 }
