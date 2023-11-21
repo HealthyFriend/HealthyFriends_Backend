@@ -3,6 +3,7 @@ package server.healthyFriends.web.controller;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.core.ApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,8 @@ import server.healthyFriends.service.UserService;
 import server.healthyFriends.service.UserServiceImpl;
 import server.healthyFriends.web.response.ResponseUtil;
 
+import javax.crypto.SecretKey;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
@@ -27,6 +30,8 @@ public class LoginController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private String secretKey;
     @PostMapping("/join")
     public ResponseDTO<String> join(@RequestBody JoinRequest joinRequest) {
         try {
@@ -67,7 +72,7 @@ public class LoginController {
 
             // 로그인 성공 => Jwt Token 발급
 
-            String secretKey = "my-secret-key-20220121";
+            //String secretKey = "my-secret-key-20220121";
             long expireTimeMs = 1000 * 60 * 60;     // Token 유효 시간 = 60분
 
             String jwtToken = JwtTokenUtil.createToken(user.getLoginId(), secretKey, expireTimeMs);
