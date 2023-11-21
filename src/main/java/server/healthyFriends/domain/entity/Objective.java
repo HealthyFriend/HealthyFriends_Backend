@@ -1,4 +1,4 @@
-package server.healthyFriends.domain.Entity;
+package server.healthyFriends.domain.entity;
 
 import lombok.*;
 import server.healthyFriends.domain.common.BaseEntity;
@@ -8,22 +8,31 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@Builder
 @NoArgsConstructor(access= AccessLevel.PROTECTED)
-@Entity(name="FoodRecord")
-@Table(name="food_record")
-public class FoodRecord extends BaseEntity {
+@AllArgsConstructor
+@Entity(name="Objective")
+@Table(name="objective")
+public class Objective extends BaseEntity {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private long id;
 
+    private LocalDate start_day;
+
+    private LocalDate end_day;
+
+    @Column(length = 20)
+    private String head;
+
     @Lob
     private String body;
 
-    private LocalDate date;
+    private Boolean status;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id",referencedColumnName = "id")
+    @JoinColumn(name="user_id", referencedColumnName = "id")
     private User user;
+
 }

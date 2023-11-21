@@ -1,7 +1,7 @@
 package server.healthyFriends.domain.mapping;
 
 import lombok.*;
-import server.healthyFriends.domain.Entity.User;
+import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.domain.common.BaseEntity;
 
 import javax.persistence.*;

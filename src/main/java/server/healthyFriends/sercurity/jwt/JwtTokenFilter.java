@@ -7,7 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
-import server.healthyFriends.domain.Entity.User;
+import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.service.UserService;
 
 import javax.servlet.FilterChain;

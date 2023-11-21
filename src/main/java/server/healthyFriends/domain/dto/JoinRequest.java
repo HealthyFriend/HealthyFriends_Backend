@@ -2,7 +2,7 @@ package server.healthyFriends.domain.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import server.healthyFriends.domain.Entity.User;
+import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.domain.enums.Gender;
 import server.healthyFriends.domain.enums.Role;
 

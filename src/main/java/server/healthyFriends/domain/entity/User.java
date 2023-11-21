@@ -1,4 +1,4 @@
-package server.healthyFriends.domain.Entity;
+package server.healthyFriends.domain.entity;
 
 import lombok.*;
 import server.healthyFriends.domain.common.BaseEntity;

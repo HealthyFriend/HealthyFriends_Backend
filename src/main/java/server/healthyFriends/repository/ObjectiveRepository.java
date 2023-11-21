@@ -2,7 +2,7 @@ package server.healthyFriends.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import server.healthyFriends.domain.Entity.Objective;
+import server.healthyFriends.domain.entity.Objective;
 
 import java.util.Optional;
 

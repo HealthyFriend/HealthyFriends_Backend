@@ -1,6 +1,6 @@
 package server.healthyFriends.service;
 
-import server.healthyFriends.domain.Entity.User;
+import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.domain.dto.JoinRequest;
 import server.healthyFriends.domain.dto.LoginRequest;
 

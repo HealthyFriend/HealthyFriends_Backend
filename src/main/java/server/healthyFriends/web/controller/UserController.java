@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import server.healthyFriends.domain.Entity.User;
+import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.domain.dto.JoinRequest;
 import server.healthyFriends.domain.dto.LoginRequest;
 import server.healthyFriends.domain.dto.ResponseDTO;

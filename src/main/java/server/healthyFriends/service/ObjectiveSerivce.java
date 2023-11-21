@@ -1,6 +1,6 @@
 package server.healthyFriends.service;
 
-import server.healthyFriends.domain.Entity.Objective;
+import server.healthyFriends.domain.entity.Objective;
 import server.healthyFriends.domain.dto.ObjectiveRequest;
 
 public interface ObjectiveSerivce {
