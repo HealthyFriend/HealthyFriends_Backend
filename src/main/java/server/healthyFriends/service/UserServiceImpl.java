@@ -50,8 +50,8 @@ public class UserServiceImpl implements UserService {
 
         User user = optionalUser.get();
 
-        // 찾아온 User의 password와 입력된 password가 다르면 null return
-        if(!user.getPassword().equals(req.getPassword())) {
+        // 암호화된 password를 디코딩한 값과 입력한 패스워드 값이 다르면 null 반환
+        if(!encoder.matches(req.getPassword(), user.getPassword())) {
             return null;
         }
 
