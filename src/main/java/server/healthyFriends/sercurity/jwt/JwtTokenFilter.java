@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 import server.healthyFriends.domain.User;
+import server.healthyFriends.service.UserService;
 import server.healthyFriends.service.UserServiceImpl;
 
 import javax.servlet.FilterChain;
@@ -21,7 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JwtTokenFilter extends OncePerRequestFilter {
 
-    private final UserServiceImpl userService;
+    private final UserService userService;
     private final String secretKey;
 
     @Override
