@@ -33,6 +33,10 @@ public class ResponseUtil {
         return new ResponseDTO<>(404, ResponseStatus.NOT_FOUND, message, data);
     }
 
+    public static <T> ResponseDTO<T> conflict(String message, T data) {
+        return new ResponseDTO<>(409, ResponseStatus.CONFLICT, message, data);
+    }
+
     public static <T> ResponseDTO<T> internalServerError(String message, T data) {
         return new ResponseDTO<>(500, ResponseStatus.INTERNAL_SERVER_ERROR, message, data);
     }
