@@ -1,7 +1,6 @@
 package server.healthyFriends.service;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import server.healthyFriends.domain.Objective;
+import server.healthyFriends.domain.Entity.Objective;
 import server.healthyFriends.domain.dto.ObjectiveRequest;
 
 public interface ObjectiveSerivce {

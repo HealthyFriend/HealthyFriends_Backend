@@ -1,4 +1,4 @@
-package server.healthyFriends.domain;
+package server.healthyFriends.domain.Entity;
 
 import lombok.*;
 import server.healthyFriends.domain.common.BaseEntity;
@@ -6,7 +6,6 @@ import server.healthyFriends.domain.common.BaseEntity;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Getter
