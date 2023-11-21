@@ -5,7 +5,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import server.healthyFriends.domain.enums.Role;
@@ -18,10 +21,16 @@ import server.healthyFriends.service.UserServiceImpl;
 //Spring Security의 웹 보안 지원 활성화, Spring MVC와 통합 제공
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserService userService;
     private static String secretKey = "my-secret-key-20220121";
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        // BCryptPasswordEncoder를 사용하여 비밀번호를 안전하게 저장
+        return new BCryptPasswordEncoder();
+    }
 
     // securityFilterChain 이름의 SecurityFilterChain 타입의 빈 반환
     @Bean
