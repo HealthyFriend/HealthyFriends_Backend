@@ -1,14 +1,9 @@
 package server.healthyFriends.web.controller;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.core.ApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import server.healthyFriends.config.AppConfig;
-import server.healthyFriends.config.SecurityConfig;
 import server.healthyFriends.domain.User;
 import server.healthyFriends.domain.dto.JoinRequest;
 import server.healthyFriends.domain.dto.LoginRequest;
@@ -16,15 +11,12 @@ import server.healthyFriends.domain.dto.ResponseDTO;
 import server.healthyFriends.repository.UserRepository;
 import server.healthyFriends.sercurity.jwt.JwtTokenUtil;
 import server.healthyFriends.service.UserService;
-import server.healthyFriends.service.UserServiceImpl;
 import server.healthyFriends.web.response.ResponseUtil;
-
-import javax.crypto.SecretKey;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
-public class LoginController {
+public class UserController {
 
     private final UserRepository userRepository;
     private final UserService userService;
