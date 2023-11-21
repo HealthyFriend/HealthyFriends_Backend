@@ -24,7 +24,12 @@ import server.healthyFriends.service.UserServiceImpl;
 public class SecurityConfig {
 
     private final UserService userService;
-    private static String secretKey = "my-secret-key-20220121";
+    private final String secretKey = "my-secret-key-20220121";
+
+    @Bean
+    public String secretKey() {
+        return secretKey;
+    }
 
     // securityFilterChain 이름의 SecurityFilterChain 타입의 빈 반환
     @Bean
