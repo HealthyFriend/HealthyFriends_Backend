@@ -1,5 +1,6 @@
 package server.healthyFriends.web.controller;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import server.healthyFriends.domain.dto.ObjectiveResponse;
@@ -13,6 +14,8 @@ import server.healthyFriends.service.UserService;
 import server.healthyFriends.web.response.ResponseUtil;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -60,6 +63,24 @@ public class ObjectiveController {
             return ResponseUtil.success("목표 조회 성공", objectiveResponse);
 
         } catch(Exception e){
+            throw e;
+        }
+    }
+
+    @GetMapping("/{userId}/list")
+    public ResponseDTO<Optional<List<ObjectiveResponse>>> readObjectives(
+            @PathVariable("userId") Long userId) {
+
+        try {
+            User user = userService.getUserById(userId);
+
+            if(user==null) {
+                return ResponseUtil.notFound("해당하는 사용자가 없습니다.",null);
+            }
+
+            return ResponseUtil.success("목표 리스트 조회 성공",objectiveSerivce.readObjectives(userId));
+
+        } catch (Exception e) {
             throw e;
         }
     }
