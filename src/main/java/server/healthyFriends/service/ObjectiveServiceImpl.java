@@ -11,6 +11,9 @@ import server.healthyFriends.web.response.EntityDtoMapper;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -49,10 +52,34 @@ public class ObjectiveServiceImpl implements ObjectiveSerivce{
         // 엔터티를 DTO로 매핑
         ObjectiveResponse objectiveResponse = EntityDtoMapper.INSTANCE.objectivetoDto(existingObjective);
 
-        // 필요한 로직 추가...
-
         return objectiveResponse;
 
+    }
+
+    // 목표 리스트 조회
+    public Optional<List<ObjectiveResponse>> readObjectives(Long userId) {
+
+        Optional<List<Objective>> objectivesList = objectiveRepository.findByUserId(userId);
+
+        // objectivesOptional가 비어있으면 빈 Optional 반환
+        return objectivesList.map(objectives -> {
+            List<ObjectiveResponse> objectiveResponses = objectives.stream()
+                    .map(EntityDtoMapper.INSTANCE::objectivetoDto)
+                    .collect(Collectors.toList());
+            return Optional.of(objectiveResponses);
+        }).orElse(Optional.empty());
+
+        /*
+            if (objectivesList.isEmpty()) {
+                return Optional.empty();
+            }
+
+             List<ObjectiveResponse> objectiveResponses = new ArrayList<>();
+             for (Objective objective : objectivesList.get()) {
+                objectiveResponses.add(new ObjectiveResponse(objective.getStartDay(), objective.getEndDay(),
+                       objective.getHead(), objective.getBody(), objective.getStatus()));
+             }
+        */
     }
 
     // 목표 수정
