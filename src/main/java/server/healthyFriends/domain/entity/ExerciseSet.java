@@ -1,6 +1,7 @@
 package server.healthyFriends.domain.entity;
 
 import lombok.*;
+import server.healthyFriends.domain.entity.ExerciseRecord;
 import server.healthyFriends.domain.common.BaseEntity;
 
 import javax.persistence.*;
