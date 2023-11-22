@@ -67,6 +67,7 @@ public class ObjectiveController {
         }
     }
 
+    // 목표 리스트 조회
     @GetMapping("/{userId}/list")
     public ResponseDTO<Optional<List<ObjectiveResponse>>> readObjectives(
             @PathVariable("userId") Long userId) {
