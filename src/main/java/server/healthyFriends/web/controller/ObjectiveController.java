@@ -2,6 +2,7 @@ package server.healthyFriends.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import server.healthyFriends.domain.dto.ObjectiveResponse;
 import server.healthyFriends.domain.entity.Objective;
 import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.domain.dto.ObjectiveRequest;
@@ -22,6 +23,7 @@ public class ObjectiveController {
     private final ObjectiveRepository objectiveRepository;
     private final UserService userService;
 
+    // 목표 설정
     @PostMapping("/{userId}")
     public ResponseDTO<String> createObjective(
             @PathVariable("userId") Long userId,
@@ -42,6 +44,27 @@ public class ObjectiveController {
         }
     }
 
+    // 목표 조회
+    @GetMapping("/{objectiveId}")
+    public ResponseDTO<ObjectiveResponse> readObjective(
+            @PathVariable("objectiveId") Long objectiveId) {
+
+        try {
+
+            if(objectiveRepository.findById(objectiveId).isEmpty()) {
+                return ResponseUtil.notFound("해당하는 목표가 없습니다.",null);
+            }
+
+            ObjectiveResponse objectiveResponse = objectiveSerivce.readObjective(objectiveId);
+
+            return ResponseUtil.success("목표 조회 성공", objectiveResponse);
+
+        } catch(Exception e){
+            throw e;
+        }
+    }
+
+    // 목표 수정
     @PutMapping("/{objectiveId}")
     public ResponseDTO<String> updateObjective(
             @PathVariable("objectiveId") Long objectiveId,
@@ -61,4 +84,24 @@ public class ObjectiveController {
             throw e;
         }
     }
+
+    // 목표 삭제
+    @DeleteMapping("/{objectiveId}")
+    public ResponseDTO<String> deleteObjective(@PathVariable("objectiveId")Long objectiveId) {
+
+        try {
+
+            if(objectiveRepository.findById(objectiveId).isEmpty()) {
+                return ResponseUtil.notFound("해당하는 목표가 없습니다.",null);
+            }
+
+            objectiveSerivce.deleteObjective(objectiveId);
+
+            return ResponseUtil.success("목표 삭제 성공",null);
+
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
 }
