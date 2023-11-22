@@ -2,12 +2,13 @@ package server.healthyFriends.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import server.healthyFriends.domain.dto.ObjectiveResponse;
 import server.healthyFriends.domain.entity.Objective;
 import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.domain.dto.ObjectiveRequest;
 import server.healthyFriends.repository.ObjectiveRepository;
+import server.healthyFriends.web.response.EntityDtoMapper;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
@@ -40,12 +41,18 @@ public class ObjectiveServiceImpl implements ObjectiveSerivce{
     }
 
     // 목표 조회
-    public Objective readObjective(Long objectiveId) {
+    public ObjectiveResponse readObjective(Long objectiveId) {
 
         Objective existingObjective = objectiveRepository.findById(objectiveId)
                 .orElseThrow(()->new EntityNotFoundException("해당하는 목표를 찾을 수 없습니다."));
 
-        return existingObjective;
+        // 엔터티를 DTO로 매핑
+        ObjectiveResponse objectiveResponse = EntityDtoMapper.INSTANCE.objectivetoDto(existingObjective);
+
+        // 필요한 로직 추가...
+
+        return objectiveResponse;
+
     }
 
     // 목표 수정
@@ -74,5 +81,4 @@ public class ObjectiveServiceImpl implements ObjectiveSerivce{
 
         objectiveRepository.delete(existingObjective);
     }
-
 }
