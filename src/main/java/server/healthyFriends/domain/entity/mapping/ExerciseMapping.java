@@ -1,4 +1,4 @@
-package server.healthyFriends.domain.mapping;
+package server.healthyFriends.domain.entity.mapping;
 
 import lombok.*;
 import server.healthyFriends.domain.entity.Exercise;
