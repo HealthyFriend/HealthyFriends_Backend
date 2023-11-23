@@ -2,7 +2,7 @@ package server.healthyFriends.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import server.healthyFriends.domain.dto.FriendRequest;
+import server.healthyFriends.domain.dto.FriendResponse;
 import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.domain.entity.mapping.FriendMapping;
 import server.healthyFriends.repository.FriendRepository;
@@ -20,7 +20,7 @@ public class FriendServiceImpl implements FriendService{
     private final UserRepository userRepository;
 
     // 친구 신청
-    public FriendRequest requestFriend(String friend_loginId, Long userId) {
+    public FriendResponse requestFriend(Long userId, String friend_loginId) {
 
         User requestUser = userRepository.findById(userId)
                 .orElseThrow(()->new EntityNotFoundException("해당하는 유저가 없습니다."));
@@ -29,20 +29,25 @@ public class FriendServiceImpl implements FriendService{
         User recipientUser = userRepository.findByLoginId(friend_loginId)
                 .orElseThrow(() -> new EntityNotFoundException("해당하는 유저가 없습니다."));
 
+        // 이미 친구 신청이 있는지 확인
+        if (friendRepository.existsByUserIdAndFriendIdAndStatus(requestUser.getId(), recipientUser.getId(), false)) {
+            throw new IllegalStateException("이미 친구 신청한 상태입니다.");
+        }
+
         // FriendMapping 엔티티 생성 및 저장 (나 -> 친구)
         FriendMapping friendMapping = new FriendMapping();
         friendMapping.setUser(requestUser);
         friendMapping.setFriendId(recipientUser.getId());
-        friendMapping.setStatus(false); // 초기 상태는 false (미수락 상태)
+        friendMapping.setStatus(false); // 초기 상태는 false (요청중 상태)
         friendMapping = friendRepository.save(friendMapping);
 
         //친구 요청 성공 시 반환 DTO
-        FriendRequest friendRequest = new FriendRequest();
-        friendRequest.setRequester_id(requestUser.getId());
-        friendRequest.setRecipient_id(recipientUser.getId());
-        friendRequest.setId(friendMapping.getId());
+        FriendResponse friendResponse = new FriendResponse();
+        friendResponse.setRequester_id(requestUser.getId());
+        friendResponse.setRecipient_id(recipientUser.getId());
+        friendResponse.setId(friendMapping.getId());
 
-        return friendRequest;
+        return friendResponse;
     }
 
     // 친구 수락
@@ -58,7 +63,7 @@ public class FriendServiceImpl implements FriendService{
         FriendMapping friendMapping = friendRepository.findById(friendMappingId)
                 .orElseThrow(()->new EntityNotFoundException("해당하는 엔티티가 없습니다."));
 
-        // 친구 상태 true로 변환
+        // 친구 상태 true로 변환(친구 상태)
         friendMapping.setStatus(true);
         friendRepository.save(friendMapping);
 
