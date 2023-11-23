@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Builder
-@NoArgsConstructor(access= AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 @Entity(name="FriendMapping")
 @Table(name="friend_mapping")
