@@ -5,12 +5,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import server.healthyFriends.repository.FriendRepository;
 import server.healthyFriends.repository.ObjectiveRepository;
 import server.healthyFriends.repository.UserRepository;
-import server.healthyFriends.service.ObjectiveSerivce;
-import server.healthyFriends.service.ObjectiveServiceImpl;
-import server.healthyFriends.service.UserService;
-import server.healthyFriends.service.UserServiceImpl;
+import server.healthyFriends.service.*;
 
 import javax.persistence.EntityManager;
 
@@ -32,6 +30,11 @@ public class AppConfig {
     @Bean
     public ObjectiveSerivce objectiveSerivce(ObjectiveRepository objectiveRepository, UserService userService) {
         return new ObjectiveServiceImpl(objectiveRepository,userService);
+    }
+
+    @Bean
+    public FriendService friendService(FriendRepository friendRepository, UserRepository userRepository) {
+        return new FriendServiceImpl(friendRepository, userRepository);
     }
 
 }
