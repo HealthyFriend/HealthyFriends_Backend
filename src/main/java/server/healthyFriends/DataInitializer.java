@@ -36,6 +36,17 @@ public class DataInitializer implements CommandLineRunner {
                 .role(Role.USER)
                 .build();
 
+        User testUser2 = User.builder()
+                .name("송하은")
+                .nickname("하은콩")
+                .height(new BigDecimal("161"))
+                .age(24)
+                .loginId("멈무@example.com")
+                .password(encoder.encode("password1234"))
+                .gender(Gender.FEMALE)
+                .role(Role.USER)
+                .build();
+
         Objective testObjective = Objective.builder()
                 .start_day(LocalDate.now())
                 .end_day(LocalDate.of(2025,01,21))
@@ -46,6 +57,7 @@ public class DataInitializer implements CommandLineRunner {
                 .build();
 
         userRepository.save(testUser);
+        userRepository.save(testUser2);
         objectiveRepository.save(testObjective);
     }
 }
