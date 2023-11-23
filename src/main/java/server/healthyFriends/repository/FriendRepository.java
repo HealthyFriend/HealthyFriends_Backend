@@ -7,4 +7,6 @@ import server.healthyFriends.domain.entity.mapping.FriendMapping;
 
 @Repository
 public interface FriendRepository extends JpaRepository<FriendMapping, Long> {
+
+    boolean existsByUserIdAndFriendIdAndStatus(Long requestUserId, Long recipientUserId, boolean status);
 }
