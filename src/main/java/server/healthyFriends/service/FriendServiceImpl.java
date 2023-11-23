@@ -19,6 +19,8 @@ public class FriendServiceImpl implements FriendService{
     private final FriendRepository friendRepository;
     private final UserRepository userRepository;
 
+    // LoginId로 친구 찾기
+
     // 친구 신청
     public FriendResponse requestFriend(Long userId, String friend_loginId) {
 
@@ -75,7 +77,7 @@ public class FriendServiceImpl implements FriendService{
         friendRepository.save(friendMappingReverse);
     }
 
-    // 친구 거절
+    // 친구 요청 거절
     public void rejectFriend(Long friendMappingId) {
 
         FriendMapping obsoleteFriendMapping = friendRepository.findById(friendMappingId)
@@ -83,4 +85,16 @@ public class FriendServiceImpl implements FriendService{
 
         friendRepository.delete(obsoleteFriendMapping);
     }
+
+    // 친구 삭제
+
+    // 친구 리스트 조회
+
+    // 친구 운동 달성 기록 보기
+
+    // 친구 체성분 변화 보기(일별)
+
+    // 친구 체성분 변화 보기(월별)
+
+    // 친구 목표 보기
 }
