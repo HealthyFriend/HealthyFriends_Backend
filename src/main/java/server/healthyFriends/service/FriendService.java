@@ -7,4 +7,5 @@ public interface FriendService {
 
     public void acceptFriend(Long friendMappingId, Long request_userId, Long recipient_userId);
 
+    public void rejectFriend(Long friendMappingId);
 }

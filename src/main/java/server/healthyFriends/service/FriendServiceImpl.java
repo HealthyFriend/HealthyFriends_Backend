@@ -69,4 +69,13 @@ public class FriendServiceImpl implements FriendService{
         friendMappingReverse.setStatus(true);
         friendRepository.save(friendMappingReverse);
     }
+
+    // 친구 거절
+    public void rejectFriend(Long friendMappingId) {
+
+        FriendMapping obsoleteFriendMapping = friendRepository.findById(friendMappingId)
+                        .orElseThrow(()->new EntityNotFoundException("해당하는 엔티티가 없습니다."));
+
+        friendRepository.delete(obsoleteFriendMapping);
+    }
 }
