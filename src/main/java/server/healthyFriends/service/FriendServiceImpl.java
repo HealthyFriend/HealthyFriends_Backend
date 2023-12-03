@@ -2,7 +2,7 @@ package server.healthyFriends.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import server.healthyFriends.web.dto.response.friend.FriendResponse;
+import server.healthyFriends.web.dto.response.FriendResponse;
 import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.domain.entity.mapping.FriendMapping;
 import server.healthyFriends.repository.FriendRepository;

@@ -7,12 +7,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.sercurity.jwt.JwtTokenUtil;
-import server.healthyFriends.web.dto.request.user.JoinRequest;
-import server.healthyFriends.web.dto.request.user.LoginRequest;
 import server.healthyFriends.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
+import server.healthyFriends.web.dto.request.UserRequest;
+
 import java.util.Optional;
+
+import static server.healthyFriends.converter.UserConverter.toUser;
 
 @Service
 @Transactional
@@ -34,8 +36,8 @@ public class UserServiceImpl implements UserService {
     }
 
     // 회원가입
-    public void join(JoinRequest req) {
-        userRepository.save(req.toEntity(encoder.encode(req.getPassword())));
+    public void join(UserRequest.JoinRequest req) {
+        userRepository.save(toUser(req, encoder.encode(req.getPassword())));
     }
 
     /**
@@ -43,7 +45,7 @@ public class UserServiceImpl implements UserService {
      *  화면에서 LoginRequest(loginId, password)을 입력받아 loginId와 password가 일치하면 User return
      *  loginId가 존재하지 않거나 password가 일치하지 않으면 null return
      */
-    public String login(LoginRequest req) {
+    public String login(UserRequest.LoginRequest req) {
         User user = userRepository.findByLoginId(req.getLoginId()).orElseThrow(() -> new EntityNotFoundException("해당하는 유저가 없습니다."));
 
         // 암호화된 password를 디코딩한 값과 입력한 패스워드 값이 다르면 null 반환

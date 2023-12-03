@@ -1,4 +1,4 @@
-package server.healthyFriends.web.dto.response.friend;
+package server.healthyFriends.web.dto.response;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

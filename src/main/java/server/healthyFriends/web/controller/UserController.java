@@ -3,11 +3,10 @@ package server.healthyFriends.web.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import server.healthyFriends.web.dto.request.user.JoinRequest;
-import server.healthyFriends.web.dto.request.user.LoginRequest;
 import server.healthyFriends.apiPayload.ResponseDTO;
 import server.healthyFriends.service.UserService;
 import server.healthyFriends.apiPayload.ResponseUtil;
+import server.healthyFriends.web.dto.request.UserRequest;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,7 +17,7 @@ public class UserController {
     private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/join")
-    public ResponseDTO<String> join(@RequestBody JoinRequest joinRequest) {
+    public ResponseDTO<String> join(@RequestBody UserRequest.JoinRequest joinRequest) {
         try {
             //loginId 중복 체크
             if (userService.checkLoginIdDuplicate(joinRequest.getLoginId())) {
@@ -44,7 +43,7 @@ public class UserController {
 
 
     @PostMapping("/login")
-    public ResponseDTO<String> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseDTO<String> login(@RequestBody UserRequest.LoginRequest loginRequest) {
 
         String accessToken = userService.login(loginRequest);
 

@@ -2,8 +2,8 @@ package server.healthyFriends.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import server.healthyFriends.web.dto.request.friend.FriendRequest;
-import server.healthyFriends.web.dto.response.friend.FriendResponse;
+import server.healthyFriends.web.dto.request.FriendRequest;
+import server.healthyFriends.web.dto.response.FriendResponse;
 import server.healthyFriends.apiPayload.ResponseDTO;
 import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.service.FriendService;
