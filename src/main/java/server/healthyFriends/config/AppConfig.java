@@ -10,31 +10,26 @@ import server.healthyFriends.repository.ObjectiveRepository;
 import server.healthyFriends.repository.UserRepository;
 import server.healthyFriends.service.*;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 @Configuration
 public class AppConfig {
     //스프링 설정 파일
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        // BCryptPasswordEncoder를 사용하여 비밀번호를 안전하게 저장
-        return new BCryptPasswordEncoder();
-    }
-
+/*
     @Bean
     public UserService userService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return new UserServiceImpl(userRepository, passwordEncoder);
     }
 
     @Bean
-    public ObjectiveSerivce objectiveSerivce(ObjectiveRepository objectiveRepository, UserService userService) {
-        return new ObjectiveServiceImpl(objectiveRepository,userService);
+    public ObjectiveSerivce objectiveSerivce(ObjectiveRepository objectiveRepository, UserRepository userRepository) {
+        return new ObjectiveServiceImpl(objectiveRepository,userRepository);
     }
 
     @Bean
     public FriendService friendService(FriendRepository friendRepository, UserRepository userRepository) {
         return new FriendServiceImpl(friendRepository, userRepository);
     }
-
+*/
 }
