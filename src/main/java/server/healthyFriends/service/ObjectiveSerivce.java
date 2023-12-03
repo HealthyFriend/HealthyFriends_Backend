@@ -14,6 +14,5 @@ public interface ObjectiveSerivce {
     Page<Objective> readObjectives(Long userId, Integer page);
     Objective updateObjective(Long objectiveId, ObjectiveRequest objectiveRequest);
     void deleteObjective(Long objectiveId);
-
-    Objective findById(Long objectviveId);
+    Objective findById(Long objectiveId);
 }

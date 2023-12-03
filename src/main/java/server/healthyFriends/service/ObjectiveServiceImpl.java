@@ -101,8 +101,8 @@ public class ObjectiveServiceImpl implements ObjectiveSerivce{
         objectiveRepository.delete(existingObjective);
     }
 
-    public Objective findById(Long objectviveId) {
-        Objective objective = objectiveRepository.findById(objectviveId)
+    public Objective findById(Long objectiveId) {
+        Objective objective = objectiveRepository.findById(objectiveId)
                 .orElseThrow(()->new EntityNotFoundException("해당하는 목표가 없습니다."));
 
         return objective;
