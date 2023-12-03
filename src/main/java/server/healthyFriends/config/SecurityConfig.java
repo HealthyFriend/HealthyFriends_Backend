@@ -7,12 +7,15 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import server.healthyFriends.domain.enums.Role;
+import server.healthyFriends.sercurity.handler.JwtAccessDeniedHandler;
+import server.healthyFriends.sercurity.handler.JwtAuthenticationEntryPoint;
 import server.healthyFriends.sercurity.jwt.JwtTokenFilter;
 import server.healthyFriends.service.UserService;
 import server.healthyFriends.service.UserServiceImpl;
@@ -21,16 +24,25 @@ import server.healthyFriends.service.UserServiceImpl;
 @Configuration
 //Spring Security의 웹 보안 지원 활성화, Spring MVC와 통합 제공
 @EnableWebSecurity
-@EnableMethodSecurity
+@EnableMethodSecurity(
+        securedEnabled = true,
+        jsr250Enabled = true
+)
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final String secretKey = "my-secret-key-20220121";
-    private final UserService userService;
-    @Bean
-    public String secretKey() {
-        return secretKey;
-    }
 
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final JwtTokenFilter jwtRequestFilter;
+
+    private final UserService userService;
+/*
+    @Bean
+    public WebSecurityCustomizer configure() {
+        return web -> web.ignoring()
+                .requestMatchers("/error", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**");
+    }
+*/
     // securityFilterChain 이름의 SecurityFilterChain 타입의 빈 반환
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -58,8 +70,13 @@ public class SecurityConfig {
         httpSecurity.sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(
                 SessionCreationPolicy.STATELESS));
 
+        httpSecurity.exceptionHandling((exceptionHandling) -> exceptionHandling
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .accessDeniedHandler(jwtAccessDeniedHandler)
+        );
+
         //JwtTokenFilter를 UsernamePasswordAuthenticationFilter 앞에 추가
-        httpSecurity.addFilterBefore(new JwtTokenFilter(userService, secretKey), UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
         //권한 규칙 구성 시작
         httpSecurity.authorizeHttpRequests(
