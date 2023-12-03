@@ -1,6 +1,7 @@
 package server.healthyFriends.domain.entity;
 
 import lombok.*;
+import org.hibernate.validator.constraints.UniqueElements;
 import server.healthyFriends.domain.common.BaseEntity;
 import server.healthyFriends.domain.enums.Gender;
 import server.healthyFriends.domain.enums.Role;
@@ -33,7 +34,7 @@ public class User extends BaseEntity {
 
     private Integer age;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 20, unique = true)
     private String loginId;
 
     @Column(nullable = false, length = 100)
