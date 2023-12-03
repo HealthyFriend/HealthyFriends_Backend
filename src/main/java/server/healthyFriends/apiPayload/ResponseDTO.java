@@ -1,4 +1,4 @@
-package server.healthyFriends.web.dto;
+package server.healthyFriends.apiPayload;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

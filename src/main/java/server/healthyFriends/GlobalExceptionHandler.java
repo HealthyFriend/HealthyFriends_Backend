@@ -4,8 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import server.healthyFriends.web.dto.ResponseDTO;
-import server.healthyFriends.web.response.ResponseUtil;
+import server.healthyFriends.apiPayload.ResponseDTO;
+import server.healthyFriends.apiPayload.ResponseUtil;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {

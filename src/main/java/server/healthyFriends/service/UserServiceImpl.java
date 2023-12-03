@@ -2,14 +2,13 @@ package server.healthyFriends.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.BadRequestException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.sercurity.jwt.JwtTokenUtil;
-import server.healthyFriends.web.dto.JoinRequest;
-import server.healthyFriends.web.dto.LoginRequest;
+import server.healthyFriends.web.dto.request.user.JoinRequest;
+import server.healthyFriends.web.dto.request.user.LoginRequest;
 import server.healthyFriends.repository.UserRepository;
 
 import jakarta.transaction.Transactional;

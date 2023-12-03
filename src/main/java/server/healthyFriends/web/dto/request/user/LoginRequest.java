@@ -1,4 +1,4 @@
-package server.healthyFriends.web.dto;
+package server.healthyFriends.web.dto.request.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

@@ -1,6 +1,6 @@
-package server.healthyFriends.web.response;
+package server.healthyFriends.apiPayload;
 
-import server.healthyFriends.web.dto.ResponseDTO;
+import server.healthyFriends.apiPayload.ResponseDTO;
 import server.healthyFriends.domain.enums.ResponseStatus;
 
 public class ResponseUtil {

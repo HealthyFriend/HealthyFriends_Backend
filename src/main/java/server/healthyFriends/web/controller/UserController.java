@@ -1,16 +1,13 @@
 package server.healthyFriends.web.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import server.healthyFriends.domain.entity.User;
-import server.healthyFriends.web.dto.JoinRequest;
-import server.healthyFriends.web.dto.LoginRequest;
-import server.healthyFriends.web.dto.ResponseDTO;
-import server.healthyFriends.sercurity.jwt.JwtTokenUtil;
+import server.healthyFriends.web.dto.request.user.JoinRequest;
+import server.healthyFriends.web.dto.request.user.LoginRequest;
+import server.healthyFriends.apiPayload.ResponseDTO;
 import server.healthyFriends.service.UserService;
-import server.healthyFriends.web.response.ResponseUtil;
+import server.healthyFriends.apiPayload.ResponseUtil;
 
 @RestController
 @RequiredArgsConstructor

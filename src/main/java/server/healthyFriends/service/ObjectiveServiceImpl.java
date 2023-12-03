@@ -2,13 +2,13 @@ package server.healthyFriends.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import server.healthyFriends.web.dto.ObjectiveResponse;
+import server.healthyFriends.web.dto.Objective.ObjectiveResponse;
 import server.healthyFriends.domain.entity.Objective;
 import server.healthyFriends.domain.entity.User;
-import server.healthyFriends.web.dto.ObjectiveRequest;
+import server.healthyFriends.web.dto.request.objective.ObjectiveRequest;
 import server.healthyFriends.repository.ObjectiveRepository;
 import server.healthyFriends.repository.UserRepository;
-import server.healthyFriends.web.response.EntityDtoMapper;
+import server.healthyFriends.apiPayload.EntityDtoMapper;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;

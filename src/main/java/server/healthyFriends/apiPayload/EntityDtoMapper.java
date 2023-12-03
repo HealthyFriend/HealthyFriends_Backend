@@ -1,8 +1,8 @@
-package server.healthyFriends.web.response;
+package server.healthyFriends.apiPayload;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
-import server.healthyFriends.web.dto.ObjectiveResponse;
+import server.healthyFriends.web.dto.Objective.ObjectiveResponse;
 import server.healthyFriends.domain.entity.Objective;
 
 @Mapper(componentModel = "spring")

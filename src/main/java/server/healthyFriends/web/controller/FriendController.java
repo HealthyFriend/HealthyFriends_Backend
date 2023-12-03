@@ -2,13 +2,13 @@ package server.healthyFriends.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import server.healthyFriends.web.dto.FriendRequest;
-import server.healthyFriends.web.dto.FriendResponse;
-import server.healthyFriends.web.dto.ResponseDTO;
+import server.healthyFriends.web.dto.request.friend.FriendRequest;
+import server.healthyFriends.web.dto.response.friend.FriendResponse;
+import server.healthyFriends.apiPayload.ResponseDTO;
 import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.service.FriendService;
 import server.healthyFriends.service.UserService;
-import server.healthyFriends.web.response.ResponseUtil;
+import server.healthyFriends.apiPayload.ResponseUtil;
 
 import jakarta.persistence.EntityNotFoundException;
 

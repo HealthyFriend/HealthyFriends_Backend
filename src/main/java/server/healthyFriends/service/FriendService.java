@@ -1,6 +1,6 @@
 package server.healthyFriends.service;
 
-import server.healthyFriends.web.dto.FriendResponse;
+import server.healthyFriends.web.dto.response.friend.FriendResponse;
 
 public interface FriendService {
     FriendResponse requestFriend(Long userId, String friend_loginId);

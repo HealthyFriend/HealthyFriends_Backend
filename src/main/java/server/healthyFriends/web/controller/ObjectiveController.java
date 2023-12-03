@@ -2,14 +2,14 @@ package server.healthyFriends.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import server.healthyFriends.web.dto.ObjectiveResponse;
+import server.healthyFriends.web.dto.Objective.ObjectiveResponse;
 import server.healthyFriends.domain.entity.Objective;
 import server.healthyFriends.domain.entity.User;
-import server.healthyFriends.web.dto.ObjectiveRequest;
-import server.healthyFriends.web.dto.ResponseDTO;
+import server.healthyFriends.web.dto.request.objective.ObjectiveRequest;
+import server.healthyFriends.apiPayload.ResponseDTO;
 import server.healthyFriends.service.ObjectiveSerivce;
 import server.healthyFriends.service.UserService;
-import server.healthyFriends.web.response.ResponseUtil;
+import server.healthyFriends.apiPayload.ResponseUtil;
 
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;

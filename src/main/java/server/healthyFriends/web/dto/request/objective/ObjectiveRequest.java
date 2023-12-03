@@ -1,4 +1,4 @@
-package server.healthyFriends.web.dto;
+package server.healthyFriends.web.dto.request.objective;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

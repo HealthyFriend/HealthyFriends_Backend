@@ -1,8 +1,8 @@
 package server.healthyFriends.service;
 
 import server.healthyFriends.domain.entity.User;
-import server.healthyFriends.web.dto.JoinRequest;
-import server.healthyFriends.web.dto.LoginRequest;
+import server.healthyFriends.web.dto.request.user.JoinRequest;
+import server.healthyFriends.web.dto.request.user.LoginRequest;
 
 public interface UserService {
     boolean checkLoginIdDuplicate(String loginId);

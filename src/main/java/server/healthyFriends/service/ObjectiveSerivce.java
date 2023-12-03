@@ -1,8 +1,8 @@
 package server.healthyFriends.service;
 
-import server.healthyFriends.web.dto.ObjectiveResponse;
+import server.healthyFriends.web.dto.Objective.ObjectiveResponse;
 import server.healthyFriends.domain.entity.Objective;
-import server.healthyFriends.web.dto.ObjectiveRequest;
+import server.healthyFriends.web.dto.request.objective.ObjectiveRequest;
 
 import java.util.List;
 import java.util.Optional;
