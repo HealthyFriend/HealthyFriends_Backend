@@ -2,7 +2,7 @@ package server.healthyFriends.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import server.healthyFriends.web.dto.Objective.ObjectiveResponse;
+import server.healthyFriends.web.dto.response.objective.ObjectiveResponse;
 import server.healthyFriends.domain.entity.Objective;
 import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.web.dto.request.objective.ObjectiveRequest;

@@ -4,7 +4,7 @@ import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 import server.healthyFriends.apiPayload.EntityDtoMapper;
 import server.healthyFriends.domain.entity.Objective;
-import server.healthyFriends.web.dto.Objective.ObjectiveResponse;
+import server.healthyFriends.web.dto.response.objective.ObjectiveResponse;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",

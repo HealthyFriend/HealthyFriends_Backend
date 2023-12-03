@@ -2,7 +2,7 @@ package server.healthyFriends.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import server.healthyFriends.web.dto.Objective.ObjectiveResponse;
+import server.healthyFriends.web.dto.response.objective.ObjectiveResponse;
 import server.healthyFriends.domain.entity.Objective;
 import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.web.dto.request.objective.ObjectiveRequest;

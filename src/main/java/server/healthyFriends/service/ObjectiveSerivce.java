@@ -1,6 +1,6 @@
 package server.healthyFriends.service;
 
-import server.healthyFriends.web.dto.Objective.ObjectiveResponse;
+import server.healthyFriends.web.dto.response.objective.ObjectiveResponse;
 import server.healthyFriends.domain.entity.Objective;
 import server.healthyFriends.web.dto.request.objective.ObjectiveRequest;
 
