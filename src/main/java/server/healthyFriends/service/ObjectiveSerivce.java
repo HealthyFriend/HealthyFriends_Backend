@@ -1,16 +1,17 @@
 package server.healthyFriends.service;
 
-import server.healthyFriends.web.dto.response.objective.ObjectiveResponse;
+import org.springframework.data.domain.Page;
+import server.healthyFriends.web.dto.response.ObjectiveResponse;
 import server.healthyFriends.domain.entity.Objective;
-import server.healthyFriends.web.dto.request.objective.ObjectiveRequest;
+import server.healthyFriends.web.dto.request.ObjectiveRequest;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ObjectiveSerivce {
     Objective createObjective(Long userId, ObjectiveRequest objectiveRequest);
-    ObjectiveResponse readObjective(Long objectiveId);
-    Optional<List<ObjectiveResponse>> readObjectives(Long userId);
+    ObjectiveResponse.SingleObjectiveResponse readObjective(Long objectiveId);
+    Page<Objective> readObjectives(Long userId, Integer page);
     Objective updateObjective(Long objectiveId, ObjectiveRequest objectiveRequest);
     void deleteObjective(Long objectiveId);
 

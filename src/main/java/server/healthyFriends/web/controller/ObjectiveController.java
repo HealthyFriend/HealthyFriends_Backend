@@ -1,11 +1,13 @@
 package server.healthyFriends.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-import server.healthyFriends.web.dto.response.objective.ObjectiveResponse;
+import server.healthyFriends.converter.ObjectiveConverter;
+import server.healthyFriends.web.dto.response.ObjectiveResponse;
 import server.healthyFriends.domain.entity.Objective;
 import server.healthyFriends.domain.entity.User;
-import server.healthyFriends.web.dto.request.objective.ObjectiveRequest;
+import server.healthyFriends.web.dto.request.ObjectiveRequest;
 import server.healthyFriends.apiPayload.ResponseDTO;
 import server.healthyFriends.service.ObjectiveSerivce;
 import server.healthyFriends.service.UserService;
@@ -46,7 +48,7 @@ public class ObjectiveController {
 
     // 목표 조회
     @GetMapping("/{objectiveId}")
-    public ResponseDTO<ObjectiveResponse> readObjective(
+    public ResponseDTO<ObjectiveResponse.SingleObjectiveResponse> readObjective(
             @PathVariable("objectiveId") Long objectiveId) {
 
         try {
@@ -55,9 +57,9 @@ public class ObjectiveController {
                 return ResponseUtil.notFound("해당하는 목표가 없습니다.",null);
             }
 
-            ObjectiveResponse objectiveResponse = objectiveSerivce.readObjective(objectiveId);
+            ObjectiveResponse.SingleObjectiveResponse singleObjectiveResponse = objectiveSerivce.readObjective(objectiveId);
 
-            return ResponseUtil.success("목표 조회 성공", objectiveResponse);
+            return ResponseUtil.success("목표 조회 성공", singleObjectiveResponse);
 
         } catch(Exception e){
             throw e;
@@ -66,21 +68,13 @@ public class ObjectiveController {
 
     // 목표 리스트 조회
     @GetMapping("/{userId}/list")
-    public ResponseDTO<Optional<List<ObjectiveResponse>>> readObjectives(
-            @PathVariable("userId") Long userId) {
+    public ResponseDTO<ObjectiveResponse.ListObjectiveResponse> readObjectives(
+            @PathVariable("userId") Long userId,
+            @RequestParam(name="page") Integer page){
 
-        try {
-            User user = userService.getUserById(userId);
-
-            if(user==null) {
-                return ResponseUtil.notFound("해당하는 사용자가 없습니다.",null);
-            }
-
-            return ResponseUtil.success("목표 리스트 조회 성공",objectiveSerivce.readObjectives(userId));
-
-        } catch (Exception e) {
-            throw e;
-        }
+        Page<Objective> objectivePage = objectiveSerivce.readObjectives(userId, page);
+        ObjectiveResponse.ListObjectiveResponse listObjectiveResponse = ObjectiveConverter.ListObject(objectivePage);
+        return ResponseUtil.success("목표 리스트 조회 성공",listObjectiveResponse);
     }
 
     // 목표 수정
