@@ -20,8 +20,6 @@ public class UserController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private String secretKey;
     @PostMapping("/join")
     public ResponseDTO<String> join(@RequestBody JoinRequest joinRequest) {
         try {
@@ -51,23 +49,11 @@ public class UserController {
     @PostMapping("/login")
     public ResponseDTO<String> login(@RequestBody LoginRequest loginRequest) {
 
-        User user = userService.login(loginRequest);
+        String accessToken = userService.login(loginRequest);
 
         try {
 
-            // 로그인 아이디나 비밀번호가 틀린 경우 global error return
-            if (user == null) {
-                return ResponseUtil.unauthorized("로그인 아이디 또는 비밀번호가 틀렸습니다.", null);
-            }
-
-            // 로그인 성공 => Jwt Token 발급
-
-            //String secretKey = "my-secret-key-20220121";
-            long expireTimeMs = 1000 * 60 * 60;     // Token 유효 시간 = 60분
-
-            String jwtToken = JwtTokenUtil.createToken(user.getLoginId(), secretKey, expireTimeMs);
-
-            return ResponseUtil.success("로그인 성공", jwtToken);
+            return ResponseUtil.success("로그인 성공", accessToken);
 
         } catch(Exception e) {
             throw e;
