@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
         }
 
 
-        String accessToken = jwtTokenUtil.createAccessToken(user.getLoginId());
+        String accessToken = jwtTokenUtil.createAccessToken(user.getId());
 
         return accessToken;
     }

@@ -46,11 +46,11 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
             if (jwtTokenUtil.isExpired(token)) {
                 // Jwt Token에서 loginId 추출
-                String loginId = jwtTokenUtil.getLoginId(token);
-                UserDetails userDetails = customUserDetailsImpl.loadUserByUsername(loginId);
+                Long userId = jwtTokenUtil.getUserId(token);
+                UserDetails userDetails = customUserDetailsImpl.loadUserByUsername(userId.toString());
 
                 if (userDetails != null) {
-                    //첫번쩨 매개변수
+                    //첫번쩨 매개변수 : userDetails
                     //두번째 매개변수 : 패스워드, 사용 안해서 null로
                     //세번째 매개변수 : 사용자 권한 정보를 나타내는 SimpleGrantedAuthority 객체 생성, 이를 리스트로 묶어서 토큰에 설정
                     //loginUser.getRole().name()은 사용자의 Role을 문자열로 가져와서 해당 역할 부여

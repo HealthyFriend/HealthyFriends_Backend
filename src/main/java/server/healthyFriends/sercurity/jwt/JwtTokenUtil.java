@@ -24,15 +24,15 @@ public class JwtTokenUtil {
         this.secretKey = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
         this.accessTokenValiditySeconds = accessTokenValiditySeconds;
     }
-    public String createAccessToken(String loginId) {
-        return createToken(loginId, accessTokenValiditySeconds);
+    public String createAccessToken(Long userId) {
+        return createToken(userId, accessTokenValiditySeconds);
     }
 
-    private String createToken(String loginId, long validitySeconds) {
+    private String createToken(Long userId, long validitySeconds) {
         //Claim -> Jwt Token에 들어갈 정보
         //Claim에 loginId를 넣어줌 -> 나중에 loginId를 꺼낼 수 있음
         Claims claims = Jwts.claims();
-        claims.put("loginId", loginId);
+        claims.put("userId", userId);
 
         ZonedDateTime now = ZonedDateTime.now();
         ZonedDateTime tokenValidity = now.plusSeconds(validitySeconds);
@@ -51,10 +51,10 @@ public class JwtTokenUtil {
                 .compact();
     }
 
-    // Claims에서 LoginId 추출
-    public String getLoginId(String token) {
+    // Claims에서 userId 추출
+    public Long getUserId(String token) {
         return getClaims(token).getBody()
-                .get("loginId", String.class);
+                .get("userId", Long.class);
     }
 
     // 발급된 Token의 만료 시간 초과 여부
