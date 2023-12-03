@@ -1,14 +1,15 @@
 package server.healthyFriends.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import server.healthyFriends.domain.entity.User;
-import server.healthyFriends.domain.dto.JoinRequest;
-import server.healthyFriends.domain.dto.LoginRequest;
+import server.healthyFriends.web.dto.JoinRequest;
+import server.healthyFriends.web.dto.LoginRequest;
 import server.healthyFriends.repository.UserRepository;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -41,6 +42,7 @@ public class UserServiceImpl implements UserService {
      */
     public User login(LoginRequest req) {
         Optional<User> optionalUser = userRepository.findByLoginId(req.getLoginId());
+        System.out.println(req.getLoginId());
 
         // loginId와 일치하는 User가 없으면 null return
         if(optionalUser.isEmpty()) {
@@ -91,6 +93,18 @@ public class UserServiceImpl implements UserService {
         if(id == null) return null;
 
         return userRepository.findById(id).orElse(null);
+    }
+
+    public User findById(Long id) {
+        if(id == null) return null;
+
+        return userRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("해당하는 유저가 없습니다."));
+    }
+
+    public User findByLoginId(String loginId) {
+        if(loginId.equals(null)) return null;
+
+        return userRepository.findByLoginId(loginId).orElseThrow(() -> new EntityNotFoundException("해당하는 유저가 없습니다."));
     }
 }
 

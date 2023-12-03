@@ -2,15 +2,16 @@ package server.healthyFriends.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import server.healthyFriends.domain.dto.ObjectiveResponse;
+import server.healthyFriends.web.dto.ObjectiveResponse;
 import server.healthyFriends.domain.entity.Objective;
 import server.healthyFriends.domain.entity.User;
-import server.healthyFriends.domain.dto.ObjectiveRequest;
+import server.healthyFriends.web.dto.ObjectiveRequest;
 import server.healthyFriends.repository.ObjectiveRepository;
+import server.healthyFriends.repository.UserRepository;
 import server.healthyFriends.web.response.EntityDtoMapper;
 
-import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,12 +22,13 @@ import java.util.stream.Collectors;
 public class ObjectiveServiceImpl implements ObjectiveSerivce{
 
     private final ObjectiveRepository objectiveRepository;
-    private final UserService userService;
+    private final UserRepository userRepository;
 
     // 목표 생성
     public Objective createObjective(Long userId, ObjectiveRequest objectiveRequest) {
 
-        User user = userService.getUserById(userId);
+        User user = userRepository.findById(userId)
+                .orElseThrow(()-> new EntityNotFoundException("해당하는 유저가 없습니다."));
 
         Objective objective = Objective.builder()
                 .start_day(objectiveRequest.getStart_day())
@@ -107,5 +109,12 @@ public class ObjectiveServiceImpl implements ObjectiveSerivce{
                 .orElseThrow(()->new EntityNotFoundException("해당하는 목표를 찾을 수 없습니다."));
 
         objectiveRepository.delete(existingObjective);
+    }
+
+    public Objective findById(Long objectviveId) {
+        Objective objective = objectiveRepository.findById(objectviveId)
+                .orElseThrow(()->new EntityNotFoundException("해당하는 목표가 없습니다."));
+
+        return objective;
     }
 }

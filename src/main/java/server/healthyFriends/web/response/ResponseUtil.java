@@ -1,9 +1,8 @@
 package server.healthyFriends.web.response;
 
-import server.healthyFriends.domain.dto.ResponseDTO;
+import server.healthyFriends.web.dto.ResponseDTO;
 import server.healthyFriends.domain.enums.ResponseStatus;
 
-import server.healthyFriends.domain.dto.ResponseDTO;
 public class ResponseUtil {
     public static <T> ResponseDTO<T> success(String message, T data) {
         return new ResponseDTO<>(200, ResponseStatus.OK, message, data);

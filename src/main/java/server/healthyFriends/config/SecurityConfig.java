@@ -3,12 +3,13 @@ package server.healthyFriends.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import server.healthyFriends.domain.enums.Role;
@@ -20,12 +21,11 @@ import server.healthyFriends.service.UserServiceImpl;
 @Configuration
 //Spring Security의 웹 보안 지원 활성화, Spring MVC와 통합 제공
 @EnableWebSecurity
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-
-    private final UserService userService;
     private final String secretKey = "my-secret-key-20220121";
-
+    private final UserService userService;
     @Bean
     public String secretKey() {
         return secretKey;
@@ -44,7 +44,38 @@ public class SecurityConfig {
          * ADMIN 권한을 가진 사용자에게 특정 URL에 액세스할 권한 필요한 경우 -> 허용
          * 권한 규칙 구성 종료
          */
-        return httpSecurity
+        //CSRF(Cross-Site Request Forgery) 보호 비활성화
+        httpSecurity.csrf(AbstractHttpConfigurer::disable);
+        httpSecurity.cors(Customizer.withDefaults());
+
+        //HTTP 기본 인증 비활성화
+        httpSecurity.formLogin(AbstractHttpConfigurer::disable);
+        httpSecurity.httpBasic(AbstractHttpConfigurer::disable);
+
+        httpSecurity.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
+
+        //세션 관리 상태 없음으로 구성, Spring Security가 세션 생성 or 사용 X
+        httpSecurity.sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(
+                SessionCreationPolicy.STATELESS));
+
+        //JwtTokenFilter를 UsernamePasswordAuthenticationFilter 앞에 추가
+        httpSecurity.addFilterBefore(new JwtTokenFilter(userService, secretKey), UsernamePasswordAuthenticationFilter.class);
+
+        //권한 규칙 구성 시작
+        httpSecurity.authorizeHttpRequests(
+                authorize -> authorize
+                        .requestMatchers("/users/join").permitAll()
+                        .requestMatchers("/users/login").permitAll()
+                        .anyRequest().authenticated()
+        );
+
+
+        return httpSecurity.build();
+
+
+                /*
+                SrpingBoot 2.7x
+                return httpSecurity
                 //HTTP 기본 인증 비활성화
                 .httpBasic().disable()
                 //CSRF(Cross-Site Request Forgery) 보호 비활성화
@@ -62,5 +93,7 @@ public class SecurityConfig {
                 //ADMIN 권한 가진 사용자에게 /jwt-login/admin/ 하우의 모든 URL에 액세스할 권한 필요
                 .antMatchers("/users/admin/**").hasAuthority(Role.ADMIN.name())
                 .and().build();
+                */
+
     }
 }

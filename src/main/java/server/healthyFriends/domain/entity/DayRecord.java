@@ -3,7 +3,7 @@ package server.healthyFriends.domain.entity;
 import lombok.*;
 import server.healthyFriends.domain.common.BaseEntity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;

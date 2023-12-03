@@ -1,19 +1,17 @@
 package server.healthyFriends.web.controller;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import server.healthyFriends.domain.dto.ObjectiveResponse;
+import server.healthyFriends.web.dto.ObjectiveResponse;
 import server.healthyFriends.domain.entity.Objective;
 import server.healthyFriends.domain.entity.User;
-import server.healthyFriends.domain.dto.ObjectiveRequest;
-import server.healthyFriends.domain.dto.ResponseDTO;
-import server.healthyFriends.repository.ObjectiveRepository;
+import server.healthyFriends.web.dto.ObjectiveRequest;
+import server.healthyFriends.web.dto.ResponseDTO;
 import server.healthyFriends.service.ObjectiveSerivce;
 import server.healthyFriends.service.UserService;
 import server.healthyFriends.web.response.ResponseUtil;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +21,6 @@ import java.util.Optional;
 public class ObjectiveController {
 
     private final ObjectiveSerivce objectiveSerivce;
-    private final ObjectiveRepository objectiveRepository;
     private final UserService userService;
 
     // 목표 설정
@@ -54,7 +51,7 @@ public class ObjectiveController {
 
         try {
 
-            if(objectiveRepository.findById(objectiveId).isEmpty()) {
+            if(objectiveSerivce.findById(objectiveId)==null) {
                 return ResponseUtil.notFound("해당하는 목표가 없습니다.",null);
             }
 
@@ -93,8 +90,7 @@ public class ObjectiveController {
             @RequestBody ObjectiveRequest objectiveRequest) {
         try {
 
-            Objective objective = objectiveRepository.findById(objectiveId)
-                    .orElseThrow(() -> new EntityNotFoundException("해당하는 목표를 찾을 수 없습니다."));
+            Objective objective = objectiveSerivce.findById(objectiveId);
 
             objectiveSerivce.updateObjective(objectiveId, objectiveRequest);
 
@@ -113,7 +109,7 @@ public class ObjectiveController {
 
         try {
 
-            if(objectiveRepository.findById(objectiveId).isEmpty()) {
+            if(objectiveSerivce.findById(objectiveId)==null) {
                 return ResponseUtil.notFound("해당하는 목표가 없습니다.",null);
             }
 

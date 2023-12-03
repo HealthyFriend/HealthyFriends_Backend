@@ -5,7 +5,7 @@ import server.healthyFriends.domain.common.BaseEntity;
 import server.healthyFriends.domain.enums.Gender;
 import server.healthyFriends.domain.enums.Role;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 
 @Getter

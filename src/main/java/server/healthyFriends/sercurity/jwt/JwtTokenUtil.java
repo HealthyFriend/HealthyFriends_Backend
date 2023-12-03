@@ -12,6 +12,8 @@ public class JwtTokenUtil {
 
     // JWT Token 발급
     public static String createToken(String loginId, String key, long expireTime) {
+
+
         //Claim -> Jwt Token에 들어갈 정보
         //Claim에 loginId를 넣어줌 -> 나중에 loginId를 꺼낼 수 있음
         Claims claims = Jwts.claims();

@@ -1,4 +1,4 @@
-package server.healthyFriends.domain.dto;
+package server.healthyFriends.web.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -3,7 +3,7 @@ package server.healthyFriends.domain.entity;
 import lombok.*;
 import server.healthyFriends.domain.common.BaseEntity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Getter
 @Setter

@@ -1,16 +1,18 @@
-package server.healthyFriends.domain.dto;
+package server.healthyFriends.web.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.domain.enums.Gender;
 import server.healthyFriends.domain.enums.Role;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Getter
+@Setter
 @NoArgsConstructor
 public class JoinRequest {
 
