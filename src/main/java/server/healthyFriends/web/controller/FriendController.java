@@ -21,12 +21,10 @@ public class FriendController {
     private final UserService userService;
 
     // 친구 신청
-    @PostMapping("/{userId}/requset")
+    @PostMapping("/{userId}/request")
     public ResponseDTO<FriendResponse> requestFriend(
             @PathVariable("userId") Long userId,
             @RequestBody FriendRequest friendRequest) {
-
-        try {
 
             User requestUser = userService.findById(userId);
 
@@ -36,13 +34,5 @@ public class FriendController {
 
             return ResponseUtil.success("친구 신청에 성공했습니다.",friendResponse);
 
-        } catch (EntityNotFoundException e) {
-            return ResponseUtil.notFound("해당하는 유저가 없습니다.", null);
-        } catch (IllegalStateException e) {
-            return ResponseUtil.badRequest("친구 요청중입니다.",null);
-        }
-        catch (Exception e) {
-            throw e;
-        }
     }
 }
