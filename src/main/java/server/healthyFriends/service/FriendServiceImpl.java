@@ -1,7 +1,12 @@
 package server.healthyFriends.service;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.BadRequestException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+import server.healthyFriends.apiPayload.ResponseUtil;
 import server.healthyFriends.web.dto.response.FriendResponse;
 import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.domain.entity.mapping.FriendMapping;
@@ -33,7 +38,12 @@ public class FriendServiceImpl implements FriendService{
 
         // 이미 친구 신청이 있는지 확인
         if (friendRepository.existsByUserIdAndFriendIdAndStatus(requestUser.getId(), recipientUser.getId(), false)) {
-            throw new IllegalStateException("이미 친구 신청한 상태입니다.");
+            throw new ResponseStatusException(HttpStatus.CONFLICT,"친구 신청 중입니다.");
+        }
+
+        // 본인에게 친구 신청 불가능
+        if(requestUser==recipientUser) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"본인에게 친구 신청은 불가합니다.");
         }
 
         // FriendMapping 엔티티 생성 및 저장 (나 -> 친구)
