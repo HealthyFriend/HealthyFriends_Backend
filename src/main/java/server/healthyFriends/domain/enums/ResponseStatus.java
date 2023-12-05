@@ -13,6 +13,7 @@ public enum ResponseStatus {
     FORBIDDEN, // 403
     NOT_FOUND, // 404
     CONFLICT, //409
+    METHOD_ARGUMENT_NOT_VALID,
 
     //ServerError
     INTERNAL_SERVER_ERROR, // 500

@@ -20,6 +20,10 @@ public class ResponseUtil {
         return new ResponseDTO<>(400, ResponseStatus.BAD_REQUEST, message, data);
     }
 
+    public static <T> ResponseDTO<T> methodArgumentNotValid(String message, T data) {
+        return new ResponseDTO<>(400, ResponseStatus.METHOD_ARGUMENT_NOT_VALID, message, data);
+    }
+
     public static <T> ResponseDTO<T> unauthorized(String message, T data) {
         return new ResponseDTO<>(401, ResponseStatus.UNAUTHORIZED, message, data);
     }

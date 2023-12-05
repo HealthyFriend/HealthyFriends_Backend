@@ -1,9 +1,12 @@
 package server.healthyFriends.apiPayload.handler;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -13,15 +16,36 @@ import server.healthyFriends.apiPayload.ResponseDTO;
 import server.healthyFriends.apiPayload.ResponseUtil;
 
 import javax.naming.ServiceUnavailableException;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Slf4j
 @RestControllerAdvice(annotations = {RestController.class})
-public class ExceptionAdvice extends ResponseEntityExceptionHandler {
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ResponseDTO<Object>> handleBadRequestException(BadRequestException e) {
         return ResponseEntity
                 .status(400)
                 .body(ResponseUtil.badRequest(e.getMessage(),null));
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ResponseDTO<Object>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        List<String> errors = e.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .toList();
+
+        return ResponseEntity
+                .status(400)
+                .body(ResponseUtil.methodArgumentNotValid(errors.toString(),null));
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ResponseDTO<Object>> handleConstraintViolationException(ConstraintViolationException e) {
+        return null;
     }
 
     @ExceptionHandler(HttpClientErrorException.Unauthorized.class)
@@ -65,6 +89,4 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
                 .status(503)
                 .body(ResponseUtil.serviceUnavailable("SERVICE_UNAVAILABLE",null));
     }
-
-
 }
