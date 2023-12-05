@@ -83,7 +83,6 @@ public class SecurityConfig {
                 authorize -> authorize
                         .requestMatchers("/users/join").permitAll()
                         .requestMatchers("/users/login").permitAll()
-                        .requestMatchers("/objectives/**").permitAll()
                         .anyRequest().authenticated()
         );
 
