@@ -16,4 +16,5 @@ public interface UserService {
     User findById(Long id);
     User findByLoginId(String loginId);
     void withdrawal(Long id, UserRequest.WithdrawalRequest req);
+    void modifyUserInfo(Long userId, UserRequest.ModifyUserInfoRequest req);
 }

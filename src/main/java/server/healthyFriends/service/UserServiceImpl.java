@@ -75,6 +75,37 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    public void modifyUserInfo(Long userId, UserRequest.ModifyUserInfoRequest req) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(()->new EntityNotFoundException("해당하는 회원이 없습니다."));
+
+        if(req.getAge()!=null) {
+            user.setAge(req.getAge());
+        }
+
+        if(req.getName()!=null) {
+            user.setName(req.getName());
+        }
+
+        if(req.getNickname()!=null) {
+            user.setNickname(req.getNickname());
+        }
+
+        if(req.getHeight()!=null) {
+            user.setHeight(req.getHeight());
+        }
+
+        if(req.getGender()!=null) {
+            user.setGender(req.getGender());
+        }
+
+        if(req.getPassword()!=null) {
+            user.setPassword(encoder.encode(req.getPassword()));
+        }
+
+        userRepository.save(user);
+    }
+
     /**
      * userId(Long)를 입력받아 User을 return 해주는 기능
      * 인증, 인가 시 사용

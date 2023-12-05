@@ -1,6 +1,8 @@
 package server.healthyFriends.web.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import server.healthyFriends.apiPayload.ResponseDTO;
@@ -14,10 +16,9 @@ import server.healthyFriends.web.dto.request.UserRequest;
 public class UserController {
 
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/join")
-    public ResponseDTO<String> join(@RequestBody UserRequest.JoinRequest joinRequest) {
+    public ResponseDTO<String> join(@RequestBody @Valid UserRequest.JoinRequest joinRequest) {
             //loginId 중복 체크
             if (userService.checkLoginIdDuplicate(joinRequest.getLoginId())) {
                 return ResponseUtil.conflict("이미 존재하는 아이디입니다.", null);
@@ -39,7 +40,7 @@ public class UserController {
 
 
     @PostMapping("/login")
-    public ResponseDTO<String> login(@RequestBody UserRequest.LoginRequest loginRequest) {
+    public ResponseDTO<String> login(@RequestBody @Valid UserRequest.LoginRequest loginRequest) {
 
         String accessToken = userService.login(loginRequest);
 
@@ -48,12 +49,20 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseDTO<String> withdrawal(@RequestBody UserRequest.WithdrawalRequest req,
+    public ResponseDTO<String> withdrawal(@RequestBody @Valid UserRequest.WithdrawalRequest req,
                                           @PathVariable("userId") Long userId) {
 
         userService.withdrawal(userId, req);
 
         return ResponseUtil.success("회원 탈퇴 성공",null);
+    }
+
+    @PutMapping("/{userId}")
+    private ResponseDTO<String> modifyUserInfo(@RequestBody @Valid UserRequest.ModifyUserInfoRequest req,
+                                               @PathVariable("userId") Long userId) {
+        userService.modifyUserInfo(userId,req);
+
+        return ResponseUtil.success("회원 정보 수정 성공",null);
     }
 
     @GetMapping("/admin")
