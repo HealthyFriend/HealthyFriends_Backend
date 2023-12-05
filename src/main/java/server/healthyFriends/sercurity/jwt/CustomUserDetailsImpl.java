@@ -13,7 +13,7 @@ import server.healthyFriends.repository.UserRepository;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CustomUserDetailsImpl implements UserDetailsService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
