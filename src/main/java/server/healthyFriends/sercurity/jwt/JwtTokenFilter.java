@@ -28,7 +28,6 @@ import java.util.List;
 //extends OncePerRequestFilter -> 한 번의 요청에 한 번만 실행되도록 보장
 public class JwtTokenFilter extends OncePerRequestFilter {
 
-    private final UserService userService;
     private final CustomUserDetailsImpl customUserDetailsImpl;
     private final JwtTokenUtil jwtTokenUtil;
     @Override
