@@ -50,4 +50,12 @@ public class UserRequest {
         @NotNull(message = "성별을 입력하세요.")
         private Gender gender;
     }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class WithdrawalRequest {
+        @NotBlank(message = "비밀번호를 입력하세요.")
+        private String password;
+    }
 }
