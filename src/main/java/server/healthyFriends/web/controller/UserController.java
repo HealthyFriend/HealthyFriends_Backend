@@ -18,7 +18,6 @@ public class UserController {
 
     @PostMapping("/join")
     public ResponseDTO<String> join(@RequestBody UserRequest.JoinRequest joinRequest) {
-        try {
             //loginId 중복 체크
             if (userService.checkLoginIdDuplicate(joinRequest.getLoginId())) {
                 return ResponseUtil.conflict("이미 존재하는 아이디입니다.", null);
@@ -35,9 +34,6 @@ public class UserController {
             userService.join(joinRequest);
             return ResponseUtil.created("회원가입에 성공하셨습니다.",null);
 
-        } catch(Exception e) {
-            throw e;
-        }
     }
 
 
@@ -47,13 +43,8 @@ public class UserController {
 
         String accessToken = userService.login(loginRequest);
 
-        try {
+        return ResponseUtil.success("로그인 성공", accessToken);
 
-            return ResponseUtil.success("로그인 성공", accessToken);
-
-        } catch(Exception e) {
-            throw e;
-        }
     }
 
     @GetMapping("/admin")

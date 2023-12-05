@@ -30,7 +30,7 @@ public class ObjectiveController {
     public ResponseDTO<String> createObjective(
             @PathVariable("userId") Long userId,
             @RequestBody ObjectiveRequest objectiveRequest) {
-        try {
+
             User user = userService.getUserById(userId);
 
             if(user==null) {
@@ -41,17 +41,12 @@ public class ObjectiveController {
 
             return ResponseUtil.created("목표 설정 성공",null);
 
-        } catch (Exception e) {
-            throw e;
-        }
     }
 
     // 목표 조회
     @GetMapping("/{objectiveId}")
     public ResponseDTO<ObjectiveResponse.SingleObjectiveResponse> readObjective(
             @PathVariable("objectiveId") Long objectiveId) {
-
-        try {
 
             if(objectiveSerivce.findById(objectiveId)==null) {
                 return ResponseUtil.notFound("해당하는 목표가 없습니다.",null);
@@ -61,9 +56,6 @@ public class ObjectiveController {
 
             return ResponseUtil.success("목표 조회 성공", singleObjectiveResponse);
 
-        } catch(Exception e){
-            throw e;
-        }
     }
 
     // 목표 리스트 조회
@@ -82,26 +74,18 @@ public class ObjectiveController {
     public ResponseDTO<String> updateObjective(
             @PathVariable("objectiveId") Long objectiveId,
             @RequestBody ObjectiveRequest objectiveRequest) {
-        try {
 
             Objective objective = objectiveSerivce.findById(objectiveId);
 
             objectiveSerivce.updateObjective(objectiveId, objectiveRequest);
 
             return ResponseUtil.success("목표 수정 성공", null);
-        } catch(EntityNotFoundException e){
-            return ResponseUtil.notFound(e.getMessage(), null);
-        }
-        catch (Exception e) {
-            throw e;
-        }
+
     }
 
     // 목표 삭제
     @DeleteMapping("/{objectiveId}")
     public ResponseDTO<String> deleteObjective(@PathVariable("objectiveId")Long objectiveId) {
-
-        try {
 
             if(objectiveSerivce.findById(objectiveId)==null) {
                 return ResponseUtil.notFound("해당하는 목표가 없습니다.",null);
@@ -111,9 +95,6 @@ public class ObjectiveController {
 
             return ResponseUtil.success("목표 삭제 성공",null);
 
-        } catch (Exception e) {
-            throw e;
-        }
     }
 
 }
