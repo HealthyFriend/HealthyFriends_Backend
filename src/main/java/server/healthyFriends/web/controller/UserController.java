@@ -47,6 +47,15 @@ public class UserController {
 
     }
 
+    @DeleteMapping("/{userId}")
+    public ResponseDTO<String> withdrawal(@RequestBody UserRequest.WithdrawalRequest req,
+                                          @PathVariable("userId") Long userId) {
+
+        userService.withdrawal(userId, req);
+
+        return ResponseUtil.success("회원 탈퇴 성공",null);
+    }
+
     @GetMapping("/admin")
     public ResponseDTO<String> adminPage() {
         return ResponseUtil.success("관리자 페이지 접근",null);

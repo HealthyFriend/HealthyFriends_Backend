@@ -2,9 +2,11 @@ package server.healthyFriends.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.sercurity.jwt.JwtTokenUtil;
 import server.healthyFriends.repository.UserRepository;
@@ -57,6 +59,20 @@ public class UserServiceImpl implements UserService {
         String accessToken = jwtTokenUtil.createAccessToken(user.getId());
 
         return accessToken;
+    }
+
+    public void withdrawal(Long userId, UserRequest.WithdrawalRequest req) {
+
+        User user = userRepository.findById(userId).orElseThrow(()->new EntityNotFoundException("해당하는 유저가 없습니다."));
+
+        if(encoder.matches(req.getPassword(), user.getPassword())) {
+            userRepository.delete(user);
+        }
+
+        else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"비밀번호가 올바르지 않습니다.");
+        }
+
     }
 
     /**
