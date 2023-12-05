@@ -35,7 +35,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     // JWT 토큰 검증, 사용자 인증 로직 구현
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //HTTP 요청의 Header에서 Authorization 값 가져옴
-        String authorizationHeader = request.getHeader("AUTHORIZATION");
+        String authorizationHeader = request.getHeader("Authorization");
 
         // Header의 Authorization 값이 Null -> Jwt Token을 전송 X => 로그인 X
         // Header의 Authorization 값이 'Bearer '로 시작하지 않으면 -> 잘못된 토큰
