@@ -8,6 +8,8 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -43,4 +45,7 @@ public class ExerciseRecord extends BaseEntity {
     @JoinColumn(name="day_record_id",referencedColumnName = "id")
     private DayRecord dayRecord;
 
+    @OneToMany(mappedBy = "exerciseRecord",cascade = CascadeType.ALL)
+    private List<ExerciseSet> exerciseSetList = new ArrayList<>();
 }
+

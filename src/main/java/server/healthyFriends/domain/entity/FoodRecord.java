@@ -5,6 +5,8 @@ import server.healthyFriends.domain.common.BaseEntity;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -26,4 +28,7 @@ public class FoodRecord extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id",referencedColumnName = "id")
     private User user;
+
+    @OneToMany(mappedBy = "foodRecord",cascade = CascadeType.ALL)
+    private List<FoodImage> foodImageList = new ArrayList<>();
 }

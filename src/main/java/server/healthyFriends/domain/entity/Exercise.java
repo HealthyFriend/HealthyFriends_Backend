@@ -4,6 +4,10 @@ import lombok.*;
 import server.healthyFriends.domain.common.BaseEntity;
 
 import jakarta.persistence.*;
+import server.healthyFriends.domain.entity.mapping.ExerciseMapping;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -27,4 +31,6 @@ public class Exercise extends BaseEntity {
 
     private Boolean cardio;
 
+    @OneToMany(mappedBy = "exercise",cascade = CascadeType.ALL)
+    private List<ExerciseMapping> exerciseMappingList = new ArrayList<>();
 }

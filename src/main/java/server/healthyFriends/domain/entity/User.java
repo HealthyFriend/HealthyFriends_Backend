@@ -3,11 +3,15 @@ package server.healthyFriends.domain.entity;
 import lombok.*;
 import org.hibernate.validator.constraints.UniqueElements;
 import server.healthyFriends.domain.common.BaseEntity;
+import server.healthyFriends.domain.entity.mapping.ExerciseMapping;
+import server.healthyFriends.domain.entity.mapping.FriendMapping;
 import server.healthyFriends.domain.enums.Gender;
 import server.healthyFriends.domain.enums.Role;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -46,4 +50,21 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Objective> objectiveList = new ArrayList<>();
+
+    @OneToMany(mappedBy ="user", cascade = CascadeType.ALL)
+    private List<FoodRecord> foodRecordList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<ExerciseMapping> exerciseMappingList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private List<DayRecord> dayRecordList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private List<BodycompositionRecord> bodycompositionRecordList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private List<FriendMapping> friendMappingList = new ArrayList<>();
 }
