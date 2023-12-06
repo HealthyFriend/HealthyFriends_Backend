@@ -83,6 +83,10 @@ public class SecurityConfig {
                 authorize -> authorize
                         .requestMatchers("/users/join").permitAll()
                         .requestMatchers("/users/login").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/v3/api-docs/**").permitAll()
+                        .requestMatchers("/swagger-resources/**").permitAll()
+                        .requestMatchers("/webjars/**").permitAll()
                         .anyRequest().authenticated()
         );
 
