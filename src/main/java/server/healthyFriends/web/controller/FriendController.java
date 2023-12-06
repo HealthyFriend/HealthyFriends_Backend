@@ -1,5 +1,6 @@
 package server.healthyFriends.web.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import server.healthyFriends.web.dto.request.FriendRequest;
@@ -12,6 +13,8 @@ import server.healthyFriends.apiPayload.ResponseUtil;
 
 import jakarta.persistence.EntityNotFoundException;
 
+
+@Tag(name="FriendController",description = "기능 구분 : 친구")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/friends")

@@ -1,5 +1,6 @@
 package server.healthyFriends.web.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
@@ -10,6 +11,7 @@ import server.healthyFriends.service.UserService;
 import server.healthyFriends.apiPayload.ResponseUtil;
 import server.healthyFriends.web.dto.request.UserRequest;
 
+@Tag(name="UserController",description = "기능 구분 : 회원")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")

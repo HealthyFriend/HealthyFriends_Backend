@@ -41,7 +41,7 @@ public class DataInitializer implements CommandLineRunner {
                 .nickname("하은콩")
                 .height(new BigDecimal("161"))
                 .age(24)
-                .loginId("멈무@example.com")
+                .loginId("하은@example.com")
                 .password(encoder.encode("password1234"))
                 .gender(Gender.FEMALE)
                 .role(Role.USER)

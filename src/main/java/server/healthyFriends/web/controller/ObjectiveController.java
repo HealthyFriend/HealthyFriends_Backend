@@ -1,5 +1,6 @@
 package server.healthyFriends.web.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
+@Tag(name="ObjectiveController",description = "기능 구분 : 목표")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/objectives")
