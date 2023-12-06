@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import server.healthyFriends.apiPayload.ResponseUtil;
+import server.healthyFriends.converter.FriendConverter;
 import server.healthyFriends.web.dto.response.FriendResponse;
 import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.domain.entity.mapping.FriendMapping;
@@ -27,7 +28,7 @@ public class FriendServiceImpl implements FriendService{
     // LoginId로 친구 찾기
 
     // 친구 신청
-    public FriendResponse requestFriend(Long userId, String friend_loginId) {
+    public FriendResponse.RequestFriendResponse requestFriend(Long userId, String friend_loginId) {
 
         User requestUser = userRepository.findById(userId)
                 .orElseThrow(()->new EntityNotFoundException("해당하는 유저가 없습니다."));
@@ -54,12 +55,11 @@ public class FriendServiceImpl implements FriendService{
         friendMapping = friendRepository.save(friendMapping);
 
         //친구 요청 성공 시 반환 DTO
-        FriendResponse friendResponse = new FriendResponse();
-        friendResponse.setRequester_id(requestUser.getId());
-        friendResponse.setRecipient_id(recipientUser.getId());
-        friendResponse.setId(friendMapping.getId());
-
-        return friendResponse;
+        return FriendConverter.requestFrinedResponse(
+                requestUser.getId(),
+                recipientUser.getId(),
+                friendMapping.getId()
+        );
     }
 
     // 친구 수락

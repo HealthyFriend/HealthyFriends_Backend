@@ -1,18 +1,19 @@
 package server.healthyFriends.web.dto.response;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
-@NoArgsConstructor
+
 public class FriendResponse {
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class RequestFriendResponse {
+        private Long friend_mapping_id;
 
-    private Long id;
+        private Long requester_id;
 
-    private Long requester_id;
-
-    private Long recipient_id;
+        private Long recipient_id;
+    }
 
 }
