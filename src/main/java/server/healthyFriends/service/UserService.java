@@ -8,7 +8,7 @@ public interface UserService {
     boolean checkNicknameDuplicate(String nickname);
     void join(UserRequest.JoinRequest req);
     String login(UserRequest.LoginRequest req);
-
+    void logout();
     User getLoginUserById(Long userId);
     User getLoginUserByLoginId(String loginId);
 

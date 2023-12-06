@@ -48,6 +48,12 @@ public class UserController {
 
     }
 
+    @PostMapping("/logout")
+    public ResponseDTO<String> logout() {
+        userService.logout();
+        return ResponseUtil.success("로그아웃 성공",null);
+    }
+
     @DeleteMapping("/{userId}")
     public ResponseDTO<String> withdrawal(@RequestBody @Valid UserRequest.WithdrawalRequest req,
                                           @PathVariable("userId") Long userId) {

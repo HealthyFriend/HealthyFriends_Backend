@@ -2,11 +2,16 @@ package server.healthyFriends.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import server.healthyFriends.domain.entity.Objective;
 import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.sercurity.jwt.JwtTokenUtil;
 import server.healthyFriends.repository.UserRepository;
@@ -26,6 +31,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
     private final JwtTokenUtil jwtTokenUtil;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     //loginId 중복 체크
     public boolean checkLoginIdDuplicate(String loginId) {
@@ -55,10 +61,25 @@ public class UserServiceImpl implements UserService {
             throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
         }
 
-
         String accessToken = jwtTokenUtil.createAccessToken(user.getId());
 
+        redisTemplate.opsForValue().set("JWT_TOKEN:" + user.getId(),accessToken);
+
         return accessToken;
+    }
+
+    public void logout() {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+            // 여기서 userDetails에서 필요한 정보 추출
+            String userId = userDetails.getUsername();
+
+            redisTemplate.delete("JWT_TOKEN:" + userId);
+        }
     }
 
     public void withdrawal(Long userId, UserRequest.WithdrawalRequest req) {
