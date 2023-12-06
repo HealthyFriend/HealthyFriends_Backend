@@ -13,6 +13,12 @@ import java.util.stream.Collectors;
 
 public class ObjectiveConverter {
 
+    public static ObjectiveResponse.CreateObjectiveResponse createObjectiveResponse(Long objectiveId) {
+        return ObjectiveResponse.CreateObjectiveResponse.builder()
+                .objectiveId(objectiveId)
+                .build();
+    }
+
     public static ObjectiveResponse.CreateObjectiveResultDTO toCreateObjective(Objective objective) {
         return ObjectiveResponse.CreateObjectiveResultDTO.builder()
                 .objectiveId(objective.getId())

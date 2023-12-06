@@ -12,6 +12,14 @@ public class ObjectiveResponse {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
+    public static class CreateObjectiveResponse {
+        private Long objectiveId;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class SingleObjectiveResponse {
         private LocalDate start_Day;
         private LocalDate end_Day;

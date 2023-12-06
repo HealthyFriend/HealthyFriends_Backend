@@ -39,19 +39,13 @@ public class ObjectiveController {
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
     @PostMapping("/{userId}")
-    public ResponseDTO<String> createObjective(
+    public ResponseDTO<ObjectiveResponse.CreateObjectiveResponse> createObjective(
             @PathVariable("userId") Long userId,
             @RequestBody ObjectiveRequest objectiveRequest) {
 
-            User user = userService.getUserById(userId);
+            ObjectiveResponse.CreateObjectiveResponse createObjectiveResponse = objectiveSerivce.createObjective(userId, objectiveRequest);
 
-            if(user==null) {
-                return ResponseUtil.notFound("해당하는 사용자가 없습니다.",null);
-            }
-
-            objectiveSerivce.createObjective(userId, objectiveRequest);
-
-            return ResponseUtil.created("목표 설정 성공",null);
+            return ResponseUtil.created("목표 설정 성공",createObjectiveResponse);
 
     }
 

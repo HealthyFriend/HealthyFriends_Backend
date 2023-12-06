@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import server.healthyFriends.converter.ObjectiveConverter;
 import server.healthyFriends.web.dto.response.ObjectiveResponse;
 import server.healthyFriends.domain.entity.Objective;
 import server.healthyFriends.domain.entity.User;
@@ -32,7 +33,7 @@ public class ObjectiveServiceImpl implements ObjectiveSerivce{
     private final UserRepository userRepository;
 
     // 목표 생성
-    public Objective createObjective(Long userId, ObjectiveRequest objectiveRequest) {
+    public ObjectiveResponse.CreateObjectiveResponse createObjective(Long userId, ObjectiveRequest objectiveRequest) {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new EntityNotFoundException("해당하는 유저가 없습니다."));
@@ -47,9 +48,9 @@ public class ObjectiveServiceImpl implements ObjectiveSerivce{
                 .build();
 
         // 목표 저장
-        Objective savedObjective = objectiveRepository.save(objective);
+        objectiveRepository.save(objective);
 
-        return savedObjective;
+        return ObjectiveConverter.createObjectiveResponse(objective.getId());
     }
 
     // 목표 조회
