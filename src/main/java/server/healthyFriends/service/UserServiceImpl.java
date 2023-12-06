@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import server.healthyFriends.converter.UserConverter;
 import server.healthyFriends.domain.entity.Objective;
 import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.sercurity.jwt.JwtTokenUtil;
@@ -18,6 +19,7 @@ import server.healthyFriends.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
 import server.healthyFriends.web.dto.request.UserRequest;
+import server.healthyFriends.web.dto.response.UserResponse;
 
 import java.util.Optional;
 
@@ -53,7 +55,7 @@ public class UserServiceImpl implements UserService {
      *  화면에서 LoginRequest(loginId, password)을 입력받아 loginId와 password가 일치하면 User return
      *  loginId가 존재하지 않거나 password가 일치하지 않으면 null return
      */
-    public String login(UserRequest.LoginRequest req) {
+    public UserResponse.LoginResponse login(UserRequest.LoginRequest req) {
         User user = userRepository.findByLoginId(req.getLoginId()).orElseThrow(() -> new EntityNotFoundException("해당하는 유저가 없습니다."));
 
         // 암호화된 password를 디코딩한 값과 입력한 패스워드 값이 다르면 null 반환
@@ -65,7 +67,7 @@ public class UserServiceImpl implements UserService {
 
         redisTemplate.opsForValue().set("JWT_TOKEN:" + user.getId(),accessToken);
 
-        return accessToken;
+        return UserConverter.loginResponse(accessToken);
     }
 
     public void logout() {
