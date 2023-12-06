@@ -1,5 +1,6 @@
 package server.healthyFriends.web.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,6 +29,7 @@ public class ObjectiveController {
     private final UserService userService;
 
     // 목표 설정
+    @Operation(summary = "목표 설정")
     @PostMapping("/{userId}")
     public ResponseDTO<String> createObjective(
             @PathVariable("userId") Long userId,
@@ -46,6 +48,7 @@ public class ObjectiveController {
     }
 
     // 목표 조회
+    @Operation(summary = "단일 목표 조회")
     @GetMapping("/{objectiveId}")
     public ResponseDTO<ObjectiveResponse.SingleObjectiveResponse> readObjective(
             @PathVariable("objectiveId") Long objectiveId) {
@@ -61,6 +64,7 @@ public class ObjectiveController {
     }
 
     // 목표 리스트 조회
+    @Operation(summary = "특정 회원의 목표 리스트 조회")
     @GetMapping("/{userId}/list")
     public ResponseDTO<ObjectiveResponse.ListObjectiveResponse> readObjectives(
             @PathVariable("userId") Long userId,
@@ -72,6 +76,7 @@ public class ObjectiveController {
     }
 
     // 목표 수정
+    @Operation(summary = "목표 수정")
     @PutMapping("/{objectiveId}")
     public ResponseDTO<String> updateObjective(
             @PathVariable("objectiveId") Long objectiveId,
@@ -86,6 +91,7 @@ public class ObjectiveController {
     }
 
     // 목표 삭제
+    @Operation(summary = "목표 삭제")
     @DeleteMapping("/{objectiveId}")
     public ResponseDTO<String> deleteObjective(@PathVariable("objectiveId")Long objectiveId) {
 

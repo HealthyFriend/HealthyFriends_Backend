@@ -1,5 +1,6 @@
 package server.healthyFriends.web.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,7 @@ public class FriendController {
     private final UserService userService;
 
     // 친구 신청
+    @Operation(summary = "친구 신청")
     @PostMapping("/{userId}/request")
     public ResponseDTO<FriendResponse> requestFriend(
             @PathVariable("userId") Long userId,

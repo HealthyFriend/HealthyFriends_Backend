@@ -1,5 +1,6 @@
 package server.healthyFriends.web.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ public class UserController {
 
     private final UserService userService;
 
+    @Operation(summary = "회원가입")
     @PostMapping("/join")
     public ResponseDTO<String> join(@RequestBody @Valid UserRequest.JoinRequest joinRequest) {
             //loginId 중복 체크
@@ -40,7 +42,7 @@ public class UserController {
     }
 
 
-
+    @Operation(summary = "로그인")
     @PostMapping("/login")
     public ResponseDTO<String> login(@RequestBody @Valid UserRequest.LoginRequest loginRequest) {
 
@@ -50,12 +52,14 @@ public class UserController {
 
     }
 
+    @Operation(summary = "로그아웃")
     @PostMapping("/logout")
     public ResponseDTO<String> logout() {
         userService.logout();
         return ResponseUtil.success("로그아웃 성공",null);
     }
 
+    @Operation(summary = "회원 탈퇴")
     @DeleteMapping("/{userId}")
     public ResponseDTO<String> withdrawal(@RequestBody @Valid UserRequest.WithdrawalRequest req,
                                           @PathVariable("userId") Long userId) {
@@ -65,6 +69,7 @@ public class UserController {
         return ResponseUtil.success("회원 탈퇴 성공",null);
     }
 
+    @Operation(summary = "회원 정보 수정")
     @PutMapping("/{userId}")
     private ResponseDTO<String> modifyUserInfo(@RequestBody @Valid UserRequest.ModifyUserInfoRequest req,
                                                @PathVariable("userId") Long userId) {
@@ -73,6 +78,7 @@ public class UserController {
         return ResponseUtil.success("회원 정보 수정 성공",null);
     }
 
+    @Operation(summary = "안씀")
     @GetMapping("/admin")
     public ResponseDTO<String> adminPage() {
         return ResponseUtil.success("관리자 페이지 접근",null);
