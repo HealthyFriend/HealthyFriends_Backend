@@ -30,6 +30,20 @@ public class FriendController {
     private final FriendService friendService;
     private final UserService userService;
 
+    @Operation(summary = "아이디로 친구 찾기")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 친구 신청 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+    })
+    @GetMapping("/{friendLoginId}")
+    public ResponseDTO<FriendResponse.FindFriendResponse> findFriend(@RequestParam(name="friendLoginId") String friendLoginId) {
+
+        FriendResponse.FindFriendResponse findFriendResponse = friendService.findFriendResponse(friendLoginId);
+
+        return ResponseUtil.success("친구 찾기 성공", findFriendResponse);
+    }
+
     // 친구 신청
     @Operation(summary = "친구 신청")
     @ApiResponses({

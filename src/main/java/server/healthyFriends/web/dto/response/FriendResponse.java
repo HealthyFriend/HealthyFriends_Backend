@@ -11,9 +11,8 @@ public class FriendResponse {
     @AllArgsConstructor
     public static class FindFriendResponse {
         private String friendLoginId;
-
-
-
+        private String friendName;
+        private String friendNickname;
     }
     @Getter
     @Builder

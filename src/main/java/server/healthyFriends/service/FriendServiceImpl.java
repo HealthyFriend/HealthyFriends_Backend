@@ -27,6 +27,13 @@ public class FriendServiceImpl implements FriendService{
     private final UserRepository userRepository;
 
     // LoginId로 친구 찾기
+    public FriendResponse.FindFriendResponse findFriendResponse(String friendLoginId) {
+
+        User friendUser = userRepository.findByLoginId(friendLoginId)
+                .orElseThrow(()-> new EntityNotFoundException("해당하는 유저가 없습니다."));
+
+        return FriendConverter.findFriendResponse(friendUser);
+    }
 
     // 친구 신청
     public FriendResponse.RequestFriendResponse requestFriend(Long userId, FriendRequest.RequestFriendDTO requestFriendDTO) {
@@ -35,7 +42,7 @@ public class FriendServiceImpl implements FriendService{
                 .orElseThrow(()->new EntityNotFoundException("해당하는 유저가 없습니다."));
 
         // 친구 신청 대상자 정보 가져오기
-        User recipientUser = userRepository.findByLoginId(requestFriendDTO.getRecipient_loginId())
+        User recipientUser = userRepository.findByLoginId(requestFriendDTO.getRecipientLoginId())
                 .orElseThrow(() -> new EntityNotFoundException("해당하는 유저가 없습니다."));
 
         // 이미 친구 신청이 있는지 확인

@@ -13,7 +13,7 @@ public class FriendRequest {
     @NoArgsConstructor
     public static class RequestFriendDTO {
         @Schema(description = "친구 신청 대상의 로그인ID", nullable = false, example = "하은@example.com")
-        private String recipient_loginId;
+        private String recipientLoginId;
     }
 
 
