@@ -36,13 +36,13 @@ public class FriendServiceImpl implements FriendService{
     }
 
     // 친구 신청
-    public FriendResponse.RequestFriendResponse requestFriend(Long userId, FriendRequest.RequestFriendDTO requestFriendDTO) {
+    public FriendResponse.RequestFriendResponse requestFriend(Long userId, FriendRequest.RequestFriendRequest requestFriendRequest) {
 
         User requestUser = userRepository.findById(userId)
                 .orElseThrow(()->new EntityNotFoundException("해당하는 유저가 없습니다."));
 
         // 친구 신청 대상자 정보 가져오기
-        User recipientUser = userRepository.findByLoginId(requestFriendDTO.getRecipientLoginId())
+        User recipientUser = userRepository.findByLoginId(requestFriendRequest.getRecipientLoginId())
                 .orElseThrow(() -> new EntityNotFoundException("해당하는 유저가 없습니다."));
 
         // 이미 친구 신청이 있는지 확인
@@ -71,17 +71,21 @@ public class FriendServiceImpl implements FriendService{
     }
 
     // 친구 수락
-    public void acceptFriend(Long friendMappingId, Long request_userId, Long recipient_userId) {
+    public FriendResponse.AcceptFriendResponse acceptFriend(FriendRequest.AcceptFriendRequest acceptFriendRequest) {
 
-        User requestUser = userRepository.findById(request_userId)
-                .orElseThrow(()->new EntityNotFoundException("해당하는 유저가 없습니다."));
-
-        User recipientUser = userRepository.findById(recipient_userId)
-                .orElseThrow(()->new EntityNotFoundException("해당하는 유저가 없습니다."));
-
+        Long friendMappingId = acceptFriendRequest.getMappingId();
 
         FriendMapping friendMapping = friendRepository.findById(friendMappingId)
                 .orElseThrow(()->new EntityNotFoundException("해당하는 엔티티가 없습니다."));
+
+        User requestUser = friendMapping.getUser();
+
+        User recipientUser = userRepository.findById(friendMapping.getFriendId())
+                .orElseThrow(()->new EntityNotFoundException("해당하는 유저가 없습니다."));
+
+        if(friendRepository.existsByUserIdAndFriendIdAndStatus(requestUser.getId(), recipientUser.getId(),true)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,"이미 친구가 맺어진 상대입니다.");
+        }
 
         // 친구 상태 true로 변환(친구 상태)
         friendMapping.setStatus(true);
@@ -93,15 +97,25 @@ public class FriendServiceImpl implements FriendService{
         friendMappingReverse.setFriendId(requestUser.getId());
         friendMappingReverse.setStatus(true);
         friendRepository.save(friendMappingReverse);
+
+        return FriendConverter.acceptFriendResponse(recipientUser.getId(), requestUser.getId(), friendMappingReverse.getFriendId());
     }
 
     // 친구 요청 거절
-    public void rejectFriend(Long friendMappingId) {
+    public void rejectFriend(FriendRequest.RejectFriendRequest rejectFriendRequest) {
+
+        Long friendMappingId = rejectFriendRequest.getMappingId();
 
         FriendMapping obsoleteFriendMapping = friendRepository.findById(friendMappingId)
                         .orElseThrow(()->new EntityNotFoundException("해당하는 엔티티가 없습니다."));
 
-        friendRepository.delete(obsoleteFriendMapping);
+        if(!obsoleteFriendMapping.getStatus()) {
+            friendRepository.delete(obsoleteFriendMapping);
+        }
+
+        else {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Friend Status에 문제가 있습니다.");
+        }
     }
 
     // 친구 삭제

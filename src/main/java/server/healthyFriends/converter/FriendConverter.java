@@ -20,4 +20,12 @@ public class FriendConverter {
                 .friendMappingId(mappingFriendId)
                 .build();
     }
+
+    public static FriendResponse.AcceptFriendResponse acceptFriendResponse(Long requestUserId, Long recipientUserId, Long mappingFriendId) {
+        return FriendResponse.AcceptFriendResponse.builder()
+                .requesterId(requestUserId)
+                .recipientId(recipientUserId)
+                .friendMappingId(mappingFriendId)
+                .build();
+    }
 }

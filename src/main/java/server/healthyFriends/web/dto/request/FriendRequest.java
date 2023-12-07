@@ -11,10 +11,25 @@ public class FriendRequest {
     @Getter
     @Setter
     @NoArgsConstructor
-    public static class RequestFriendDTO {
+    public static class RequestFriendRequest {
         @Schema(description = "친구 신청 대상의 로그인ID", nullable = false, example = "하은@example.com")
         private String recipientLoginId;
     }
 
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class AcceptFriendRequest {
+        @Schema(description = "mapping_id", nullable = false, example = "1")
+        private Long mappingId;
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class RejectFriendRequest {
+        @Schema(description = "mapping_id", nullable = false, example = "1")
+        private Long mappingId;
+    }
 
 }

@@ -26,4 +26,16 @@ public class FriendResponse {
         private Long recipientId;
     }
 
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AcceptFriendResponse {
+        private Long friendMappingId;
+
+        private Long requesterId;
+
+        private Long recipientId;
+    }
+
 }

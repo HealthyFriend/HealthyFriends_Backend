@@ -32,12 +32,12 @@ public class FriendController {
 
     @Operation(summary = "아이디로 친구 찾기")
     @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 친구 신청 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "OK, 친구 신청 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
     @GetMapping("/{friendLoginId}")
-    public ResponseDTO<FriendResponse.FindFriendResponse> findFriend(@RequestParam(name="friendLoginId") String friendLoginId) {
+    public ResponseDTO<FriendResponse.FindFriendResponse> findFriend(@RequestParam(name = "friendLoginId") String friendLoginId) {
 
         FriendResponse.FindFriendResponse findFriendResponse = friendService.findFriendResponse(friendLoginId);
 
@@ -47,18 +47,33 @@ public class FriendController {
     // 친구 신청
     @Operation(summary = "친구 신청")
     @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 친구 신청 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "OK, 친구 신청 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
     @PostMapping("/{userId}/request")
     public ResponseDTO<FriendResponse.RequestFriendResponse> requestFriend(
             @PathVariable("userId") Long userId,
-            @RequestBody @Valid FriendRequest.RequestFriendDTO requestFriendDTO) {
+            @RequestBody @Valid FriendRequest.RequestFriendRequest requestFriendRequest) {
 
-            FriendResponse.RequestFriendResponse friendResponse = friendService.requestFriend(userId, requestFriendDTO);
+        FriendResponse.RequestFriendResponse friendResponse = friendService.requestFriend(userId, requestFriendRequest);
 
-            return ResponseUtil.success("친구 신청에 성공했습니다.",friendResponse);
+        return ResponseUtil.success("친구 신청에 성공했습니다.", friendResponse);
 
+    }
+
+    @Operation(summary = "친구 수락")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "OK, 친구 신청 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+    })
+    @PostMapping("/accept")
+    public ResponseDTO<FriendResponse.AcceptFriendResponse> acceptFriend (
+            @RequestBody @Valid FriendRequest.AcceptFriendRequest acceptFriendRequest) {
+
+        FriendResponse.AcceptFriendResponse acceptFriendResponse = friendService.acceptFriend(acceptFriendRequest);
+
+        return ResponseUtil.success("친구 요청을 수락했습니다.",acceptFriendResponse);
     }
 }
