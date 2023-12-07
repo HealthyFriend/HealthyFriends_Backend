@@ -5,5 +5,6 @@ import server.healthyFriends.web.dto.response.BodyInfoResponse;
 
 public interface BodyInfoService {
 
-    BodyInfoResponse.CreateBodyInfoResponse createBodyInfoResponse(Long userId, BodyInfoRequest.CreateBodyInfoRequest req);
+    BodyInfoResponse.CreateBodyInfoResponse createBodyInfo(Long userId, BodyInfoRequest.CreateBodyInfoRequest req);
+    void updateBodyInfo(Long bodyCompositionRecordId, BodyInfoRequest.UpdateBodyInfoRequest req);
 }
