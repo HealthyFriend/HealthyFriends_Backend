@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import server.healthyFriends.apiPayload.ResponseUtil;
 import server.healthyFriends.converter.FriendConverter;
+import server.healthyFriends.domain.entity.Objective;
+import server.healthyFriends.repository.ObjectiveRepository;
 import server.healthyFriends.web.dto.request.FriendRequest;
 import server.healthyFriends.web.dto.response.FriendResponse;
 import server.healthyFriends.domain.entity.User;
@@ -18,6 +20,10 @@ import server.healthyFriends.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -25,6 +31,7 @@ public class FriendServiceImpl implements FriendService{
 
     private final FriendRepository friendRepository;
     private final UserRepository userRepository;
+    private final ObjectiveRepository objectiveRepository;
 
     // LoginId로 친구 찾기
     public FriendResponse.FindFriendResponse findFriendResponse(String friendLoginId) {
@@ -140,8 +147,22 @@ public class FriendServiceImpl implements FriendService{
         friendRepository.delete(friendMapping2);
 
     }
+    // 친구 목표 보기
+    public FriendResponse.FriendObjective readFriendObjective(Long friendId) {
 
-    // 친구 리스트 조회
+        User friendUser = userRepository.findById(friendId)
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 친구 유저가 존재하지 않습니다."));
+
+        List<Objective> sortedObjectives = friendUser.getObjectiveList().stream()
+                .sorted(Comparator.comparing(Objective::getStart_day).reversed())
+                .toList();
+
+        Optional<Objective> latestObjective = sortedObjectives.isEmpty()
+                ? Optional.empty()
+                : Optional.ofNullable(sortedObjectives.get(0));
+
+        return FriendConverter.friendObjective(latestObjective,friendUser);
+    }
 
     // 친구 운동 달성 기록 보기
 
@@ -149,5 +170,4 @@ public class FriendServiceImpl implements FriendService{
 
     // 친구 체성분 변화 보기(월별)
 
-    // 친구 목표 보기
 }

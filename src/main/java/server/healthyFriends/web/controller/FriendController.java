@@ -83,6 +83,7 @@ public class FriendController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
+
     @PostMapping("/reject")
     public ResponseDTO<String> rejectFriend (
             @RequestBody @Valid FriendRequest.RejectFriendRequest rejectFriendRequest) {
@@ -90,6 +91,20 @@ public class FriendController {
         friendService.rejectFriend(rejectFriendRequest);
 
         return ResponseUtil.success("친구 거절 성공",null);
+    }
+
+    @Operation(summary = "친구 목표 조회")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "OK, 친구 신청 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+    })
+    @GetMapping("/{friendId}/objective")
+    public ResponseDTO<FriendResponse.FriendObjective> readFriendObjective(@PathVariable("friendId")Long friendId) {
+
+        FriendResponse.FriendObjective friendObjective = friendService.readFriendObjective(friendId);
+
+        return ResponseUtil.success("친구 목표 조회 성공",friendObjective);
     }
 
 

@@ -1,8 +1,11 @@
 package server.healthyFriends.converter;
 
+import server.healthyFriends.domain.entity.Objective;
 import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.web.dto.request.FriendRequest;
 import server.healthyFriends.web.dto.response.FriendResponse;
+
+import java.util.Optional;
 
 public class FriendConverter {
 
@@ -33,6 +36,16 @@ public class FriendConverter {
         return FriendResponse.FriendInfo.builder()
                 .nickname(nickname)
                 .objectiveHead(objecviteHead)
+                .build();
+    }
+
+    public static FriendResponse.FriendObjective friendObjective(Optional<Objective> latestObjective, User friend) {
+        return FriendResponse.FriendObjective.builder()
+                .nickname(friend.getNickname())
+                .startDay(latestObjective.map(Objective::getStart_day).orElse(null))
+                .endDay(latestObjective.map(Objective::getEnd_day).orElse(null))
+                .objectiveBody(latestObjective.map(Objective::getBody).orElse(null))
+                .objectiveHead(latestObjective.map(Objective::getHead).orElse(null))
                 .build();
     }
 }

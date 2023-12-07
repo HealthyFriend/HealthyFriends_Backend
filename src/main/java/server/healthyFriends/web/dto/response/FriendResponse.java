@@ -2,6 +2,7 @@ package server.healthyFriends.web.dto.response;
 
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -51,6 +52,18 @@ public class FriendResponse {
     @AllArgsConstructor
     public static class ListFriendResponse {
         List<FriendResponse.FriendInfo> friendInfoList;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class FriendObjective {
+        private String nickname;
+        private String objectiveHead;
+        private String objectiveBody;
+        private LocalDate endDay;
+        private LocalDate startDay;
     }
 
 
