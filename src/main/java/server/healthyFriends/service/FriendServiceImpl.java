@@ -119,6 +119,27 @@ public class FriendServiceImpl implements FriendService{
     }
 
     // 친구 삭제
+    public void deleteFriend(Long myId, Long friendId) {
+        User myUser = userRepository.findById(myId)
+                .orElseThrow(()->new EntityNotFoundException("해당하는 유저가 없습니다."));
+        User friend = userRepository.findById(friendId)
+                .orElseThrow(()->new EntityNotFoundException("해당하는 친구 유저가 없습니다."));
+
+        FriendMapping friendMapping1 = friendRepository.findByUserIdAndFriendIdAndStatus(myId,friendId,true);
+        FriendMapping friendMapping2 = friendRepository.findByUserIdAndFriendIdAndStatus(friendId,myId,true);
+
+        if(friendMapping1==null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"해당하는 친구 관계가 없습니다.");
+        }
+
+        if(friendMapping2==null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"해당하는 친구 관계가 없습니다.");
+        }
+
+        friendRepository.delete(friendMapping1);
+        friendRepository.delete(friendMapping2);
+
+    }
 
     // 친구 리스트 조회
 

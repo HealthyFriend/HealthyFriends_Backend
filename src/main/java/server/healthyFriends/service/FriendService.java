@@ -11,4 +11,5 @@ public interface FriendService {
     FriendResponse.AcceptFriendResponse acceptFriend(FriendRequest.AcceptFriendRequest acceptFriendRequest);
 
     void rejectFriend(FriendRequest.RejectFriendRequest rejectFriendRequest);
+    void deleteFriend(Long myId, Long friendId);
 }
