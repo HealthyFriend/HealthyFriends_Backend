@@ -21,8 +21,8 @@ public class ObjectiveResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class SingleObjectiveResponse {
-        private LocalDate start_Day;
-        private LocalDate end_Day;
+        private LocalDate startDay;
+        private LocalDate endDay;
         private String head;
         private String body;
         private Boolean status;

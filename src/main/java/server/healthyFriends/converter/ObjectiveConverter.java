@@ -30,8 +30,8 @@ public class ObjectiveConverter {
         return ObjectiveResponse.SingleObjectiveResponse.builder()
                 .body(existingObject.getBody())
                 .head(existingObject.getHead())
-                .end_Day(existingObject.getEnd_day())
-                .start_Day(existingObject.getStart_day())
+                .endDay(existingObject.getEnd_day())
+                .startDay(existingObject.getStart_day())
                 .build();
     }
 

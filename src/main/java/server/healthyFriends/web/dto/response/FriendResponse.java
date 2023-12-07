@@ -4,16 +4,27 @@ import lombok.*;
 
 
 public class FriendResponse {
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class FindFriendResponse {
+        private String friendLoginId;
+
+
+
+    }
     @Getter
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
     public static class RequestFriendResponse {
-        private Long friend_mapping_id;
+        private Long friendMappingId;
 
-        private Long requester_id;
+        private Long requesterId;
 
-        private Long recipient_id;
+        private Long recipientId;
     }
 
 }
