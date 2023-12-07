@@ -29,7 +29,7 @@ public class BodycompositionRecord extends BaseEntity {
     @Column(precision = 3, scale = 1)
     private BigDecimal body_fat_mass;
 
-    @Column(precision = 3, scale = 1)
+    @Column(precision = 4, scale = 2)
     private BigDecimal bmi;
 
     private LocalDate date;
