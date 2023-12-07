@@ -12,7 +12,7 @@ public interface ObjectiveSerivce {
     ObjectiveResponse.CreateObjectiveResponse createObjective(Long userId, ObjectiveRequest.CreateObjectiveRequest createObjectiveRequest);
     ObjectiveResponse.SingleObjectiveResponse readObjective(Long objectiveId);
     Page<Objective> readObjectives(Long userId, Integer page);
-    Objective updateObjective(Long objectiveId, ObjectiveRequest.UpdateObjectiveRequest updateObjectiveRequest);
+    void updateObjective(Long objectiveId, ObjectiveRequest.UpdateObjectiveRequest updateObjectiveRequest);
     void deleteObjective(Long objectiveId);
     Objective findById(Long objectiveId);
 }

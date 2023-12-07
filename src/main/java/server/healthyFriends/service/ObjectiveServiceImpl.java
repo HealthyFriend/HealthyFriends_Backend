@@ -76,7 +76,7 @@ public class ObjectiveServiceImpl implements ObjectiveSerivce{
     }
 
     // 목표 수정
-    public Objective updateObjective(Long objectiveId, ObjectiveRequest.UpdateObjectiveRequest updateObjectiveRequest) {
+    public void updateObjective(Long objectiveId, ObjectiveRequest.UpdateObjectiveRequest updateObjectiveRequest) {
 
         Objective existingObjective = objectiveRepository.findById(objectiveId)
                 .orElseThrow(() -> new EntityNotFoundException("해당하는 목표를 찾을 수 없습니다."));
@@ -95,9 +95,7 @@ public class ObjectiveServiceImpl implements ObjectiveSerivce{
         }
 
         // 목표 저장
-        Objective updatedObjective = objectiveRepository.save(existingObjective);
-
-        return updatedObjective;
+        objectiveRepository.save(existingObjective);
 
     }
 
