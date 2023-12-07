@@ -2,6 +2,8 @@ package server.healthyFriends.web.dto.response;
 
 import lombok.*;
 
+import java.util.List;
+
 
 public class FriendResponse {
 
@@ -20,9 +22,7 @@ public class FriendResponse {
     @AllArgsConstructor
     public static class RequestFriendResponse {
         private Long friendMappingId;
-
         private Long requesterId;
-
         private Long recipientId;
     }
 
@@ -32,10 +32,26 @@ public class FriendResponse {
     @AllArgsConstructor
     public static class AcceptFriendResponse {
         private Long friendMappingId;
-
         private Long requesterId;
-
         private Long recipientId;
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class FriendInfo {
+        private String nickname;
+        private String objectiveHead;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ListFriendResponse {
+        List<FriendResponse.FriendInfo> friendInfoList;
+    }
+
 
 }

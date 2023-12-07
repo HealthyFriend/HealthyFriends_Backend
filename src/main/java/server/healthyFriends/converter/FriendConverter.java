@@ -28,4 +28,11 @@ public class FriendConverter {
                 .friendMappingId(mappingFriendId)
                 .build();
     }
+
+    public static FriendResponse.FriendInfo friendInfo(String nickname, String objecviteHead) {
+        return FriendResponse.FriendInfo.builder()
+                .nickname(nickname)
+                .objectiveHead(objecviteHead)
+                .build();
+    }
 }

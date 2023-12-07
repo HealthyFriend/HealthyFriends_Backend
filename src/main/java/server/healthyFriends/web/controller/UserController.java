@@ -15,6 +15,7 @@ import server.healthyFriends.service.FriendService;
 import server.healthyFriends.service.UserService;
 import server.healthyFriends.apiPayload.ResponseUtil;
 import server.healthyFriends.web.dto.request.UserRequest;
+import server.healthyFriends.web.dto.response.FriendResponse;
 import server.healthyFriends.web.dto.response.UserResponse;
 
 @Tag(name="UserController",description = "기능 구분 : 회원")
@@ -67,6 +68,21 @@ public class UserController {
 
         return ResponseUtil.success("친구 삭제 성공",null);
     }
+
+    @Operation(summary = "친구 리스트 조회")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "OK, 친구 신청 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+    })
+    @GetMapping("/{userId}")
+    public ResponseDTO<FriendResponse.ListFriendResponse> readFriends(@PathVariable("userId") Long userId) {
+
+        FriendResponse.ListFriendResponse listFriendResponse = userService.readFriends(userId);
+
+        return ResponseUtil.success("친구 리스트 조회 성공",listFriendResponse);
+    }
+
 
     @Operation(summary = "안씀")
     @GetMapping("/admin")
