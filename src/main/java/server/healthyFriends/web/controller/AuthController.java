@@ -23,7 +23,6 @@ import server.healthyFriends.web.dto.response.UserResponse;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final UserService userService;
     private final AuthService authService;
 
     @Operation(summary = "회원가입")
