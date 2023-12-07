@@ -33,16 +33,16 @@ public class ObjectiveServiceImpl implements ObjectiveSerivce{
     private final UserRepository userRepository;
 
     // 목표 생성
-    public ObjectiveResponse.CreateObjectiveResponse createObjective(Long userId, ObjectiveRequest objectiveRequest) {
+    public ObjectiveResponse.CreateObjectiveResponse createObjective(Long userId, ObjectiveRequest.CreateObjectiveRequest createObjectiveRequest) {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new EntityNotFoundException("해당하는 유저가 없습니다."));
 
         Objective objective = Objective.builder()
-                .start_day(objectiveRequest.getStart_day())
-                .end_day(objectiveRequest.getEnd_day())
-                .head(objectiveRequest.getHead())
-                .body(objectiveRequest.getBody())
+                .start_day(createObjectiveRequest.getStart_day())
+                .end_day(createObjectiveRequest.getEnd_day())
+                .head(createObjectiveRequest.getHead())
+                .body(createObjectiveRequest.getBody())
                 .status(false)
                 .user(user)
                 .build();
@@ -76,15 +76,23 @@ public class ObjectiveServiceImpl implements ObjectiveSerivce{
     }
 
     // 목표 수정
-    public Objective updateObjective(Long objectiveId, ObjectiveRequest objectiveRequest) {
+    public Objective updateObjective(Long objectiveId, ObjectiveRequest.UpdateObjectiveRequest updateObjectiveRequest) {
 
         Objective existingObjective = objectiveRepository.findById(objectiveId)
                 .orElseThrow(() -> new EntityNotFoundException("해당하는 목표를 찾을 수 없습니다."));
 
-        existingObjective.setStart_day(objectiveRequest.getStart_day());
-        existingObjective.setEnd_day(objectiveRequest.getEnd_day());
-        existingObjective.setHead(objectiveRequest.getHead());
-        existingObjective.setBody(objectiveRequest.getBody());
+        if(updateObjectiveRequest.getStart_day()!=null) {
+            existingObjective.setStart_day(updateObjectiveRequest.getStart_day());
+        }
+        if(updateObjectiveRequest.getEnd_day()!=null) {
+            existingObjective.setEnd_day(updateObjectiveRequest.getEnd_day());
+        }
+        if(updateObjectiveRequest.getHead()!=null) {
+            existingObjective.setHead(updateObjectiveRequest.getHead());
+        }
+        if(updateObjectiveRequest.getBody()!=null) {
+            existingObjective.setBody(updateObjectiveRequest.getBody());
+        }
 
         // 목표 저장
         Objective updatedObjective = objectiveRepository.save(existingObjective);

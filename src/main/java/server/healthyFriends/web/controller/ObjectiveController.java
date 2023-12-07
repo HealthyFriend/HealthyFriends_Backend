@@ -41,9 +41,9 @@ public class ObjectiveController {
     @PostMapping("/{userId}")
     public ResponseDTO<ObjectiveResponse.CreateObjectiveResponse> createObjective(
             @PathVariable("userId") Long userId,
-            @RequestBody ObjectiveRequest objectiveRequest) {
+            @RequestBody ObjectiveRequest.CreateObjectiveRequest createObjectiveRequest) {
 
-            ObjectiveResponse.CreateObjectiveResponse createObjectiveResponse = objectiveSerivce.createObjective(userId, objectiveRequest);
+            ObjectiveResponse.CreateObjectiveResponse createObjectiveResponse = objectiveSerivce.createObjective(userId, createObjectiveRequest);
 
             return ResponseUtil.created("목표 설정 성공",createObjectiveResponse);
 
@@ -97,11 +97,11 @@ public class ObjectiveController {
     @PutMapping("/{objectiveId}")
     public ResponseDTO<String> updateObjective(
             @PathVariable("objectiveId") Long objectiveId,
-            @RequestBody ObjectiveRequest objectiveRequest) {
+            @RequestBody ObjectiveRequest.UpdateObjectiveRequest updateObjectiveRequest) {
 
             Objective objective = objectiveSerivce.findById(objectiveId);
 
-            objectiveSerivce.updateObjective(objectiveId, objectiveRequest);
+            objectiveSerivce.updateObjective(objectiveId, updateObjectiveRequest);
 
             return ResponseUtil.success("목표 수정 성공", null);
 
