@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,6 @@ import java.util.Optional;
 public class ObjectiveController {
 
     private final ObjectiveSerivce objectiveSerivce;
-    private final UserService userService;
 
     // 목표 설정
     @Operation(summary = "목표 설정")
@@ -41,7 +41,7 @@ public class ObjectiveController {
     @PostMapping("/{userId}")
     public ResponseDTO<ObjectiveResponse.CreateObjectiveResponse> createObjective(
             @PathVariable("userId") Long userId,
-            @RequestBody ObjectiveRequest.CreateObjectiveRequest createObjectiveRequest) {
+            @RequestBody @Valid ObjectiveRequest.CreateObjectiveRequest createObjectiveRequest) {
 
             ObjectiveResponse.CreateObjectiveResponse createObjectiveResponse = objectiveSerivce.createObjective(userId, createObjectiveRequest);
 
@@ -97,7 +97,7 @@ public class ObjectiveController {
     @PutMapping("/{objectiveId}")
     public ResponseDTO<String> updateObjective(
             @PathVariable("objectiveId") Long objectiveId,
-            @RequestBody ObjectiveRequest.UpdateObjectiveRequest updateObjectiveRequest) {
+            @RequestBody @Valid ObjectiveRequest.UpdateObjectiveRequest updateObjectiveRequest) {
 
             Objective objective = objectiveSerivce.findById(objectiveId);
 
