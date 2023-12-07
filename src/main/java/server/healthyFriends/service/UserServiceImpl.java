@@ -32,19 +32,6 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
-    private final JwtTokenUtil jwtTokenUtil;
-    private final RedisTemplate<String, Object> redisTemplate;
-
-    //loginId 중복 체크
-    public boolean checkLoginIdDuplicate(String loginId) {
-        return userRepository.existsByLoginId(loginId);
-    }
-
-    //닉네임 중복 체크
-    public boolean checkNicknameDuplicate(String nickname) {
-        return userRepository.existsByNickname(nickname);
-    }
-
 
     public void withdrawal(Long userId, UserRequest.WithdrawalRequest req) {
 

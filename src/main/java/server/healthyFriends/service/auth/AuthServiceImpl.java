@@ -4,12 +4,14 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import server.healthyFriends.converter.UserConverter;
 import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.repository.UserRepository;
@@ -30,14 +32,21 @@ public class AuthServiceImpl implements AuthService{
 
     // 회원가입
     public void join(UserRequest.JoinRequest req) {
-        userRepository.save(toUser(req, encoder.encode(req.getPassword())));
+
+        User user = UserConverter.toUser(req, encoder.encode(req.getPassword()));
+
+        if(userRepository.existsByNickname(user.getNickname())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,"이미 존재하는 닉네임입니다.");
+        }
+
+        if(userRepository.existsByLoginId(user.getLoginId())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,"이미 존재하는 아이디입니다.");
+        }
+
+        userRepository.save(user);
     }
 
-    /**
-     *  로그인 기능
-     *  화면에서 LoginRequest(loginId, password)을 입력받아 loginId와 password가 일치하면 User return
-     *  loginId가 존재하지 않거나 password가 일치하지 않으면 null return
-     */
+    // 로그인
     public UserResponse.LoginResponse login(UserRequest.LoginRequest req) {
         User user = userRepository.findByLoginId(req.getLoginId()).orElseThrow(() -> new EntityNotFoundException("해당하는 유저가 없습니다."));
 
@@ -53,6 +62,7 @@ public class AuthServiceImpl implements AuthService{
         return UserConverter.loginResponse(accessToken);
     }
 
+    //로그아웃
     public void logout() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

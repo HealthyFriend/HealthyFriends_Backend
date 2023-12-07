@@ -34,14 +34,6 @@ public class AuthController {
     })
     @PostMapping("/join")
     public ResponseDTO<String> join(@RequestBody @Valid UserRequest.JoinRequest joinRequest) {
-        //loginId 중복 체크
-        if (userService.checkLoginIdDuplicate(joinRequest.getLoginId())) {
-            return ResponseUtil.conflict("이미 존재하는 아이디입니다.", null);
-        }
-        //닉네임 중복 체크
-        if(userService.checkNicknameDuplicate(joinRequest.getNickname())) {
-            return ResponseUtil.conflict("이미 존재하는 닉네임입니다.",null);
-        }
 
         if (!joinRequest.getPassword().equals(joinRequest.getPasswordCheck())) {
             return ResponseUtil.badRequest("비밀번호와 비밀번호 확인이 일치하지 않습니다.",null);
