@@ -11,6 +11,7 @@ import lombok.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import server.healthyFriends.apiPayload.ResponseDTO;
+import server.healthyFriends.service.FriendService;
 import server.healthyFriends.service.UserService;
 import server.healthyFriends.apiPayload.ResponseUtil;
 import server.healthyFriends.web.dto.request.UserRequest;
@@ -23,6 +24,7 @@ import server.healthyFriends.web.dto.response.UserResponse;
 public class UserController {
 
     private final UserService userService;
+    private final FriendService friendService;
     @Operation(summary = "회원 탈퇴")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 회원 탈퇴 성공"),
@@ -50,6 +52,20 @@ public class UserController {
         userService.modifyUserInfo(userId,req);
 
         return ResponseUtil.success("회원 정보 수정 성공",null);
+    }
+
+    @Operation(summary = "친구 삭제")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "OK, 친구 신청 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+    })
+    @DeleteMapping("/{userId}/friends/{friendId}")
+    public ResponseDTO<String> deleteFriend (@PathVariable("userId") Long userId,
+                                             @PathVariable("friendId") Long friendId) {
+        friendService.deleteFriend(userId,friendId);
+
+        return ResponseUtil.success("친구 삭제 성공",null);
     }
 
     @Operation(summary = "안씀")

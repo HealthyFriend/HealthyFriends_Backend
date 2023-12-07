@@ -92,17 +92,5 @@ public class FriendController {
         return ResponseUtil.success("친구 거절 성공",null);
     }
 
-    @Operation(summary = "친구 삭제")
-    @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "OK, 친구 신청 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
-                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
-    })
-    @DeleteMapping("/{userId}/friends/{friendId}")
-    public ResponseDTO<String> deleteFriend (@PathVariable("userId") Long userId,
-                                             @PathVariable("friendId") Long friendId) {
-        friendService.deleteFriend(userId,friendId);
 
-        return ResponseUtil.success("친구 삭제 성공",null);
-    }
 }
