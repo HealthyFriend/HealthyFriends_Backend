@@ -1,4 +1,4 @@
-package server.healthyFriends.service;
+package server.healthyFriends.service.friendmapping;
 
 import server.healthyFriends.web.dto.request.FriendRequest;
 import server.healthyFriends.web.dto.response.FriendResponse;

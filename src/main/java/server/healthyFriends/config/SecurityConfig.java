@@ -7,18 +7,15 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import server.healthyFriends.domain.enums.Role;
 import server.healthyFriends.sercurity.handler.JwtAccessDeniedHandler;
 import server.healthyFriends.sercurity.handler.JwtAuthenticationEntryPoint;
 import server.healthyFriends.sercurity.jwt.JwtTokenFilter;
-import server.healthyFriends.service.UserService;
-import server.healthyFriends.service.UserServiceImpl;
+import server.healthyFriends.service.user.UserService;
 
 //설정 클래스
 @Configuration

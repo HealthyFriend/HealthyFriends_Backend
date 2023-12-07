@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import server.healthyFriends.apiPayload.ResponseDTO;
 import server.healthyFriends.apiPayload.ResponseUtil;
-import server.healthyFriends.service.BodyInfoService;
+import server.healthyFriends.service.bodyCompositionRecord.BodyInfoService;
 import server.healthyFriends.web.dto.request.BodyInfoRequest;
 import server.healthyFriends.web.dto.response.BodyInfoResponse;
 

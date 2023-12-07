@@ -1,4 +1,4 @@
-package server.healthyFriends.service;
+package server.healthyFriends.service.objective;
 
 import org.springframework.data.domain.Page;
 import server.healthyFriends.web.dto.response.ObjectiveResponse;

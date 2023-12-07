@@ -1,4 +1,4 @@
-package server.healthyFriends.service;
+package server.healthyFriends.service.user;
 
 import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.web.dto.request.UserRequest;

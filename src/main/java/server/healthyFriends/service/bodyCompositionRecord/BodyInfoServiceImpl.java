@@ -1,4 +1,4 @@
-package server.healthyFriends.service;
+package server.healthyFriends.service.bodyCompositionRecord;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -11,9 +11,9 @@ import server.healthyFriends.domain.entity.BodycompositionRecord;
 import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.repository.BodyInfoRepository;
 import server.healthyFriends.repository.UserRepository;
+import server.healthyFriends.service.bodyCompositionRecord.BodyInfoService;
 import server.healthyFriends.web.dto.request.BodyInfoRequest;
 import server.healthyFriends.web.dto.response.BodyInfoResponse;
-import server.healthyFriends.web.dto.response.UserResponse;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -22,7 +22,7 @@ import java.time.LocalDate;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class BodyInfoServiceImpl implements BodyInfoService{
+public class BodyInfoServiceImpl implements BodyInfoService {
 
     private final UserRepository userRepository;
     private final BodyInfoRepository bodyInfoRepository;

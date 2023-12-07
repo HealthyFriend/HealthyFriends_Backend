@@ -12,16 +12,10 @@ import org.springframework.web.bind.annotation.*;
 import server.healthyFriends.converter.ObjectiveConverter;
 import server.healthyFriends.web.dto.response.ObjectiveResponse;
 import server.healthyFriends.domain.entity.Objective;
-import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.web.dto.request.ObjectiveRequest;
 import server.healthyFriends.apiPayload.ResponseDTO;
-import server.healthyFriends.service.ObjectiveSerivce;
-import server.healthyFriends.service.UserService;
+import server.healthyFriends.service.objective.ObjectiveSerivce;
 import server.healthyFriends.apiPayload.ResponseUtil;
-
-import jakarta.persistence.EntityNotFoundException;
-import java.util.List;
-import java.util.Optional;
 
 @Tag(name="ObjectiveController",description = "기능 구분 : 목표")
 @RestController

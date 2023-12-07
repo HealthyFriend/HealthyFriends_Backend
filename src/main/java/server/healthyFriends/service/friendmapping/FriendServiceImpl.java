@@ -1,15 +1,13 @@
-package server.healthyFriends.service;
+package server.healthyFriends.service.friendmapping;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import server.healthyFriends.apiPayload.ResponseUtil;
 import server.healthyFriends.converter.FriendConverter;
 import server.healthyFriends.domain.entity.Objective;
 import server.healthyFriends.repository.ObjectiveRepository;
+import server.healthyFriends.service.friendmapping.FriendService;
 import server.healthyFriends.web.dto.request.FriendRequest;
 import server.healthyFriends.web.dto.response.FriendResponse;
 import server.healthyFriends.domain.entity.User;
@@ -27,7 +25,7 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class FriendServiceImpl implements FriendService{
+public class FriendServiceImpl implements FriendService {
 
     private final FriendRepository friendRepository;
     private final UserRepository userRepository;

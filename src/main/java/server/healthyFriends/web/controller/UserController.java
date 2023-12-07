@@ -7,16 +7,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import server.healthyFriends.apiPayload.ResponseDTO;
-import server.healthyFriends.service.FriendService;
-import server.healthyFriends.service.UserService;
+import server.healthyFriends.service.friendmapping.FriendService;
+import server.healthyFriends.service.user.UserService;
 import server.healthyFriends.apiPayload.ResponseUtil;
 import server.healthyFriends.web.dto.request.UserRequest;
 import server.healthyFriends.web.dto.response.FriendResponse;
-import server.healthyFriends.web.dto.response.UserResponse;
 
 @Tag(name="UserController",description = "기능 구분 : 회원")
 @RestController

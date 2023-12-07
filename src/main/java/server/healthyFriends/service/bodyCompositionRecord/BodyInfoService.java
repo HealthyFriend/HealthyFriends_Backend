@@ -1,4 +1,4 @@
-package server.healthyFriends.service;
+package server.healthyFriends.service.bodyCompositionRecord;
 
 import server.healthyFriends.web.dto.request.BodyInfoRequest;
 import server.healthyFriends.web.dto.response.BodyInfoResponse;

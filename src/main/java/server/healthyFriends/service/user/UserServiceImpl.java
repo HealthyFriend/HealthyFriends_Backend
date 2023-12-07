@@ -1,36 +1,25 @@
-package server.healthyFriends.service;
+package server.healthyFriends.service.user;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import server.healthyFriends.converter.FriendConverter;
-import server.healthyFriends.converter.UserConverter;
 import server.healthyFriends.domain.entity.Objective;
 import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.domain.entity.mapping.FriendMapping;
 import server.healthyFriends.repository.FriendRepository;
-import server.healthyFriends.sercurity.jwt.JwtTokenUtil;
 import server.healthyFriends.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
+import server.healthyFriends.service.user.UserService;
 import server.healthyFriends.web.dto.request.UserRequest;
 import server.healthyFriends.web.dto.response.FriendResponse;
-import server.healthyFriends.web.dto.response.UserResponse;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static server.healthyFriends.converter.UserConverter.toUser;
 
 @Service
 @Transactional

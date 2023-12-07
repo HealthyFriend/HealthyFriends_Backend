@@ -1,4 +1,4 @@
-package server.healthyFriends.service;
+package server.healthyFriends.service.objective;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import server.healthyFriends.converter.ObjectiveConverter;
+import server.healthyFriends.service.objective.ObjectiveSerivce;
 import server.healthyFriends.web.dto.response.ObjectiveResponse;
 import server.healthyFriends.domain.entity.Objective;
 import server.healthyFriends.domain.entity.User;
@@ -17,17 +18,12 @@ import server.healthyFriends.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import static server.healthyFriends.converter.ObjectiveConverter.SingleObject;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ObjectiveServiceImpl implements ObjectiveSerivce{
+public class ObjectiveServiceImpl implements ObjectiveSerivce {
 
     private final ObjectiveRepository objectiveRepository;
     private final UserRepository userRepository;
