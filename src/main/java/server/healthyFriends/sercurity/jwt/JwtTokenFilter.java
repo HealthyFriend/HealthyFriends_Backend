@@ -2,25 +2,18 @@ package server.healthyFriends.sercurity.jwt;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import server.healthyFriends.config.SecurityConfig;
-import server.healthyFriends.domain.entity.User;
-import server.healthyFriends.service.UserService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 
 @Component
@@ -28,7 +21,7 @@ import java.util.List;
 //extends OncePerRequestFilter -> 한 번의 요청에 한 번만 실행되도록 보장
 public class JwtTokenFilter extends OncePerRequestFilter {
 
-    private final CustomUserDetailsImpl customUserDetailsImpl;
+    private final CustomUserDetailsService customUserDetailsService;
     private final JwtTokenUtil jwtTokenUtil;
     @Override
     // JWT 토큰 검증, 사용자 인증 로직 구현
@@ -46,7 +39,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             if (jwtTokenUtil.isExpired(token)) {
                 // Jwt Token에서 loginId 추출
                 Long userId = jwtTokenUtil.getUserId(token);
-                UserDetails userDetails = customUserDetailsImpl.loadUserByUsername(userId.toString());
+                UserDetails userDetails = customUserDetailsService.loadUserByUsername(userId.toString());
 
                 if (userDetails != null) {
                     //첫번쩨 매개변수 : userDetails

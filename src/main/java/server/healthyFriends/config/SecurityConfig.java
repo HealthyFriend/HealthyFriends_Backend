@@ -81,8 +81,8 @@ public class SecurityConfig {
         //권한 규칙 구성 시작
         httpSecurity.authorizeHttpRequests(
                 authorize -> authorize
-                        .requestMatchers("/users/join").permitAll()
-                        .requestMatchers("/users/login").permitAll()
+                        .requestMatchers("/join").permitAll()
+                        .requestMatchers("/login").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers("/swagger-resources/**").permitAll()
