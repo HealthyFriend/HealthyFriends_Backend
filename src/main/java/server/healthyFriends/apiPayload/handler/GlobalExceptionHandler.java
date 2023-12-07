@@ -5,12 +5,16 @@ import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitterReturnValueHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import server.healthyFriends.apiPayload.ResponseDTO;
 import server.healthyFriends.apiPayload.ResponseUtil;
@@ -88,5 +92,30 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(503)
                 .body(ResponseUtil.serviceUnavailable("SERVICE_UNAVAILABLE",null));
+    }
+
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<ResponseDTO<Object>> handleResponseStatusException(ResponseStatusException e) {
+        int statusCode = e.getStatusCode().value();
+
+        if (statusCode == 400) {
+            return ResponseEntity.status(400).body(ResponseUtil.badRequest(e.getReason(), null));
+        }
+
+        if (statusCode == 401) {
+            return ResponseEntity.status(401).body(ResponseUtil.unauthorized(e.getReason(), null));
+        }
+
+        if (statusCode == 404) {
+            return ResponseEntity.status(404).body(ResponseUtil.notFound(e.getReason(), null));
+        }
+
+        if (statusCode == 409) {
+            return ResponseEntity.status(409).body(ResponseUtil.conflict(e.getReason(), null));
+        } else {
+            return ResponseEntity
+                    .status(e.getStatusCode())
+                    .body(ResponseUtil.internalServerError(e.getReason(), null));
+        }
     }
 }
