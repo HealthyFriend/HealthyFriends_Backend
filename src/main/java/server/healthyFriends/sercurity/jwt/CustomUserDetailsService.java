@@ -12,7 +12,7 @@ import server.healthyFriends.repository.UserRepository;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class CustomUserDetailsImpl implements UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
