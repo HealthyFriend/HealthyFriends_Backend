@@ -40,13 +40,9 @@ public class FriendController {
     @PostMapping("/{userId}/request")
     public ResponseDTO<FriendResponse.RequestFriendResponse> requestFriend(
             @PathVariable("userId") Long userId,
-            @RequestBody @Valid FriendRequest friendRequest) {
+            @RequestBody @Valid FriendRequest.RequestFriendDTO requestFriendDTO) {
 
-            User requestUser = userService.findById(userId);
-
-            User recipientUser = userService.findByLoginId(friendRequest.getRecipient_loginId());
-
-            FriendResponse.RequestFriendResponse friendResponse = friendService.requestFriend(userId, friendRequest.getRecipient_loginId());
+            FriendResponse.RequestFriendResponse friendResponse = friendService.requestFriend(userId, requestFriendDTO);
 
             return ResponseUtil.success("친구 신청에 성공했습니다.",friendResponse);
 

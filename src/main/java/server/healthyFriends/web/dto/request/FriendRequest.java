@@ -5,11 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
-@NoArgsConstructor
-public class FriendRequest {
-    @Schema(description = "친구 신청 대상의 로그인ID", nullable = false, example = "하은@example.com")
-    private String recipient_loginId;
 
+public class FriendRequest {
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class RequestFriendDTO {
+        @Schema(description = "친구 신청 대상의 로그인ID", nullable = false, example = "하은@example.com")
+        private String recipient_loginId;
+    }
 }
