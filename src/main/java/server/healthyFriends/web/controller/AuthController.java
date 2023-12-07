@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import server.healthyFriends.apiPayload.ResponseDTO;
 import server.healthyFriends.apiPayload.ResponseUtil;
 import server.healthyFriends.service.UserService;
+import server.healthyFriends.service.auth.AuthService;
 import server.healthyFriends.web.dto.request.UserRequest;
 import server.healthyFriends.web.dto.response.UserResponse;
 
@@ -23,6 +24,7 @@ import server.healthyFriends.web.dto.response.UserResponse;
 public class AuthController {
 
     private final UserService userService;
+    private final AuthService authService;
 
     @Operation(summary = "회원가입")
     @ApiResponses({
@@ -36,7 +38,7 @@ public class AuthController {
         if (userService.checkLoginIdDuplicate(joinRequest.getLoginId())) {
             return ResponseUtil.conflict("이미 존재하는 아이디입니다.", null);
         }
-
+        //닉네임 중복 체크
         if(userService.checkNicknameDuplicate(joinRequest.getNickname())) {
             return ResponseUtil.conflict("이미 존재하는 닉네임입니다.",null);
         }
@@ -45,7 +47,7 @@ public class AuthController {
             return ResponseUtil.badRequest("비밀번호와 비밀번호 확인이 일치하지 않습니다.",null);
         }
 
-        userService.join(joinRequest);
+        authService.join(joinRequest);
         return ResponseUtil.created("회원가입에 성공하셨습니다.",null);
 
     }
@@ -60,7 +62,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseDTO<UserResponse.LoginResponse> login(@RequestBody @Valid UserRequest.LoginRequest loginRequest) {
 
-        UserResponse.LoginResponse loginResponse = userService.login(loginRequest);
+        UserResponse.LoginResponse loginResponse = authService.login(loginRequest);
 
         return ResponseUtil.success("로그인 성공", loginResponse);
 
@@ -74,7 +76,7 @@ public class AuthController {
     })
     @PostMapping("/logout")
     public ResponseDTO<String> logout() {
-        userService.logout();
+        authService.logout();
         return ResponseUtil.success("로그아웃 성공",null);
     }
 
