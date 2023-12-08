@@ -69,10 +69,12 @@ public class BodyInfoController {
 
         Optional<BodyInfoResponse.DailyWeightChange> dailyWeightChangeOptional = bodyInfoService.getDailyWeightChange(userId, friendId);
 
-        if (dailyWeightChangeOptional.isPresent()) {
-            BodyInfoResponse.DailyWeightChange dailyWeightChange = dailyWeightChangeOptional.get();
+        BodyInfoResponse.DailyWeightChange dailyWeightChange = dailyWeightChangeOptional.orElse(null);
+
+        if (dailyWeightChange != null) {
             return ResponseUtil.success("일별 몸무게 변화 기록 조회 성공", dailyWeightChange);
         } else {
             return ResponseUtil.success("입력된 몸무게 기록이 없습니다.", null);
-        }  }
+        }
+    }
 }

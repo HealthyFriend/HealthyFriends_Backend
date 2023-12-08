@@ -1,6 +1,7 @@
 package server.healthyFriends.service.bodyCompositionRecord;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.Tuple;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cglib.core.Local;
@@ -21,8 +22,10 @@ import server.healthyFriends.web.dto.response.BodyInfoResponse;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -121,9 +124,12 @@ public class BodyInfoServiceImpl implements BodyInfoService {
                     ? LocalDate.now().minusMonths(3)
                     : earliestDate;
 
-            List<BigDecimal> dailyWeightList = bodyInfoRepository.findDailyWeightChange(friendId, firstRecordDate);
+            List<Object[]> dailyWeightList = bodyInfoRepository.findDailyWeightChange(friendId, firstRecordDate);
 
-            return Optional.of(BodyInfoConverter.dailyWeightChange(Optional.ofNullable(dailyWeightList)));
+            return Optional.of(BodyInfoConverter.convertToDailyWeightChange(dailyWeightList));
         }
+
     }
 }
+
+
