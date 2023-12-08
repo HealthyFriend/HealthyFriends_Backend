@@ -6,6 +6,8 @@ import server.healthyFriends.web.dto.response.BodyInfoResponse;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 public class BodyInfoConverter {
 
@@ -23,4 +25,10 @@ public class BodyInfoConverter {
                 .bodyInfoCompositionRecordId(bodyCompositionRecordId)
                 .build();
     }
+
+    public static BodyInfoResponse.DailyWeightChange dailyWeightChange(Optional<List<BigDecimal>> dailyWeightList) {
+        return new BodyInfoResponse.DailyWeightChange(dailyWeightList);
+    }
+
+
 }

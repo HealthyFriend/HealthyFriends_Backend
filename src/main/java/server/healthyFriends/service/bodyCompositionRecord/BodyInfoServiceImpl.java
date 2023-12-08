@@ -3,13 +3,16 @@ package server.healthyFriends.service.bodyCompositionRecord;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import server.healthyFriends.converter.BodyInfoConverter;
 import server.healthyFriends.domain.entity.BodycompositionRecord;
 import server.healthyFriends.domain.entity.User;
+import server.healthyFriends.domain.entity.mapping.FriendMapping;
 import server.healthyFriends.repository.BodyInfoRepository;
+import server.healthyFriends.repository.FriendRepository;
 import server.healthyFriends.repository.UserRepository;
 import server.healthyFriends.service.bodyCompositionRecord.BodyInfoService;
 import server.healthyFriends.web.dto.request.BodyInfoRequest;
@@ -18,6 +21,8 @@ import server.healthyFriends.web.dto.response.BodyInfoResponse;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -26,6 +31,7 @@ public class BodyInfoServiceImpl implements BodyInfoService {
 
     private final UserRepository userRepository;
     private final BodyInfoRepository bodyInfoRepository;
+    private final FriendRepository friendRepository;
 
     public BodyInfoResponse.CreateBodyInfoResponse createBodyInfo(Long userId, BodyInfoRequest.CreateBodyInfoRequest req) {
 
@@ -92,5 +98,32 @@ public class BodyInfoServiceImpl implements BodyInfoService {
         }
 
         bodyInfoRepository.save(bodycompositionRecord);
+    }
+
+    public Optional<BodyInfoResponse.DailyWeightChange> getDailyWeightChange(Long userId, Long friendId) {
+
+        if(userRepository.findById(friendId).isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"해당하는 친구가 없습니다.");
+        }
+
+        if(!friendRepository.existsByUserIdAndFriendIdAndStatus(userId,friendId,true)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"해당 유저는 본인의 친구가 아닙니다.");
+        }
+
+        LocalDate earliestDate = bodyInfoRepository.findEarliestRecordDate(friendId);
+
+        if(earliestDate==null) {
+            return Optional.empty();
+        }
+
+        else {
+            LocalDate firstRecordDate = (earliestDate.isBefore(LocalDate.now().minusMonths(3)))
+                    ? LocalDate.now().minusMonths(3)
+                    : earliestDate;
+
+            List<BigDecimal> dailyWeightList = bodyInfoRepository.findDailyWeightChange(friendId, firstRecordDate);
+
+            return Optional.of(BodyInfoConverter.dailyWeightChange(Optional.ofNullable(dailyWeightList)));
+        }
     }
 }
