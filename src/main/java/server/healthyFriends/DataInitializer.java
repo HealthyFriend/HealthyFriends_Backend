@@ -4,12 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import server.healthyFriends.domain.entity.BodycompositionRecord;
 import server.healthyFriends.domain.entity.Objective;
 import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.domain.enums.Gender;
 import server.healthyFriends.domain.enums.Role;
+import server.healthyFriends.repository.BodyInfoRepository;
 import server.healthyFriends.repository.ObjectiveRepository;
 import server.healthyFriends.repository.UserRepository;
+import server.healthyFriends.service.bodyCompositionRecord.BodyInfoService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -21,6 +24,7 @@ public class DataInitializer implements CommandLineRunner {
     private final UserRepository userRepository;
     private final ObjectiveRepository objectiveRepository;
     private final PasswordEncoder encoder;
+    private final BodyInfoRepository bodyInfoRepository;
 
 
     @Override
@@ -56,8 +60,17 @@ public class DataInitializer implements CommandLineRunner {
                 .user(testUser)
                 .build();
 
+        BodycompositionRecord testBodycompositionRecord = BodycompositionRecord.builder()
+                        .body_fat_mass(BigDecimal.valueOf(30.0))
+                        .skeletal_muscle_mass(BigDecimal.valueOf(40.0))
+                        .weight(BigDecimal.valueOf(90.0))
+                        .user(testUser2)
+                        .date(LocalDate.of(2023,11,20))
+                        .build();
+
         userRepository.save(testUser);
         userRepository.save(testUser2);
         objectiveRepository.save(testObjective);
+        bodyInfoRepository.save(testBodycompositionRecord);
     }
 }
