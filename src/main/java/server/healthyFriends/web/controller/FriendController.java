@@ -19,7 +19,6 @@ import server.healthyFriends.apiPayload.ResponseUtil;
 @Tag(name="FriendController",description = "기능 구분 : 친구")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/friends")
 public class FriendController {
 
     private final FriendService friendService;
@@ -31,7 +30,7 @@ public class FriendController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @GetMapping("/{friendLoginId}")
+    @GetMapping("/friends/{friendLoginId}")
     public ResponseDTO<FriendResponse.FindFriendResponse> findFriend(@RequestParam(name = "friendLoginId") String friendLoginId) {
 
         FriendResponse.FindFriendResponse findFriendResponse = friendService.findFriendResponse(friendLoginId);
@@ -46,7 +45,7 @@ public class FriendController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @PostMapping("/{userId}/request")
+    @PostMapping("/friends/{userId}/request")
     public ResponseDTO<FriendResponse.RequestFriendResponse> requestFriend(
             @PathVariable("userId") Long userId,
             @RequestBody @Valid FriendRequest.RequestFriendRequest requestFriendRequest) {
@@ -63,7 +62,7 @@ public class FriendController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @PostMapping("/accept")
+    @PostMapping("/friend-acceptance")
     public ResponseDTO<FriendResponse.AcceptFriendResponse> acceptFriend (
             @RequestBody @Valid FriendRequest.AcceptFriendRequest acceptFriendRequest) {
 
@@ -79,11 +78,10 @@ public class FriendController {
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
 
-    @PostMapping("/reject")
+    @DeleteMapping("/friend-rejection/{friendMappingId}")
     public ResponseDTO<String> rejectFriend (
-            @RequestBody @Valid FriendRequest.RejectFriendRequest rejectFriendRequest) {
-
-        friendService.rejectFriend(rejectFriendRequest);
+            @PathVariable("friendMappingId") Long friendMappingId) {
+        friendService.rejectFriend(friendMappingId);
 
         return ResponseUtil.success("친구 거절 성공",null);
     }
@@ -94,7 +92,7 @@ public class FriendController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @GetMapping("/{friendId}/objective")
+    @GetMapping("/friends/{friendId}/objective")
     public ResponseDTO<FriendResponse.FriendObjective> readFriendObjective(@PathVariable("friendId")Long friendId) {
 
         FriendResponse.FriendObjective friendObjective = friendService.readFriendObjective(friendId);

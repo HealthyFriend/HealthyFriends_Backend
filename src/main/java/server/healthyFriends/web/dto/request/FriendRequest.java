@@ -20,16 +20,16 @@ public class FriendRequest {
     @Setter
     @NoArgsConstructor
     public static class AcceptFriendRequest {
-        @Schema(description = "mapping_id", nullable = false, example = "1")
-        private Long mappingId;
+        @Schema(description = "friend_mapping_id", nullable = false, example = "1")
+        private Long friendMappingId;
     }
 
     @Getter
     @Setter
     @NoArgsConstructor
     public static class RejectFriendRequest {
-        @Schema(description = "mapping_id", nullable = false, example = "1")
-        private Long mappingId;
+        @Schema(description = "friend_mapping_id", nullable = false, example = "1")
+        private Long friendMappingId;
     }
 
 }
