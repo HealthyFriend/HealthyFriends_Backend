@@ -73,7 +73,7 @@ public class BodyInfoServiceImpl implements BodyInfoService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"수정하려는 날짜는 필수 입력입니다.");
         }
 
-        if(bodyInfoRepository.existsByuserIdAndDate(bodycompositionRecord.getId(),req.getEdit_day()))
+        if(bodyInfoRepository.existsByuserIdAndDate(bodycompositionRecord.getUser().getId(),req.getEdit_day()))
         {
             throw new ResponseStatusException(HttpStatus.CONFLICT,"수정하려는 날짜에 이미 기록이 존재합니다.");
         }
