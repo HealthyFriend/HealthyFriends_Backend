@@ -43,24 +43,6 @@ public class FriendController {
         return ResponseUtil.success("친구 찾기 성공", findFriendResponse);
     }
 
-    // 친구 신청
-    @Operation(summary = "친구 신청")
-    @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "OK, 친구 신청 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
-                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
-    })
-    @PostMapping("/friends/{userId}/request")
-    public ResponseDTO<FriendResponse.RequestFriendResponse> requestFriend(
-            @PathVariable("userId") Long userId,
-            @RequestBody @Valid FriendRequest.RequestFriendRequest requestFriendRequest) {
-
-        FriendResponse.RequestFriendResponse friendResponse = friendService.requestFriend(userId, requestFriendRequest);
-
-        return ResponseUtil.success("친구 신청에 성공했습니다.", friendResponse);
-
-    }
-
     @Operation(summary = "친구 요청 수락")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "OK, 친구 신청 성공"),
