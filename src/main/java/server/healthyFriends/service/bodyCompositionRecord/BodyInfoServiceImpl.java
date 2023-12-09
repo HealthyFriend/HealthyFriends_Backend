@@ -153,6 +153,30 @@ public class BodyInfoServiceImpl implements BodyInfoService {
 
     }
 
+    public Optional<BodyInfoResponse.DailyFatChange> getDailyFatChange(Long userId, Long friendId) {
+
+        existsFriend(userId);
+
+        isMyFriend(userId, friendId);
+
+        LocalDate earliestDate = bodyInfoRepository.findEarliestFatRecordDate(friendId);
+
+        if(earliestDate==null) {
+            return Optional.empty();
+        }
+
+        else {
+            LocalDate firstRecordDate = (earliestDate.isBefore(LocalDate.now().minusYears(1)))
+                    ? LocalDate.now().minusYears(1)
+                    : earliestDate;
+
+            List<Object[]> dailyFatList = bodyInfoRepository.findDailyFatChange(friendId, firstRecordDate);
+
+            return Optional.of(BodyInfoConverter.convertToDailyFatChange(dailyFatList));
+        }
+
+    }
+
 
 
     private void existsFriend(Long friendId) {

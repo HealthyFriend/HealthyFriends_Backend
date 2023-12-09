@@ -111,7 +111,7 @@ public class FriendController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @GetMapping("/friends/{friendId}/users/{userId}/muscle/daily")
+    @GetMapping("/friends/{friendId}/users/{userId}/weight/daily")
     public ResponseDTO<BodyInfoResponse.DailyWeightChange> dailyMuscleChange(@PathVariable("friendId")Long friendId,
                                                                              @PathVariable("userId")Long userId) {
 
@@ -132,7 +132,7 @@ public class FriendController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @GetMapping("/friends/{friendId}/users/{userId}/weight/daily")
+    @GetMapping("/friends/{friendId}/users/{userId}/muscle/daily")
     public ResponseDTO<BodyInfoResponse.DailyMuscleChange> dailyWeightChange(@PathVariable("friendId")Long friendId,
                                                                              @PathVariable("userId")Long userId) {
 
@@ -141,11 +141,31 @@ public class FriendController {
         BodyInfoResponse.DailyMuscleChange dailyMuscleChange = dailyMuscleChangeOptional.orElse(null);
 
         if (dailyMuscleChange != null) {
-            return ResponseUtil.success("일별 몸무게 변화 기록 조회 성공", dailyMuscleChange);
+            return ResponseUtil.success("친구의 일별 몸무게 변화 기록 조회 성공", dailyMuscleChange);
         } else {
             return ResponseUtil.success("지난 1년간 입력된 골격근 기록이 없습니다.", null);
         }
     }
 
+    @Operation(summary = "친구 체지방 일별 조회(1년간)")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 친구의 일별 몸무게 조회 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+    })
+    @GetMapping("/friends/{friendId}/users/{userId}/fat/daily")
+    public ResponseDTO<BodyInfoResponse.DailyFatChange> dailyFatChange(@PathVariable("friendId")Long friendId,
+                                                                             @PathVariable("userId")Long userId) {
+
+        Optional<BodyInfoResponse.DailyFatChange> dailyFatChangeOptional = bodyInfoService.getDailyFatChange(userId, friendId);
+
+        BodyInfoResponse.DailyFatChange dailyFatChange = dailyFatChangeOptional.orElse(null);
+
+        if (dailyFatChange != null) {
+            return ResponseUtil.success("친구의 일별 골격근 변화 기록 조회 성공", dailyFatChange);
+        } else {
+            return ResponseUtil.success("지난 1년간 입력된 체지방 기록이 없습니다.", null);
+        }
+    }
 
 }

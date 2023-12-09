@@ -54,4 +54,20 @@ public class BodyInfoResponse {
         private Optional<List<BodyInfoResponse.MuscleChange>> dailyMuscleList;
     }
 
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class FatChange {
+        private LocalDate date;
+        private BigDecimal fat;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class DailyFatChange {
+        private Optional<List<BodyInfoResponse.FatChange>> dailyFatList;
+    }
 }

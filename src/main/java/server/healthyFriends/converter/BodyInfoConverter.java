@@ -62,4 +62,16 @@ public class BodyInfoConverter {
         return new BodyInfoResponse.DailyMuscleChange(Optional.of(muscleChanges));
     }
 
+    public static BodyInfoResponse.FatChange fatChange(Object[] result) {
+        return new BodyInfoResponse.FatChange((LocalDate) result[1], (BigDecimal) result[0]);
+    }
+
+    public static BodyInfoResponse.DailyFatChange convertToDailyFatChange(List<Object[]> fatChangeList) {
+        List<BodyInfoResponse.FatChange> fatChanges = fatChangeList.stream()
+                .map(BodyInfoConverter::fatChange)
+                .toList();
+
+        return new BodyInfoResponse.DailyFatChange(Optional.of(fatChanges));
+    }
+
 }
