@@ -30,6 +30,9 @@ public interface BodyInfoRepository extends JpaRepositoryImplementation<Bodycomp
     @Query("SELECT MIN(r.date) FROM BodycompositionRecord r WHERE r.user.id = :userId AND r.body_fat_mass IS NOT NULL")
     LocalDate findEarliestFatRecordDate(@Param("userId") Long userId);
 
+    @Query("SELECT MIN(r.date) FROM BodycompositionRecord r WHERE r.user.id = :userId AND r.bmi IS NOT NULL")
+    LocalDate findEarliestBmiRecordDate(@Param("userId") Long userId);
+
     @Query("SELECT r.weight, r.date FROM BodycompositionRecord r " +
             "WHERE r.user.id = :userId " +
             "AND r.date >= :date " +
@@ -47,6 +50,12 @@ public interface BodyInfoRepository extends JpaRepositoryImplementation<Bodycomp
             "AND r.date >= :date " +
             "ORDER BY r.date ASC")
     List<Object[]> findDailyFatChange(@Param("userId")Long userId, @Param("date")LocalDate date);
+
+    @Query("SELECT r.bmi, r.date FROM BodycompositionRecord r " +
+            "WHERE r.user.id = :userId " +
+            "AND r.date >= :date " +
+            "ORDER BY r.date ASC")
+    List<Object[]> findDailyBmiChange(@Param("userId")Long userId, @Param("date")LocalDate date);
 
     /*
     @Query("SELECT r.weight FROM BodycompositionRecord r " +

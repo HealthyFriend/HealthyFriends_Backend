@@ -168,4 +168,24 @@ public class FriendController {
         }
     }
 
+    @Operation(summary = "친구 bmi 일별 조회(1년간)")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 친구의 일별 몸무게 조회 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+    })
+    @GetMapping("/friends/{friendId}/users/{userId}/bmi/daily")
+    public ResponseDTO<BodyInfoResponse.DailyBmiChange> dailyBmiChange(@PathVariable("friendId")Long friendId,
+                                                                       @PathVariable("userId")Long userId) {
+
+        Optional<BodyInfoResponse.DailyBmiChange> dailyBmiChangeOptional = bodyInfoService.getDailyBmiChange(userId, friendId);
+
+        BodyInfoResponse.DailyBmiChange dailyBmiChange = dailyBmiChangeOptional.orElse(null);
+
+        if (dailyBmiChange != null) {
+            return ResponseUtil.success("친구의 일별 bmi 변화 기록 조회 성공", dailyBmiChange);
+        } else {
+            return ResponseUtil.success("지난 1년간 입력된 bmi 기록이 없습니다.", null);
+        }
+    }
 }

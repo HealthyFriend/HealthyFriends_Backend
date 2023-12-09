@@ -70,4 +70,21 @@ public class BodyInfoResponse {
     public static class DailyFatChange {
         private Optional<List<BodyInfoResponse.FatChange>> dailyFatList;
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class BmiChange {
+        private LocalDate date;
+        private BigDecimal bmi;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class DailyBmiChange {
+        private Optional<List<BodyInfoResponse.BmiChange>> dailyBmiList;
+    }
 }

@@ -177,6 +177,29 @@ public class BodyInfoServiceImpl implements BodyInfoService {
 
     }
 
+    public Optional<BodyInfoResponse.DailyBmiChange> getDailyBmiChange(Long userId, Long friendId) {
+
+        existsFriend(userId);
+
+        isMyFriend(userId, friendId);
+
+        LocalDate earliestDate = bodyInfoRepository.findEarliestBmiRecordDate(friendId);
+
+        if(earliestDate==null) {
+            return Optional.empty();
+        }
+
+        else {
+            LocalDate firstRecordDate = (earliestDate.isBefore(LocalDate.now().minusYears(1)))
+                    ? LocalDate.now().minusYears(1)
+                    : earliestDate;
+
+            List<Object[]> dailyBmiList = bodyInfoRepository.findDailyBmiChange(friendId, firstRecordDate);
+
+            return Optional.of(BodyInfoConverter.convertToDailyBmiChange(dailyBmiList));
+        }
+
+    }
 
 
     private void existsFriend(Long friendId) {

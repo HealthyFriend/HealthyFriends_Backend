@@ -74,4 +74,15 @@ public class BodyInfoConverter {
         return new BodyInfoResponse.DailyFatChange(Optional.of(fatChanges));
     }
 
+    public static BodyInfoResponse.BmiChange bmiChange(Object[] result) {
+        return new BodyInfoResponse.BmiChange((LocalDate) result[1], (BigDecimal) result[0]);
+    }
+
+    public static BodyInfoResponse.DailyBmiChange convertToDailyBmiChange(List<Object[]> bmiChangeList) {
+        List<BodyInfoResponse.BmiChange> bmiChanges = bmiChangeList.stream()
+                .map(BodyInfoConverter::bmiChange)
+                .toList();
+
+        return new BodyInfoResponse.DailyBmiChange(Optional.of(bmiChanges));
+    }
 }
