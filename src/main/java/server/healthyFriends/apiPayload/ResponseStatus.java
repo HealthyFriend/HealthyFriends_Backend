@@ -1,4 +1,4 @@
-package server.healthyFriends.domain.enums;
+package server.healthyFriends.apiPayload;
 
 public enum ResponseStatus {
 

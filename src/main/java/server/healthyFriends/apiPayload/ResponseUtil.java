@@ -1,8 +1,5 @@
 package server.healthyFriends.apiPayload;
 
-import server.healthyFriends.apiPayload.ResponseDTO;
-import server.healthyFriends.domain.enums.ResponseStatus;
-
 public class ResponseUtil {
     public static <T> ResponseDTO<T> success(String message, T data) {
         return new ResponseDTO<>(200, ResponseStatus.OK, message, data);
