@@ -1,6 +1,7 @@
 package server.healthyFriends.apiPayload.handler;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
@@ -8,6 +9,8 @@ import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,7 +52,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ResponseDTO<Object>> handleConstraintViolationException(ConstraintViolationException e) {
-        return null;
+        List<String> errors = e.getConstraintViolations()
+                .stream()
+                .map(ConstraintViolation::getMessage)
+                .toList();
+
+        return ResponseEntity
+                .status(400) // or any other appropriate status code
+                .body(ResponseUtil.methodArgumentNotValid(errors.toString(), null));
     }
 
     @ExceptionHandler(HttpClientErrorException.Unauthorized.class)
@@ -59,8 +69,22 @@ public class GlobalExceptionHandler {
                 .body(ResponseUtil.unauthorized(e.getMessage(),null));
     }
 
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ResponseDTO<Object>> handleAuthenticationException(AuthenticationException e) {
+        return ResponseEntity
+                .status(401)
+                .body(ResponseUtil.unauthorized(e.getMessage(), null));
+    }
+
     @ExceptionHandler(HttpClientErrorException.Forbidden.class)
     public ResponseEntity<ResponseDTO<Object>> handleForbiddenException(HttpClientErrorException.Forbidden e) {
+        return ResponseEntity
+                .status(403)
+                .body(ResponseUtil.forbidden(e.getMessage(), null));
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ResponseDTO<Object>> handleAccessDeniedException(AccessDeniedException e) {
         return ResponseEntity
                 .status(403)
                 .body(ResponseUtil.forbidden(e.getMessage(), null));
