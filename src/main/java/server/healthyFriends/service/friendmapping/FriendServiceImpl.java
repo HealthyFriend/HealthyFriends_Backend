@@ -76,9 +76,7 @@ public class FriendServiceImpl implements FriendService {
     }
 
     // 친구 수락
-    public FriendResponse.AcceptFriendResponse acceptFriend(FriendRequest.AcceptFriendRequest acceptFriendRequest) {
-
-        Long friendMappingId = acceptFriendRequest.getFriendMappingId();
+    public FriendResponse.AcceptFriendResponse acceptFriend(Long friendMappingId) {
 
         FriendMapping friendMapping = friendRepository.findById(friendMappingId)
                 .orElseThrow(()->new EntityNotFoundException("해당하는 엔티티가 없습니다."));

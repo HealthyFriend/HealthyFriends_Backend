@@ -62,11 +62,11 @@ public class FriendController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @PostMapping("/friend-acceptance")
+    @PostMapping("/friend-acceptance/{friendMappingId}")
     public ResponseDTO<FriendResponse.AcceptFriendResponse> acceptFriend (
-            @RequestBody @Valid FriendRequest.AcceptFriendRequest acceptFriendRequest) {
+            @PathVariable("friendMappingId") Long friendMappingId) {
 
-        FriendResponse.AcceptFriendResponse acceptFriendResponse = friendService.acceptFriend(acceptFriendRequest);
+        FriendResponse.AcceptFriendResponse acceptFriendResponse = friendService.acceptFriend(friendMappingId);
 
         return ResponseUtil.success("친구 요청을 수락했습니다.",acceptFriendResponse);
     }
