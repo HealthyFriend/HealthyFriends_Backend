@@ -57,4 +57,84 @@ public class BodyInfoController {
 
         return ResponseUtil.success("체성분 수정 성공",null);
     }
+
+    @Operation(summary = "몸무게 일별 조회(1년간)")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 일별 몸무게 조회 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+    })
+    @GetMapping("/users/{userId}/weight/daily")
+    public ResponseDTO<BodyInfoResponse.DailyWeightChange> dailyMuscleChange(@PathVariable("userId")Long userId) {
+
+        Optional<BodyInfoResponse.DailyWeightChange> dailyWeightChangeOptional = bodyInfoService.getDailyWeightChange(userId);
+
+        BodyInfoResponse.DailyWeightChange dailyWeightChange = dailyWeightChangeOptional.orElse(null);
+
+        if (dailyWeightChange != null) {
+            return ResponseUtil.success("일별 몸무게 변화 기록 조회 성공", dailyWeightChange);
+        } else {
+            return ResponseUtil.success("지난 1년간 입력된 몸무게 기록이 없습니다.", null);
+        }
+    }
+
+    @Operation(summary = "골격근 일별 조회(1년간)")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 일별 골격근 조회 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+    })
+    @GetMapping("/users/{userId}/muscle/daily")
+    public ResponseDTO<BodyInfoResponse.DailyMuscleChange> dailyWeightChange(@PathVariable("userId")Long userId) {
+
+        Optional<BodyInfoResponse.DailyMuscleChange> dailyMuscleChangeOptional = bodyInfoService.getDailyMuscleChange(userId);
+
+        BodyInfoResponse.DailyMuscleChange dailyMuscleChange = dailyMuscleChangeOptional.orElse(null);
+
+        if (dailyMuscleChange != null) {
+            return ResponseUtil.success("일별 골격근 변화 기록 조회 성공", dailyMuscleChange);
+        } else {
+            return ResponseUtil.success("지난 1년간 입력된 골격근 기록이 없습니다.", null);
+        }
+    }
+
+    @Operation(summary = "체지방 일별 조회(1년간)")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 일별 체지방 조회 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+    })
+    @GetMapping("/users/{userId}/fat/daily")
+    public ResponseDTO<BodyInfoResponse.DailyFatChange> dailyFatChange(@PathVariable("userId")Long userId) {
+
+        Optional<BodyInfoResponse.DailyFatChange> dailyFatChangeOptional = bodyInfoService.getDailyFatChange(userId);
+
+        BodyInfoResponse.DailyFatChange dailyFatChange = dailyFatChangeOptional.orElse(null);
+
+        if (dailyFatChange != null) {
+            return ResponseUtil.success("일별 체지방 변화 기록 조회 성공", dailyFatChange);
+        } else {
+            return ResponseUtil.success("지난 1년간 입력된 체지방 기록이 없습니다.", null);
+        }
+    }
+
+    @Operation(summary = "bmi 일별 조회(1년간)")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 친구의 일별 bmi 조회 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+    })
+    @GetMapping("/users/{userId}/bmi/daily")
+    public ResponseDTO<BodyInfoResponse.DailyBmiChange> dailyBmiChange(@PathVariable("userId")Long userId) {
+
+        Optional<BodyInfoResponse.DailyBmiChange> dailyBmiChangeOptional = bodyInfoService.getDailyBmiChange(userId);
+
+        BodyInfoResponse.DailyBmiChange dailyBmiChange = dailyBmiChangeOptional.orElse(null);
+
+        if (dailyBmiChange != null) {
+            return ResponseUtil.success("일별 bmi 변화 기록 조회 성공", dailyBmiChange);
+        } else {
+            return ResponseUtil.success("지난 1년간 입력된 bmi 기록이 없습니다.", null);
+        }
+    }
 }

@@ -106,7 +106,10 @@ public class BodyInfoServiceImpl implements BodyInfoService {
         bodyInfoRepository.save(bodycompositionRecord);
     }
 
-    public Optional<BodyInfoResponse.DailyWeightChange> getDailyWeightChange(Long userId, Long friendId) {
+    /**
+     *  친구의 체성분 기록 조회
+     */
+    public Optional<BodyInfoResponse.DailyWeightChange> getDailyFriendWeightChange(Long userId, Long friendId) {
 
         existsFriend(userId);
 
@@ -129,7 +132,7 @@ public class BodyInfoServiceImpl implements BodyInfoService {
         }
     }
 
-    public Optional<BodyInfoResponse.DailyMuscleChange> getDailyMuscleChange(Long userId, Long friendId) {
+    public Optional<BodyInfoResponse.DailyMuscleChange> getDailyFriendMuscleChange(Long userId, Long friendId) {
 
         existsFriend(userId);
 
@@ -153,7 +156,7 @@ public class BodyInfoServiceImpl implements BodyInfoService {
 
     }
 
-    public Optional<BodyInfoResponse.DailyFatChange> getDailyFatChange(Long userId, Long friendId) {
+    public Optional<BodyInfoResponse.DailyFatChange> getDailyFriendFatChange(Long userId, Long friendId) {
 
         existsFriend(userId);
 
@@ -177,7 +180,7 @@ public class BodyInfoServiceImpl implements BodyInfoService {
 
     }
 
-    public Optional<BodyInfoResponse.DailyBmiChange> getDailyBmiChange(Long userId, Long friendId) {
+    public Optional<BodyInfoResponse.DailyBmiChange> getDailyFriendBmiChange(Long userId, Long friendId) {
 
         existsFriend(userId);
 
@@ -202,17 +205,112 @@ public class BodyInfoServiceImpl implements BodyInfoService {
     }
 
 
-    private void existsFriend(Long friendId) {
-        if(userRepository.findById(friendId).isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"해당하는 친구가 없습니다.");
+    /**
+     * 나의 체성분 기록 조회
+     */
+
+    public Optional<BodyInfoResponse.DailyWeightChange> getDailyWeightChange(Long userId) {
+
+        existsUser(userId);
+
+        LocalDate earliestDate = bodyInfoRepository.findEarliestWeightRecordDate(userId);
+
+        if(earliestDate==null) {
+            return Optional.empty();
+        }
+
+        else {
+            LocalDate firstRecordDate = (earliestDate.isBefore(LocalDate.now().minusYears(1)))
+                    ? LocalDate.now().minusYears(1)
+                    : earliestDate;
+
+            List<Object[]> dailyWeightList = bodyInfoRepository.findDailyWeightChange(userId, firstRecordDate);
+
+            return Optional.of(BodyInfoConverter.convertToDailyWeightChange(dailyWeightList));
         }
     }
 
-    private void isMyFriend(Long userId, Long friendId) {
-        if(!friendRepository.existsByUserIdAndFriendIdAndStatus(userId,friendId,true)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"해당 유저는 본인의 친구가 아닙니다.");
+    public Optional<BodyInfoResponse.DailyMuscleChange> getDailyMuscleChange(Long userId) {
+
+        existsFriend(userId);
+
+        LocalDate earliestDate = bodyInfoRepository.findEarliestMuscleRecordDate(userId);
+
+        if(earliestDate==null) {
+            return Optional.empty();
+        }
+
+        else {
+            LocalDate firstRecordDate = (earliestDate.isBefore(LocalDate.now().minusYears(1)))
+                    ? LocalDate.now().minusYears(1)
+                    : earliestDate;
+
+            List<Object[]> dailyMuscleList = bodyInfoRepository.findDailyMuscleChange(userId, firstRecordDate);
+
+            return Optional.of(BodyInfoConverter.convertToDailyMuscleChange(dailyMuscleList));
+        }
+
+    }
+
+    public Optional<BodyInfoResponse.DailyFatChange> getDailyFatChange(Long userId) {
+
+        existsFriend(userId);
+
+        LocalDate earliestDate = bodyInfoRepository.findEarliestFatRecordDate(userId);
+
+        if(earliestDate==null) {
+            return Optional.empty();
+        }
+
+        else {
+            LocalDate firstRecordDate = (earliestDate.isBefore(LocalDate.now().minusYears(1)))
+                    ? LocalDate.now().minusYears(1)
+                    : earliestDate;
+
+            List<Object[]> dailyFatList = bodyInfoRepository.findDailyFatChange(userId, firstRecordDate);
+
+            return Optional.of(BodyInfoConverter.convertToDailyFatChange(dailyFatList));
+        }
+
+    }
+
+    public Optional<BodyInfoResponse.DailyBmiChange> getDailyBmiChange(Long userId) {
+
+        existsFriend(userId);
+
+        LocalDate earliestDate = bodyInfoRepository.findEarliestBmiRecordDate(userId);
+
+        if (earliestDate == null) {
+            return Optional.empty();
+        } else {
+            LocalDate firstRecordDate = (earliestDate.isBefore(LocalDate.now().minusYears(1)))
+                    ? LocalDate.now().minusYears(1)
+                    : earliestDate;
+
+            List<Object[]> dailyBmiList = bodyInfoRepository.findDailyBmiChange(userId, firstRecordDate);
+
+            return Optional.of(BodyInfoConverter.convertToDailyBmiChange(dailyBmiList));
         }
     }
+
+
+        private void existsFriend(Long friendId) {
+            if(userRepository.findById(friendId).isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND,"해당하는 친구가 없습니다.");
+            }
+        }
+
+        private void existsUser(Long userId) {
+            if(userRepository.findById(userId).isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND,"해당하는 유저가 없습니다.");
+            }
+        }
+
+        private void isMyFriend(Long userId, Long friendId) {
+            if(!friendRepository.existsByUserIdAndFriendIdAndStatus(userId,friendId,true)) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"해당 유저는 본인의 친구가 아닙니다.");
+            }
+        }
 }
 
 
