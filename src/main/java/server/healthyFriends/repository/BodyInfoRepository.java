@@ -21,11 +21,23 @@ public interface BodyInfoRepository extends JpaRepositoryImplementation<Bodycomp
     @Query("SELECT MIN(r.date) FROM BodycompositionRecord r WHERE r.user.id = :userId")
     LocalDate findEarliestRecordDate(@Param("userId")Long userId);
 
+    @Query("SELECT MIN(r.date) FROM BodycompositionRecord r WHERE r.user.id = :userId AND r.weight IS NOT NULL")
+    LocalDate findEarliestWeightRecordDate(@Param("userId") Long userId);
+
+    @Query("SELECT MIN(r.date) FROM BodycompositionRecord r WHERE r.user.id = :userId AND r.skeletal_muscle_mass IS NOT NULL")
+    LocalDate findEarliestMuscleRecordDate(@Param("userId") Long userId);
+
     @Query("SELECT r.weight, r.date FROM BodycompositionRecord r " +
             "WHERE r.user.id = :userId " +
             "AND r.date >= :date " +
             "ORDER BY r.date ASC")
     List<Object[]> findDailyWeightChange(@Param("userId")Long userId, @Param("date")LocalDate date);
+
+    @Query("SELECT r.skeletal_muscle_mass, r.date FROM BodycompositionRecord r " +
+            "WHERE r.user.id = :userId " +
+            "AND r.date >= :date " +
+            "ORDER BY r.date ASC")
+    List<Object[]> findDailyMuscleChange(@Param("userId")Long userId, @Param("date")LocalDate date);
 
     /*
     @Query("SELECT r.weight FROM BodycompositionRecord r " +

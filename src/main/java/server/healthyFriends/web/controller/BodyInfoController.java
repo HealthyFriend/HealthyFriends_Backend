@@ -16,7 +16,7 @@ import server.healthyFriends.web.dto.response.BodyInfoResponse;
 
 import java.util.Optional;
 
-@Tag(name="ExerciseController",description = "기능 구분 : 체성분")
+@Tag(name="BodyInfoController",description = "기능 구분 : 체성분")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/body-info")

@@ -37,4 +37,21 @@ public class BodyInfoResponse {
         private Optional<List<BodyInfoResponse.WeightChange>> dailyWeightList;
     }
 
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MuscleChange {
+        private LocalDate date;
+        private BigDecimal muscle;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class DailyMuscleChange {
+        private Optional<List<BodyInfoResponse.MuscleChange>> dailyMuscleList;
+    }
+
 }

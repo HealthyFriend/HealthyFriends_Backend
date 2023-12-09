@@ -1,6 +1,7 @@
 package server.healthyFriends.converter;
 
 import jakarta.persistence.Tuple;
+import org.springframework.http.StreamingHttpOutputMessage;
 import server.healthyFriends.domain.entity.BodycompositionRecord;
 import server.healthyFriends.web.dto.request.BodyInfoRequest;
 import server.healthyFriends.web.dto.response.BodyInfoResponse;
@@ -44,9 +45,21 @@ public class BodyInfoConverter {
     public static BodyInfoResponse.DailyWeightChange convertToDailyWeightChange(List<Object[]> weightChangeList) {
         List<BodyInfoResponse.WeightChange> weightChanges = weightChangeList.stream()
                 .map(BodyInfoConverter::weightChange)
-                .collect(Collectors.toList());
+                .toList();
 
         return new BodyInfoResponse.DailyWeightChange(Optional.of(weightChanges));
+    }
+
+    public static BodyInfoResponse.MuscleChange muscleChange(Object[] result) {
+        return new BodyInfoResponse.MuscleChange((LocalDate) result[1], (BigDecimal) result[0]);
+    }
+
+    public static BodyInfoResponse.DailyMuscleChange convertToDailyMuscleChange(List<Object[]> muscleChangeList) {
+        List<BodyInfoResponse.MuscleChange> muscleChanges = muscleChangeList.stream()
+                .map(BodyInfoConverter::muscleChange)
+                .toList();
+
+        return new BodyInfoResponse.DailyMuscleChange(Optional.of(muscleChanges));
     }
 
 }

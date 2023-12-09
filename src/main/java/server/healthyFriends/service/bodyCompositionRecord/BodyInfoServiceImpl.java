@@ -105,30 +105,63 @@ public class BodyInfoServiceImpl implements BodyInfoService {
 
     public Optional<BodyInfoResponse.DailyWeightChange> getDailyWeightChange(Long userId, Long friendId) {
 
-        if(userRepository.findById(friendId).isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"해당하는 친구가 없습니다.");
-        }
+        existsFriend(userId);
 
-        if(!friendRepository.existsByUserIdAndFriendIdAndStatus(userId,friendId,true)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"해당 유저는 본인의 친구가 아닙니다.");
-        }
+        isMyFriend(userId, friendId);
 
-        LocalDate earliestDate = bodyInfoRepository.findEarliestRecordDate(friendId);
+        LocalDate earliestDate = bodyInfoRepository.findEarliestWeightRecordDate(friendId);
 
         if(earliestDate==null) {
             return Optional.empty();
         }
 
         else {
-            LocalDate firstRecordDate = (earliestDate.isBefore(LocalDate.now().minusMonths(3)))
-                    ? LocalDate.now().minusMonths(3)
+            LocalDate firstRecordDate = (earliestDate.isBefore(LocalDate.now().minusYears(1)))
+                    ? LocalDate.now().minusYears(1)
                     : earliestDate;
 
             List<Object[]> dailyWeightList = bodyInfoRepository.findDailyWeightChange(friendId, firstRecordDate);
 
             return Optional.of(BodyInfoConverter.convertToDailyWeightChange(dailyWeightList));
         }
+    }
 
+    public Optional<BodyInfoResponse.DailyMuscleChange> getDailyMuscleChange(Long userId, Long friendId) {
+
+        existsFriend(userId);
+
+        isMyFriend(userId, friendId);
+
+        LocalDate earliestDate = bodyInfoRepository.findEarliestMuscleRecordDate(friendId);
+
+        if(earliestDate==null) {
+            return Optional.empty();
+        }
+
+        else {
+            LocalDate firstRecordDate = (earliestDate.isBefore(LocalDate.now().minusYears(1)))
+                    ? LocalDate.now().minusYears(1)
+                    : earliestDate;
+
+            List<Object[]> dailyMuscleList = bodyInfoRepository.findDailyMuscleChange(friendId, firstRecordDate);
+
+            return Optional.of(BodyInfoConverter.convertToDailyMuscleChange(dailyMuscleList));
+        }
+
+    }
+
+
+
+    private void existsFriend(Long friendId) {
+        if(userRepository.findById(friendId).isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"해당하는 친구가 없습니다.");
+        }
+    }
+
+    private void isMyFriend(Long userId, Long friendId) {
+        if(!friendRepository.existsByUserIdAndFriendIdAndStatus(userId,friendId,true)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"해당 유저는 본인의 친구가 아닙니다.");
+        }
     }
 }
 

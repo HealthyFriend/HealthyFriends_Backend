@@ -12,4 +12,5 @@ public interface BodyInfoService {
     BodyInfoResponse.CreateBodyInfoResponse createBodyInfo(Long userId, BodyInfoRequest.CreateBodyInfoRequest req);
     void updateBodyInfo(Long bodyCompositionRecordId, BodyInfoRequest.UpdateBodyInfoRequest req);
     Optional<BodyInfoResponse.DailyWeightChange> getDailyWeightChange(Long userId, Long friendId);
+    Optional<BodyInfoResponse.DailyMuscleChange> getDailyMuscleChange(Long userId, Long friendId);
 }
