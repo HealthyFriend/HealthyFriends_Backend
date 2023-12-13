@@ -30,12 +30,13 @@ public class User extends BaseEntity {
     @Column(nullable = false, length = 4)
     private String name;
 
-    @Column(nullable = false, length = 10)
+    @Column(nullable = true, length = 15)
     private String nickname;
 
-    @Column(nullable = false, precision = 4, scale = 1)
+    @Column(nullable = true, precision = 4, scale = 1)
     private BigDecimal height;
 
+    @Column(nullable = true)
     private Integer age;
 
     @Column(nullable = false, length = 20, unique = true)

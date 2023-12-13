@@ -3,6 +3,7 @@ package server.healthyFriends.service.auth;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -18,6 +19,9 @@ import server.healthyFriends.repository.UserRepository;
 import server.healthyFriends.sercurity.jwt.JwtTokenUtil;
 import server.healthyFriends.web.dto.request.UserRequest;
 import server.healthyFriends.web.dto.response.UserResponse;
+
+import java.time.Instant;
+import java.util.UUID;
 
 import static server.healthyFriends.converter.UserConverter.toUser;
 @Service
@@ -41,6 +45,10 @@ public class AuthServiceImpl implements AuthService{
 
         if(userRepository.existsByLoginId(user.getLoginId())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT,"이미 존재하는 아이디입니다.");
+        }
+
+        if(req.getNickname()==null || req.getNickname().isEmpty()) {
+            user.setNickname(generateRandomNickname());
         }
 
         userRepository.save(user);
@@ -75,6 +83,10 @@ public class AuthServiceImpl implements AuthService{
 
             redisTemplate.delete("JWT_TOKEN:" + userId);
         }
+    }
+
+    private String generateRandomNickname() {
+        return "HelfUser" + UUID.randomUUID().toString().replaceAll("-","").substring(0,7);
     }
 
 }

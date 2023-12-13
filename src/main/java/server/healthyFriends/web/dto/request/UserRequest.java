@@ -52,14 +52,14 @@ public class UserRequest {
         @Schema(description = "이름", nullable = false, example = "윤덕우1")
         private String name;
 
-        @NotBlank(message = "2~10글자의 닉네임을 입력하세요.")
+        //@NotBlank(message = "2~10글자의 닉네임을 입력하세요.")
         @Size(min=2,max=10)
-        @Schema(description = "닉네임", nullable = false, example = "더구더구1")
+        @Schema(description = "닉네임", nullable = true, example = "더구더구1")
         private String nickname;
 
-        @NotNull(message = "키를 입력하세요.(140cm~200cm)")
+        //@NotNull(message = "키를 입력하세요.(140cm~200cm)")
         @DecimalMin(value="140.0") @DecimalMax(value="200.0")
-        @Schema(description = "키", nullable = false, example = "178.3")
+        @Schema(description = "키", nullable = true, example = "178.3")
         private BigDecimal height;
 
         @NotNull(message = "나이를 입력하세요.(12세~99세)")
