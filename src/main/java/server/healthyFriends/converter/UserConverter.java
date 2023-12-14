@@ -26,4 +26,10 @@ public class UserConverter {
                 .accessToken(accessToken)
                 .build();
     }
+
+    public static UserResponse.JoinResponse joinResponse(String accessToken) {
+        return UserResponse.JoinResponse.builder()
+                .accessToken(accessToken)
+                .build();
+    }
 }

@@ -8,7 +8,7 @@ import server.healthyFriends.web.dto.response.UserResponse;
 
 
 public interface AuthService {
-    void join(UserRequest.JoinRequest req);
+    UserResponse.JoinResponse join(UserRequest.JoinRequest req);
     UserResponse.LoginResponse login(UserRequest.LoginRequest req);
     void logout();
 }

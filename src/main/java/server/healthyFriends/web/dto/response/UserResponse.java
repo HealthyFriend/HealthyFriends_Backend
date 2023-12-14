@@ -14,4 +14,12 @@ public class UserResponse {
     public static class LoginResponse {
         String accessToken;
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class JoinResponse {
+        String accessToken;
+    }
 }

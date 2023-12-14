@@ -30,14 +30,11 @@ public class AuthController {
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
     @PostMapping("/join")
-    public ResponseDTO<String> join(@RequestBody @Valid UserRequest.JoinRequest joinRequest) {
+    public ResponseDTO<UserResponse.JoinResponse> join(@RequestBody @Valid UserRequest.JoinRequest joinRequest) {
 
-        if (!joinRequest.getPassword().equals(joinRequest.getPasswordCheck())) {
-            return ResponseUtil.badRequest("비밀번호와 비밀번호 확인이 일치하지 않습니다.",null);
-        }
 
-        authService.join(joinRequest);
-        return ResponseUtil.created("회원가입에 성공하셨습니다.",null);
+        UserResponse.JoinResponse joinResponse = authService.join(joinRequest);
+        return ResponseUtil.created("회원가입에 성공하셨습니다.",joinResponse);
 
     }
 

@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import server.healthyFriends.apiPayload.ResponseUtil;
 import server.healthyFriends.converter.UserConverter;
 import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.repository.UserRepository;
@@ -35,7 +36,7 @@ public class AuthServiceImpl implements AuthService{
     private final RedisTemplate<String, Object> redisTemplate;
 
     // 회원가입
-    public void join(UserRequest.JoinRequest req) {
+    public UserResponse.JoinResponse join(UserRequest.JoinRequest req) {
 
         User user = UserConverter.toUser(req, encoder.encode(req.getPassword()));
 
@@ -47,11 +48,21 @@ public class AuthServiceImpl implements AuthService{
             throw new ResponseStatusException(HttpStatus.CONFLICT,"이미 존재하는 아이디입니다.");
         }
 
+        if (!req.getPassword().equals(req.getPasswordCheck())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,"비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+        }
+
         if(req.getNickname()==null || req.getNickname().isEmpty()) {
             user.setNickname(generateRandomNickname());
         }
 
         userRepository.save(user);
+
+        String accessToken = jwtTokenUtil.createAccessToken(user.getId());
+
+        redisTemplate.opsForValue().set("JWT_TOKEN:" + user.getId(),accessToken);
+
+        return UserConverter.joinResponse(accessToken);
     }
 
     // 로그인
