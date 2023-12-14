@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+import java.util.Optional;
+
 public class UserResponse {
 
     @Getter
@@ -21,5 +24,18 @@ public class UserResponse {
     @AllArgsConstructor
     public static class JoinResponse {
         String accessToken;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UserInfoResponse {
+        String name;
+        String nickname;
+        BigDecimal height;
+        Optional<BigDecimal> weight;
+        Integer age;
+        String loginId;
     }
 }

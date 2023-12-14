@@ -15,6 +15,9 @@ import server.healthyFriends.apiPayload.ResponseUtil;
 import server.healthyFriends.web.dto.request.FriendRequest;
 import server.healthyFriends.web.dto.request.UserRequest;
 import server.healthyFriends.web.dto.response.FriendResponse;
+import server.healthyFriends.web.dto.response.UserResponse;
+
+import java.util.Optional;
 
 @Tag(name="UserController",description = "기능 구분 : 회원")
 @RestController
@@ -46,11 +49,25 @@ public class UserController {
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
     @PutMapping("/{userId}")
-    private ResponseDTO<String> modifyUserInfo(@RequestBody @Valid UserRequest.ModifyUserInfoRequest req,
+    public ResponseDTO<String> modifyUserInfo(@RequestBody @Valid UserRequest.ModifyUserInfoRequest req,
                                                @PathVariable("userId") Long userId) {
         userService.modifyUserInfo(userId,req);
 
         return ResponseUtil.success("회원 정보 수정 성공",null);
+    }
+
+    @Operation(summary = "회원 정보(프로필) 조회")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 회원 정보 조회 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+    })
+    @GetMapping("/{userId}")
+    public ResponseDTO<Optional<UserResponse.UserInfoResponse>> getUserInfo(@PathVariable("userId") Long userId) {
+
+        Optional<UserResponse.UserInfoResponse> userInfoResponse = userService.getUserInfo(userId);
+
+        return ResponseUtil.success("회원 정보 조회 성공",userInfoResponse);
     }
 
     // 친구 신청
@@ -91,7 +108,7 @@ public class UserController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @GetMapping("/{userId}")
+    @GetMapping("/{userId}/friends")
     public ResponseDTO<FriendResponse.ListFriendResponse> readFriends(@PathVariable("userId") Long userId) {
 
         FriendResponse.ListFriendResponse listFriendResponse = userService.readFriends(userId);

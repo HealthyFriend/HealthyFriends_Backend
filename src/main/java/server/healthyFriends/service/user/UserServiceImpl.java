@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import org.webjars.NotFoundException;
 import server.healthyFriends.converter.FriendConverter;
 import server.healthyFriends.domain.entity.Objective;
 import server.healthyFriends.domain.entity.User;
@@ -17,9 +18,12 @@ import jakarta.transaction.Transactional;
 import server.healthyFriends.service.user.UserService;
 import server.healthyFriends.web.dto.request.UserRequest;
 import server.healthyFriends.web.dto.response.FriendResponse;
+import server.healthyFriends.web.dto.response.UserResponse;
 
+import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -75,6 +79,23 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    public Optional<UserResponse.UserInfoResponse> getUserInfo(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저가 없습니다."));
+
+
+        Optional<BigDecimal> weight = userRepository.findLatestWeight(userId);
+
+        UserResponse.UserInfoResponse userInfoResponse = UserResponse.UserInfoResponse.builder()
+                .age(user.getAge())
+                .loginId(user.getLoginId())
+                .name(user.getName())
+                .nickname(user.getNickname())
+                .weight(weight)
+                .build();
+
+        return Optional.of(userInfoResponse);
+    }
     public FriendResponse.ListFriendResponse readFriends(Long userId) {
 
         User user = userRepository.findById(userId)
