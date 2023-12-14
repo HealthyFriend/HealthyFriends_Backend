@@ -49,7 +49,7 @@ public class BodyInfoServiceImpl implements BodyInfoService {
 
         bodycompositionRecord.setUser(user);
 
-        if(req.getWeight()!=null) {
+        if(user.getHeight()!=null && req.getWeight()!=null) {
 
             BigDecimal kg = req.getWeight();
             BigDecimal m = user.getHeight().divide(new BigDecimal(100), 3, RoundingMode.HALF_UP);
