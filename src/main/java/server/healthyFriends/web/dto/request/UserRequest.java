@@ -47,8 +47,8 @@ public class UserRequest {
         private String password;
         private String passwordCheck;
 
-        @NotBlank(message = "2~4글자의 이름을 입력하세요.")
-        @Size(min=2, max=4)
+        @NotBlank(message = "2~5글자의 이름을 입력하세요.")
+        @Size(min=2, max=5)
         @Schema(description = "이름", nullable = false, example = "윤덕우1")
         private String name;
 
@@ -62,12 +62,12 @@ public class UserRequest {
         @Schema(description = "키", nullable = true, example = "178.3")
         private BigDecimal height;
 
-        @NotNull(message = "나이를 입력하세요.(12세~99세)")
+        //@NotNull(message = "나이를 입력하세요.(12세~99세)")
         @Min(value=12) @Max(value=99)
         @Schema(description = "나이", nullable = false, example = "27")
         private Integer age;
 
-        @NotNull(message = "성별을 입력하세요.(MALE, FEMALE")
+        //@NotNull(message = "성별을 입력하세요.(MALE, FEMALE")
         @Enumerated(EnumType.STRING)
         @Schema(description = "성별", nullable = false, example = "MALE")
         private Gender gender;
