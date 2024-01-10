@@ -29,7 +29,6 @@ public class FriendServiceImpl implements FriendService {
 
     private final FriendRepository friendRepository;
     private final UserRepository userRepository;
-    private final ObjectiveRepository objectiveRepository;
 
     // LoginId로 친구 찾기
     public FriendResponse.FindFriendResponse findFriendResponse(String friendLoginId) {

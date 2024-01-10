@@ -26,7 +26,6 @@ import java.util.Optional;
 public class FriendController {
 
     private final FriendService friendService;
-    private final UserService userService;
     private final BodyInfoService bodyInfoService;
 
     @Operation(summary = "아이디로 친구 찾기")
