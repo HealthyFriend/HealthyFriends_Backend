@@ -9,6 +9,8 @@ import server.healthyFriends.domain.enums.Gender;
 import server.healthyFriends.domain.enums.Role;
 
 import jakarta.persistence.*;
+import server.healthyFriends.sercurity.OAuth.Basic.OAuthProvider;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +52,15 @@ public class User extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Column(nullable = true)
+    private OAuthProvider oAuthProvider;
+
+    @Column(nullable = true)
+    private String provider;
+
+    @Column(nullable = true)
+    private String providerId;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Objective> objectiveList = new ArrayList<>();

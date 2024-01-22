@@ -15,7 +15,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByNickname(String nickname);
     Optional<User> findByLoginId(String loginId);
     Optional<User> findById(Long id);
-
+    Optional<User> findByName(String name);
     @Query("SELECT br.weight FROM BodycompositionRecord br " +
     "WHERE br.user.id =:userId " +
     "ORDER BY br.date DESC " +
