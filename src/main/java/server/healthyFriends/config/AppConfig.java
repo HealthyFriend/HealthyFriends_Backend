@@ -1,3 +1,4 @@
+/*
 package server.healthyFriends.config;
 
 import org.springframework.context.annotation.Bean;
@@ -11,16 +12,14 @@ import server.healthyFriends.repository.UserRepository;
 import server.healthyFriends.service.*;
 
 import jakarta.persistence.EntityManager;
+import server.healthyFriends.service.friendmapping.FriendService;
+import server.healthyFriends.service.friendmapping.FriendServiceImpl;
+import server.healthyFriends.service.objective.ObjectiveSerivce;
+import server.healthyFriends.service.objective.ObjectiveServiceImpl;
 
 @Configuration
 public class AppConfig {
     //스프링 설정 파일
-
-/*
-    @Bean
-    public UserService userService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        return new UserServiceImpl(userRepository, passwordEncoder);
-    }
 
     @Bean
     public ObjectiveSerivce objectiveSerivce(ObjectiveRepository objectiveRepository, UserRepository userRepository) {
@@ -31,5 +30,6 @@ public class AppConfig {
     public FriendService friendService(FriendRepository friendRepository, UserRepository userRepository) {
         return new FriendServiceImpl(friendRepository, userRepository);
     }
-*/
+
 }
+*/
