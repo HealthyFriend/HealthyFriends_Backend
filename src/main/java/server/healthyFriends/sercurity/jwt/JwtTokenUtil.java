@@ -11,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
 import java.util.Date;
 
+//refresh token 제외
 @Component
 public class JwtTokenUtil {
 
