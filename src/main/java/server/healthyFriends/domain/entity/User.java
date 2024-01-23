@@ -19,7 +19,7 @@ import java.util.List;
 @Setter
 @Builder
 //생성자 접근 수준 protected
-@NoArgsConstructor(access= AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 @Entity(name="User")
 @Table(name="user")
@@ -41,7 +41,7 @@ public class User extends BaseEntity {
     @Column(nullable = true)
     private Integer age;
 
-    @Column(nullable = false, length = 20, unique = true)
+    @Column(nullable = false, length = 40, unique = true)
     private String loginId;
 
     @Column(nullable = false, length = 100)
@@ -53,7 +53,7 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @Column(nullable = true)
+    @Enumerated(EnumType.STRING)
     private OAuthProvider oAuthProvider;
 
     @Column(nullable = true)
