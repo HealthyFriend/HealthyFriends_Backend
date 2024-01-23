@@ -7,7 +7,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.service.bodyCompositionRecord.BodyInfoService;
 import server.healthyFriends.web.dto.request.FriendRequest;
 import server.healthyFriends.web.dto.response.BodyInfoResponse;
@@ -16,6 +18,7 @@ import server.healthyFriends.apiPayload.ResponseDTO;
 import server.healthyFriends.service.friendmapping.FriendService;
 import server.healthyFriends.service.user.UserService;
 import server.healthyFriends.apiPayload.ResponseUtil;
+import server.healthyFriends.web.dto.response.UserResponse;
 
 import java.util.Optional;
 
@@ -27,6 +30,7 @@ public class FriendController {
 
     private final FriendService friendService;
     private final BodyInfoService bodyInfoService;
+    private final UserService userService;
 
     @Operation(summary = "아이디로 친구 찾기")
     @ApiResponses({
@@ -70,6 +74,20 @@ public class FriendController {
         friendService.rejectFriend(friendMappingId);
 
         return ResponseUtil.success("친구 거절 성공",null);
+    }
+
+    @Operation(summary = "친구 정보(프로필) 조회")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 회원 정보 조회 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+    })
+    @GetMapping("/{friendId}/profile")
+    public ResponseDTO<Optional<UserResponse.UserInfoResponse>> getUserInfo(@PathVariable Long friendId) {
+
+        Optional<UserResponse.UserInfoResponse> userInfoResponse = userService.getUserInfo(friendId);
+
+        return ResponseUtil.success("친구 정보 조회 성공",userInfoResponse);
     }
 
     @Operation(summary = "친구 목표 조회")
