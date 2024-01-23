@@ -83,7 +83,7 @@ public class FriendController {
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
     @GetMapping("/{friendId}/profile")
-    public ResponseDTO<Optional<UserResponse.UserInfoResponse>> getUserInfo(@PathVariable Long friendId) {
+    public ResponseDTO<Optional<UserResponse.UserInfoResponse>> getUserInfo(@PathVariable("friendId") Long friendId) {
 
         Optional<UserResponse.UserInfoResponse> userInfoResponse = userService.getUserInfo(friendId);
 
@@ -110,9 +110,11 @@ public class FriendController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @GetMapping("/friends/{friendId}/users/{userId}/weight/daily")
+    @GetMapping("/friends/{friendId}/weight/daily")
     public ResponseDTO<BodyInfoResponse.DailyWeightChange> dailyMuscleChange(@PathVariable("friendId")Long friendId,
-                                                                             @PathVariable("userId")Long userId) {
+                                                                             Authentication authentication) {
+
+        Long userId = Long.parseLong(authentication.getName());
 
         Optional<BodyInfoResponse.DailyWeightChange> dailyWeightChangeOptional = bodyInfoService.getDailyFriendWeightChange(userId, friendId);
 
@@ -131,9 +133,11 @@ public class FriendController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @GetMapping("/friends/{friendId}/users/{userId}/muscle/daily")
+    @GetMapping("/friends/{friendId}/muscle/daily")
     public ResponseDTO<BodyInfoResponse.DailyMuscleChange> dailyWeightChange(@PathVariable("friendId")Long friendId,
-                                                                             @PathVariable("userId")Long userId) {
+                                                                             Authentication authentication) {
+
+        Long userId = Long.parseLong(authentication.getName());
 
         Optional<BodyInfoResponse.DailyMuscleChange> dailyMuscleChangeOptional = bodyInfoService.getDailyFriendMuscleChange(userId, friendId);
 
@@ -152,9 +156,11 @@ public class FriendController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @GetMapping("/friends/{friendId}/users/{userId}/fat/daily")
+    @GetMapping("/friends/{friendId}/fat/daily")
     public ResponseDTO<BodyInfoResponse.DailyFatChange> dailyFatChange(@PathVariable("friendId")Long friendId,
-                                                                             @PathVariable("userId")Long userId) {
+                                                                       Authentication authentication) {
+
+        Long userId = Long.parseLong(authentication.getName());
 
         Optional<BodyInfoResponse.DailyFatChange> dailyFatChangeOptional = bodyInfoService.getDailyFriendFatChange(userId, friendId);
 
@@ -173,9 +179,11 @@ public class FriendController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @GetMapping("/friends/{friendId}/users/{userId}/bmi/daily")
+    @GetMapping("/friends/{friendId}/bmi/daily")
     public ResponseDTO<BodyInfoResponse.DailyBmiChange> dailyBmiChange(@PathVariable("friendId")Long friendId,
-                                                                       @PathVariable("userId")Long userId) {
+                                                                       Authentication authentication) {
+
+        Long userId = Long.parseLong(authentication.getName());
 
         Optional<BodyInfoResponse.DailyBmiChange> dailyBmiChangeOptional = bodyInfoService.getDailyFriendBmiChange(userId, friendId);
 
