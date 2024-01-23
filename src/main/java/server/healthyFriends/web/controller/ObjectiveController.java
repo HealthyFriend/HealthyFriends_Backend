@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import server.healthyFriends.converter.ObjectiveConverter;
 import server.healthyFriends.web.dto.response.ObjectiveResponse;
@@ -32,10 +33,12 @@ public class ObjectiveController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @PostMapping("/{userId}")
+    @PostMapping("/setting")
     public ResponseDTO<ObjectiveResponse.CreateObjectiveResponse> createObjective(
-            @PathVariable("userId") Long userId,
+            Authentication authentication,
             @RequestBody @Valid ObjectiveRequest.CreateObjectiveRequest createObjectiveRequest) {
+
+            Long userId=Long.parseLong(authentication.getName());
 
             ObjectiveResponse.CreateObjectiveResponse createObjectiveResponse = objectiveSerivce.createObjective(userId, createObjectiveRequest);
 
@@ -64,16 +67,35 @@ public class ObjectiveController {
 
     }
 
-    // 목표 리스트 조회
-    @Operation(summary = "특정 회원의 목표 리스트 조회")
+    // 본인 목표 리스트 조회
+    @Operation(summary = "나의 목표 리스트 조회")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 목표 리스트 조회 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
     @GetMapping("/{userId}/list")
-    public ResponseDTO<ObjectiveResponse.ListObjectiveResponse> readObjectives(
-            @PathVariable("userId") Long userId,
+    public ResponseDTO<ObjectiveResponse.ListObjectiveResponse> readMyObjectives(
+            Authentication authentication,
+            @RequestParam(name="page") Integer page){
+
+        Long userId=Long.parseLong(authentication.getName());
+
+        Page<Objective> objectivePage = objectiveSerivce.readObjectives(userId, page);
+        ObjectiveResponse.ListObjectiveResponse listObjectiveResponse = ObjectiveConverter.ListObject(objectivePage);
+        return ResponseUtil.success("목표 리스트 조회 성공",listObjectiveResponse);
+    }
+
+    // 친구 목표 리스트 조회
+    @Operation(summary = "특정 회원의 목표 리스트 조회")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 목표 리스트 조회 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+    })
+    @GetMapping("/{friendId}/list")
+    public ResponseDTO<ObjectiveResponse.ListObjectiveResponse> readFriendObjectives(
+            @PathVariable("friendId") Long userId,
             @RequestParam(name="page") Integer page){
 
         Page<Objective> objectivePage = objectiveSerivce.readObjectives(userId, page);
