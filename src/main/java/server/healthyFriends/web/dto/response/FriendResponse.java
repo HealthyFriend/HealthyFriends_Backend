@@ -42,6 +42,7 @@ public class FriendResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class FriendInfo {
+        private Long friendId;
         private String nickname;
         private String objectiveHead;
     }

@@ -32,8 +32,9 @@ public class FriendConverter {
                 .build();
     }
 
-    public static FriendResponse.FriendInfo friendInfo(String nickname, String objecviteHead) {
+    public static FriendResponse.FriendInfo friendInfo(Long userId, String nickname, String objecviteHead) {
         return FriendResponse.FriendInfo.builder()
+                .friendId(userId)
                 .nickname(nickname)
                 .objectiveHead(objecviteHead)
                 .build();
