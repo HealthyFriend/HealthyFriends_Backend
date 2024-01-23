@@ -74,7 +74,7 @@ public class ObjectiveController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @GetMapping("/{userId}/list")
+    @GetMapping("/objective-list")
     public ResponseDTO<ObjectiveResponse.ListObjectiveResponse> readMyObjectives(
             Authentication authentication,
             @RequestParam(name="page") Integer page){
@@ -93,7 +93,7 @@ public class ObjectiveController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @GetMapping("/{friendId}/list")
+    @GetMapping("/{friendId}/objective-list")
     public ResponseDTO<ObjectiveResponse.ListObjectiveResponse> readFriendObjectives(
             @PathVariable("friendId") Long userId,
             @RequestParam(name="page") Integer page){
