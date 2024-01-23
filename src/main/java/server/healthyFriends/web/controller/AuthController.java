@@ -7,12 +7,17 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import server.healthyFriends.apiPayload.ResponseDTO;
 import server.healthyFriends.apiPayload.ResponseUtil;
+import server.healthyFriends.sercurity.OAuth.CustomOauth2UserService;
+import server.healthyFriends.sercurity.OAuth.Naver.NaverLoginParams;
 import server.healthyFriends.service.auth.AuthService;
+import server.healthyFriends.service.auth.AuthTokens;
+import server.healthyFriends.service.auth.OAuthLoginService;
 import server.healthyFriends.web.dto.request.UserRequest;
 import server.healthyFriends.web.dto.response.UserResponse;
 
@@ -22,6 +27,8 @@ import server.healthyFriends.web.dto.response.UserResponse;
 public class AuthController {
 
     private final AuthService authService;
+    private final OAuthLoginService oAuthLoginService;
+    private final CustomOauth2UserService customOauth2UserService;
 
     @Operation(summary = "회원가입")
     @ApiResponses({
@@ -65,5 +72,20 @@ public class AuthController {
         authService.logout();
         return ResponseUtil.success("로그아웃 성공",null);
     }
+
+    @Operation(summary = "네이버 로그인")
+    @PostMapping("/login/oauth2/naver")
+    public ResponseDTO<AuthTokens> loginNaver(@RequestBody NaverLoginParams params) {
+        return ResponseUtil.success("로그인 성공",oAuthLoginService.login(params));
+    }
+
+    @Operation(summary = "카카오 로그인")
+    @PostMapping("/login/oauth2/kakao")
+    public ResponseEntity<UserResponse.LoginResponse> loginKakao() {
+        return null;
+    }
+
+
+
 
 }

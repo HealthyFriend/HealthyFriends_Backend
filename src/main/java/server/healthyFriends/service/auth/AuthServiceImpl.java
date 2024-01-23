@@ -95,7 +95,6 @@ public class AuthServiceImpl implements AuthService{
             redisTemplate.delete("JWT_TOKEN:" + userId);
         }
     }
-
     private String generateRandomNickname() {
         return "HelfUser" + UUID.randomUUID().toString().replaceAll("-","").substring(0,7);
     }
