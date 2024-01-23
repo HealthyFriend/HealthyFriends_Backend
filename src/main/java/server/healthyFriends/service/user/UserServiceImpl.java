@@ -122,7 +122,7 @@ public class UserServiceImpl implements UserService {
 
                     String latestObjectiveHead = sortedObjectives.isEmpty() ? null : sortedObjectives.get(0).getHead();
 
-                    return FriendConverter.friendInfo(friendUser.getNickname(), latestObjectiveHead);
+                    return FriendConverter.friendInfo(friendUser.getId(), friendUser.getNickname(), latestObjectiveHead);
                 })
                 .toList();
 

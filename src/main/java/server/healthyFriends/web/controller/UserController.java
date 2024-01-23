@@ -31,16 +31,17 @@ public class UserController {
 
     private final UserService userService;
     private final FriendService friendService;
-    private final JwtTokenUtil jwtTokenUtil;
     @Operation(summary = "회원 탈퇴")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 회원 탈퇴 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @DeleteMapping("/{userId}")
+    @DeleteMapping("/withdrawal")
     public ResponseDTO<String> withdrawal(@RequestBody @Valid UserRequest.WithdrawalRequest req,
-                                          @PathVariable("userId") Long userId) {
+                                          Authentication authentication) {
+
+        Long userId=Long.parseLong(authentication.getName());
 
         userService.withdrawal(userId, req);
 
@@ -53,9 +54,11 @@ public class UserController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @PutMapping("/{userId}")
+    @PutMapping("/edit-profile")
     public ResponseDTO<String> modifyUserInfo(@RequestBody @Valid UserRequest.ModifyUserInfoRequest req,
-                                               @PathVariable("userId") Long userId) {
+                                               Authentication authentication) {
+        Long userId=Long.parseLong(authentication.getName());
+
         userService.modifyUserInfo(userId,req);
 
         return ResponseUtil.success("회원 정보 수정 성공",null);
@@ -84,10 +87,12 @@ public class UserController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @PostMapping("{userId}/friend-request")
+    @PostMapping("/friend-request")
     public ResponseDTO<FriendResponse.RequestFriendResponse> requestFriend(
-            @PathVariable("userId") Long userId,
-            @RequestBody @Valid FriendRequest.RequestFriendRequest requestFriendRequest) {
+            @RequestBody @Valid FriendRequest.RequestFriendRequest requestFriendRequest,
+            Authentication authentication) {
+
+        Long userId=Long.parseLong(authentication.getName());
 
         FriendResponse.RequestFriendResponse friendResponse = friendService.requestFriend(userId, requestFriendRequest);
 
@@ -101,9 +106,11 @@ public class UserController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @DeleteMapping("/{userId}/friends/{friendId}")
-    public ResponseDTO<String> deleteFriend (@PathVariable("userId") Long userId,
+    @DeleteMapping("/friends/{friendId}")
+    public ResponseDTO<String> deleteFriend (Authentication authentication,
                                              @PathVariable("friendId") Long friendId) {
+        Long userId=Long.parseLong(authentication.getName());
+
         friendService.deleteFriend(userId,friendId);
 
         return ResponseUtil.success("친구 삭제 성공",null);
@@ -115,8 +122,10 @@ public class UserController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @GetMapping("/{userId}/friends")
-    public ResponseDTO<FriendResponse.ListFriendResponse> readFriends(@PathVariable("userId") Long userId) {
+    @GetMapping("/friends")
+    public ResponseDTO<FriendResponse.ListFriendResponse> readFriends(Authentication authentication) {
+
+        Long userId = Long.parseLong(authentication.getName());
 
         FriendResponse.ListFriendResponse listFriendResponse = userService.readFriends(userId);
 
