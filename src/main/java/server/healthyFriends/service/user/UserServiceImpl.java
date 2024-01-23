@@ -34,6 +34,13 @@ public class UserServiceImpl implements UserService {
     private final FriendRepository friendRepository;
     private final PasswordEncoder encoder;
 
+    public User getUser(Long userId)
+    {
+        User user = userRepository.findById(userId)
+                .orElseThrow(()->new EntityNotFoundException("해당하는 유저가 없습니다."));
+        return user;
+    }
+
     public void withdrawal(Long userId, UserRequest.WithdrawalRequest req) {
 
         User user = userRepository.findById(userId).orElseThrow(()->new EntityNotFoundException("해당하는 유저가 없습니다."));

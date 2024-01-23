@@ -1,14 +1,18 @@
 package server.healthyFriends.web.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import server.healthyFriends.apiPayload.ResponseDTO;
+import server.healthyFriends.domain.entity.User;
+import server.healthyFriends.sercurity.jwt.JwtTokenUtil;
 import server.healthyFriends.service.friendmapping.FriendService;
 import server.healthyFriends.service.user.UserService;
 import server.healthyFriends.apiPayload.ResponseUtil;
@@ -27,6 +31,7 @@ public class UserController {
 
     private final UserService userService;
     private final FriendService friendService;
+    private final JwtTokenUtil jwtTokenUtil;
     @Operation(summary = "회원 탈퇴")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 회원 탈퇴 성공"),
@@ -62,10 +67,12 @@ public class UserController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @GetMapping("/{userId}")
-    public ResponseDTO<Optional<UserResponse.UserInfoResponse>> getUserInfo(@PathVariable("userId") Long userId) {
+    @GetMapping("/profile")
+    public ResponseDTO<Optional<UserResponse.UserInfoResponse>> getUserInfo(Authentication authentication) {
 
-        Optional<UserResponse.UserInfoResponse> userInfoResponse = userService.getUserInfo(userId);
+        User user = userService.getUser(Long.parseLong(authentication.getName()));
+
+        Optional<UserResponse.UserInfoResponse> userInfoResponse = userService.getUserInfo(user.getId());
 
         return ResponseUtil.success("회원 정보 조회 성공",userInfoResponse);
     }

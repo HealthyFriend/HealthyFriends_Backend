@@ -8,6 +8,7 @@ import server.healthyFriends.web.dto.response.UserResponse;
 import java.util.Optional;
 
 public interface UserService {
+    public User getUser(Long userId);
     void withdrawal(Long id, UserRequest.WithdrawalRequest req);
     void modifyUserInfo(Long userId, UserRequest.ModifyUserInfoRequest req);
     FriendResponse.ListFriendResponse readFriends(Long userId);
