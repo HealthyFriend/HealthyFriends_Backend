@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import server.healthyFriends.apiPayload.ResponseDTO;
 import server.healthyFriends.apiPayload.ResponseUtil;
@@ -30,11 +31,12 @@ public class BodyInfoController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @PostMapping("/{userId}")
+    @PostMapping("/input")
     public ResponseDTO<BodyInfoResponse.CreateBodyInfoResponse> createBodyInfo(
             @RequestBody @Valid  BodyInfoRequest.CreateBodyInfoRequest createBodyInfoRequest,
-            @PathVariable("userId") Long userId
+            Authentication authentication
             ) {
+        Long userId = Long.parseLong(authentication.getName());
 
         BodyInfoResponse.CreateBodyInfoResponse createBodyInfoResponse = bodyInfoService.createBodyInfo(userId,createBodyInfoRequest);
 
@@ -64,8 +66,10 @@ public class BodyInfoController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @GetMapping("/users/{userId}/weight/daily")
-    public ResponseDTO<BodyInfoResponse.DailyWeightChange> dailyMuscleChange(@PathVariable("userId")Long userId) {
+    @GetMapping("/weight/daily")
+    public ResponseDTO<BodyInfoResponse.DailyWeightChange> dailyMuscleChange(Authentication authentication) {
+
+        Long userId=Long.parseLong(authentication.getName());
 
         Optional<BodyInfoResponse.DailyWeightChange> dailyWeightChangeOptional = bodyInfoService.getDailyWeightChange(userId);
 
@@ -84,8 +88,10 @@ public class BodyInfoController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @GetMapping("/users/{userId}/muscle/daily")
-    public ResponseDTO<BodyInfoResponse.DailyMuscleChange> dailyWeightChange(@PathVariable("userId")Long userId) {
+    @GetMapping("/muscle/daily")
+    public ResponseDTO<BodyInfoResponse.DailyMuscleChange> dailyWeightChange(Authentication authentication) {
+
+        Long userId=Long.parseLong(authentication.getName());
 
         Optional<BodyInfoResponse.DailyMuscleChange> dailyMuscleChangeOptional = bodyInfoService.getDailyMuscleChange(userId);
 
@@ -104,8 +110,10 @@ public class BodyInfoController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @GetMapping("/users/{userId}/fat/daily")
-    public ResponseDTO<BodyInfoResponse.DailyFatChange> dailyFatChange(@PathVariable("userId")Long userId) {
+    @GetMapping("/fat/daily")
+    public ResponseDTO<BodyInfoResponse.DailyFatChange> dailyFatChange(Authentication authentication) {
+
+        Long userId=Long.parseLong(authentication.getName());
 
         Optional<BodyInfoResponse.DailyFatChange> dailyFatChangeOptional = bodyInfoService.getDailyFatChange(userId);
 
@@ -124,8 +132,10 @@ public class BodyInfoController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @GetMapping("/users/{userId}/bmi/daily")
-    public ResponseDTO<BodyInfoResponse.DailyBmiChange> dailyBmiChange(@PathVariable("userId")Long userId) {
+    @GetMapping("/bmi/daily")
+    public ResponseDTO<BodyInfoResponse.DailyBmiChange> dailyBmiChange(Authentication authentication) {
+
+        Long userId=Long.parseLong(authentication.getName());
 
         Optional<BodyInfoResponse.DailyBmiChange> dailyBmiChangeOptional = bodyInfoService.getDailyBmiChange(userId);
 
