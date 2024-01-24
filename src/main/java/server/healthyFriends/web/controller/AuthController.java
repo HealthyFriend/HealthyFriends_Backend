@@ -72,7 +72,7 @@ public class AuthController {
         authService.logout();
         return ResponseUtil.success("로그아웃 성공",null);
     }
-/*
+
     @Operation(summary = "네이버 로그인")
     @PostMapping("/login/oauth2/naver")
     public ResponseDTO<AuthTokens> loginNaver(@RequestBody NaverLoginParams params) {
@@ -84,7 +84,7 @@ public class AuthController {
     public ResponseEntity<UserResponse.LoginResponse> loginKakao() {
         return null;
     }
-*/
+
 
 
 
