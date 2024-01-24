@@ -52,10 +52,10 @@ public class User extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Role role;
-
+/*
     @Enumerated(EnumType.STRING)
     private OAuthProvider oAuthProvider;
-
+*/
     @Column(nullable = true)
     private String provider;
 

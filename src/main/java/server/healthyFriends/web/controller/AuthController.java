@@ -72,11 +72,11 @@ public class AuthController {
         authService.logout();
         return ResponseUtil.success("로그아웃 성공",null);
     }
-
+/*
     @Operation(summary = "네이버 로그인")
     @PostMapping("/login/oauth2/naver")
     public ResponseDTO<AuthTokens> loginNaver(@RequestBody NaverLoginParams params) {
-        return ResponseUtil.success("로그인 성공",oAuthLoginService.login(params));
+        return null;
     }
 
     @Operation(summary = "카카오 로그인")
@@ -84,7 +84,7 @@ public class AuthController {
     public ResponseEntity<UserResponse.LoginResponse> loginKakao() {
         return null;
     }
-
+*/
 
 
 
