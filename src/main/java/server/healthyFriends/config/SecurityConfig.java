@@ -3,6 +3,7 @@ package server.healthyFriends.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,12 +11,19 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import server.healthyFriends.sercurity.OAuth.CustomOauth2UserService;
 import server.healthyFriends.sercurity.handler.JwtAccessDeniedHandler;
 import server.healthyFriends.sercurity.handler.JwtAuthenticationEntryPoint;
 import server.healthyFriends.sercurity.jwt.JwtTokenFilter;
 import server.healthyFriends.service.user.UserService;
+
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 
 //설정 클래스
 @Configuration
@@ -31,6 +39,7 @@ public class SecurityConfig {
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final JwtTokenFilter jwtRequestFilter;
+    private final CustomOauth2UserService customOauth2UserService;
 
     private final UserService userService;
 /*
@@ -80,13 +89,21 @@ public class SecurityConfig {
                 authorize -> authorize
                         .requestMatchers("/join").permitAll()
                         .requestMatchers("/login").permitAll()
+                        .requestMatchers("/login/**").permitAll()
+                        .requestMatchers("/oauth/**").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers("/swagger-resources/**").permitAll()
                         .requestMatchers("/webjars/**").permitAll()
                         .anyRequest().authenticated()
         );
-
+   /*     //oauth2 설정
+        httpSecurity.oauth2Login(oauth2 -> oauth2
+                //.successHandler()
+                //.failureHandler()
+                .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
+                        .userService(customOauth2UserService))); //userService 설정
+         */
 
         return httpSecurity.build();
 
