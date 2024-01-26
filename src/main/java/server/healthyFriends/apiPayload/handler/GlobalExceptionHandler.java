@@ -23,6 +23,7 @@ import server.healthyFriends.apiPayload.ResponseDTO;
 import server.healthyFriends.apiPayload.ResponseUtil;
 
 import javax.naming.ServiceUnavailableException;
+import java.rmi.UnexpectedException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -101,6 +102,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ResponseDTO<Object>> handleConflictException(HttpClientErrorException.Conflict e) {
         return ResponseEntity
                 .status(409)
+                .body(ResponseUtil.conflict(e.getMessage(), null));
+    }
+
+    @ExceptionHandler(UnexpectedException.class)
+    public ResponseEntity<ResponseDTO<Object>> handleExpecationFailedException(UnexpectedException e) {
+        return ResponseEntity
+                .status(417)
                 .body(ResponseUtil.conflict(e.getMessage(), null));
     }
 

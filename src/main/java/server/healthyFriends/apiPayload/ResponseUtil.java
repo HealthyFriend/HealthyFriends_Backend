@@ -37,6 +37,10 @@ public class ResponseUtil {
         return new ResponseDTO<>(409, ResponseStatus.CONFLICT, message, data);
     }
 
+    public static <T> ResponseDTO<T> expectationFailed(String message, T data) {
+        return new ResponseDTO<>(417,ResponseStatus.EXPECTATION_FAILED,message,data);
+    }
+
     public static <T> ResponseDTO<T> internalServerError(String message, T data) {
         return new ResponseDTO<>(500, ResponseStatus.INTERNAL_SERVER_ERROR, message, data);
     }
