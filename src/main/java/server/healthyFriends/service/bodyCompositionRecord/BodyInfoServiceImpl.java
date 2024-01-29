@@ -293,6 +293,40 @@ public class BodyInfoServiceImpl implements BodyInfoService {
         }
     }
 
+    public Optional<BodyInfoResponse.MonthlyWeightChange> getMonthlyWeightChange(Long userId) {
+
+        existsFriend(userId);
+
+        LocalDate earliestDate = bodyInfoRepository.findEarliestWeightRecordDate(userId);
+
+        if(earliestDate==null) {
+            return Optional.empty();
+        }
+
+        List<Object[]> monthlyWeightList = bodyInfoRepository.findMonthlyWeightChange(userId, earliestDate);
+
+        List<BodyInfoResponse.WeightChange> weightChanges = monthlyWeightList.stream()
+                .map(result -> {
+                    Integer year = (Integer) result[0];
+                    Integer month = (Integer) result[1];
+                    BigDecimal averageWeight = null;
+                    if (result[2] instanceof Double) {
+                        averageWeight = BigDecimal.valueOf((Double) result[2]);
+                    } else if (result[2] instanceof BigDecimal) {
+                        averageWeight = (BigDecimal) result[2];
+                    }
+                    return BodyInfoResponse.WeightChange.builder()
+                            .date(LocalDate.of(year, month,1))
+                            .weight(averageWeight)
+                            .build();
+                })
+                .collect(Collectors.toList());
+
+        return Optional.of(BodyInfoResponse.MonthlyWeightChange.builder()
+                .monthlyWeightList(Optional.of(weightChanges))
+                .build());
+    }
+
 
         private void existsFriend(Long friendId) {
             if(userRepository.findById(friendId).isEmpty()) {

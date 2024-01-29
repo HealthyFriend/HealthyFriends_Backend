@@ -41,6 +41,14 @@ public class BodyInfoResponse {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
+    public static class MonthlyWeightChange {
+        private Optional<List<BodyInfoResponse.WeightChange>> monthlyWeightList;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class MuscleChange {
         private LocalDate date;
         private BigDecimal muscle;
@@ -52,6 +60,14 @@ public class BodyInfoResponse {
     @AllArgsConstructor
     public static class DailyMuscleChange {
         private Optional<List<BodyInfoResponse.MuscleChange>> dailyMuscleList;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MonthlyMuscleChange {
+        private Optional<List<BodyInfoResponse.MuscleChange>> monthlyMuscleList;
     }
 
     @Getter
@@ -75,6 +91,14 @@ public class BodyInfoResponse {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
+    public static class MonthlyFatChange {
+        private Optional<List<BodyInfoResponse.FatChange>> monthlyFatList;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class BmiChange {
         private LocalDate date;
         private BigDecimal bmi;
@@ -86,5 +110,13 @@ public class BodyInfoResponse {
     @AllArgsConstructor
     public static class DailyBmiChange {
         private Optional<List<BodyInfoResponse.BmiChange>> dailyBmiList;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MonthlyBmiChange {
+        private Optional<List<BodyInfoResponse.BmiChange>> monthlyBmiList;
     }
 }

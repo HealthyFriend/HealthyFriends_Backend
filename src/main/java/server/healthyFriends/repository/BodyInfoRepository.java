@@ -57,6 +57,13 @@ public interface BodyInfoRepository extends JpaRepositoryImplementation<Bodycomp
             "ORDER BY r.date ASC")
     List<Object[]> findDailyBmiChange(@Param("userId")Long userId, @Param("date")LocalDate date);
 
+    @Query("SELECT YEAR(r.date) AS year, MONTH(r.date) AS month, AVG(r.weight) AS averageWeight " +
+            "FROM BodycompositionRecord r " +
+            "WHERE r.user.id = :userId " +
+            "AND r.date >= :date " +
+            "GROUP BY YEAR(r.date), MONTH(r.date)")
+    List<Object[]> findMonthlyWeightChange(@Param("userId")Long userId, @Param("date")LocalDate date);
+
     /*
     @Query("SELECT r.weight FROM BodycompositionRecord r " +
             "WHERE r.user.id = :userId " +
