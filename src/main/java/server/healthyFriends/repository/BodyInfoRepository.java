@@ -64,12 +64,26 @@ public interface BodyInfoRepository extends JpaRepositoryImplementation<Bodycomp
             "GROUP BY YEAR(r.date), MONTH(r.date)")
     List<Object[]> findMonthlyWeightChange(@Param("userId")Long userId, @Param("date")LocalDate date);
 
-    /*
-    @Query("SELECT r.weight FROM BodycompositionRecord r " +
+    @Query("SELECT YEAR(r.date) AS year, MONTH(r.date) AS month, AVG(r.skeletal_muscle_mass) AS averageMuscle " +
+            "FROM BodycompositionRecord r " +
             "WHERE r.user.id = :userId " +
             "AND r.date >= :date " +
-            "ORDER BY r.date ASC")
-    List<BigDecimal> findDailyWeightChange2(@Param("userId")Long userId, @Param("date")LocalDate date);
-    */
+            "GROUP BY YEAR(r.date), MONTH(r.date)")
+    List<Object[]> findMonthlyMuscleChange(@Param("userId")Long userId, @Param("date")LocalDate date);
+
+    @Query("SELECT YEAR(r.date) AS year, MONTH(r.date) AS month, AVG(r.body_fat_mass) AS averageFat " +
+            "FROM BodycompositionRecord r " +
+            "WHERE r.user.id = :userId " +
+            "AND r.date >= :date " +
+            "GROUP BY YEAR(r.date), MONTH(r.date)")
+    List<Object[]> findMonthlyFatChange(@Param("userId")Long userId, @Param("date")LocalDate date);
+
+    @Query("SELECT YEAR(r.date) AS year, MONTH(r.date) AS month, AVG(r.bmi) AS averageBmi " +
+            "FROM BodycompositionRecord r " +
+            "WHERE r.user.id = :userId " +
+            "AND r.date >= :date " +
+            "GROUP BY YEAR(r.date), MONTH(r.date)")
+    List<Object[]> findMonthlyBmiChange(@Param("userId")Long userId, @Param("date")LocalDate date);
+
 }
 
