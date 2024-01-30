@@ -6,7 +6,7 @@ import server.healthyFriends.web.dto.response.FriendResponse;
 public interface FriendService {
 
     FriendResponse.FindFriendResponse findFriendbyLoginId(String friendLoginId);
-    //FriendResponse.FindFriendResponse findFriendbyNickname(String friendNickname);
+    FriendResponse.FindFriendResponse findFriendbyNickname(String friendNickname);
     FriendResponse.RequestFriendResponse requestFriend(Long userId, FriendRequest.RequestFriendRequest requestFriendRequest);
     FriendResponse.AcceptFriendResponse acceptFriend(Long friendMappingId);
 

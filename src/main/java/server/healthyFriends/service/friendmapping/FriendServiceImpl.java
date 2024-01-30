@@ -39,7 +39,14 @@ public class FriendServiceImpl implements FriendService {
         return FriendConverter.findFriendResponse(friendUser);
     }
 
+    // Nickname으로 친구 찾기
+    public FriendResponse.FindFriendResponse findFriendbyNickname(String friendNickname) {
 
+        User friendUser = userRepository.findByNickname(friendNickname)
+                .orElseThrow(()-> new EntityNotFoundException("해당하는 유저가 없습니다."));
+
+        return FriendConverter.findFriendResponse(friendUser);
+    }
 
     // 친구 신청
     public FriendResponse.RequestFriendResponse requestFriend(Long userId, FriendRequest.RequestFriendRequest requestFriendRequest) {
