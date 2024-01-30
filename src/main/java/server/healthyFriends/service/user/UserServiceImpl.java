@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    public void modifyUserInfo(Long userId, UserRequest.ModifyUserInfoRequest req) {
+    public UserResponse.UserInfoResponse modifyUserInfo(Long userId, UserRequest.ModifyUserInfoRequest req) {
         User user = userRepository.findById(userId)
                 .orElseThrow(()->new EntityNotFoundException("해당하는 회원이 없습니다."));
 
@@ -71,10 +71,6 @@ public class UserServiceImpl implements UserService {
             user.setNickname(req.getNickname());
         }
 
-        if(req.getHeight()!=null) {
-            user.setHeight(req.getHeight());
-        }
-
         if(req.getGender()!=null) {
             user.setGender(req.getGender());
         }
@@ -83,7 +79,19 @@ public class UserServiceImpl implements UserService {
             user.setPassword(encoder.encode(req.getPassword()));
         }
 
+        if(req.getHeight()!=null) {
+            user.setHeight(req.getHeight());
+        }
+
         userRepository.save(user);
+
+        return UserResponse.UserInfoResponse.builder()
+                .age(user.getAge())
+                .loginId(user.getLoginId())
+                .name(user.getName())
+                .nickname(user.getNickname())
+                .height(user.getHeight())
+                .build();
     }
 
     public Optional<UserResponse.UserInfoResponse> getUserInfo(Long userId) {
@@ -91,14 +99,15 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new EntityNotFoundException("해당하는 유저가 없습니다."));
 
 
-        Optional<BigDecimal> weight = userRepository.findLatestWeight(userId);
+        //Optional<BigDecimal> weight = userRepository.findLatestWeight(userId);
 
         UserResponse.UserInfoResponse userInfoResponse = UserResponse.UserInfoResponse.builder()
                 .age(user.getAge())
                 .loginId(user.getLoginId())
                 .name(user.getName())
                 .nickname(user.getNickname())
-                .weight(weight)
+                .height(user.getHeight())
+                //.weight(weight)
                 .build();
 
         return Optional.of(userInfoResponse);

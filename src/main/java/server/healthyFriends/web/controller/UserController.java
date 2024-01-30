@@ -55,13 +55,13 @@ public class UserController {
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
     @PutMapping("/edit-profile")
-    public ResponseDTO<String> modifyUserInfo(@RequestBody @Valid UserRequest.ModifyUserInfoRequest req,
+    public ResponseDTO<UserResponse.UserInfoResponse> modifyUserInfo(@RequestBody @Valid UserRequest.ModifyUserInfoRequest req,
                                                Authentication authentication) {
         Long userId=Long.parseLong(authentication.getName());
 
-        userService.modifyUserInfo(userId,req);
+        UserResponse.UserInfoResponse userInfoResponse = userService.modifyUserInfo(userId,req);
 
-        return ResponseUtil.success("회원 정보 수정 성공",null);
+        return ResponseUtil.success("회원 정보 수정 성공",userInfoResponse);
     }
 
     @Operation(summary = "회원 정보(프로필) 조회")

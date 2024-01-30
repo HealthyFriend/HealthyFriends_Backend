@@ -34,7 +34,7 @@ public class UserResponse {
         String name;
         String nickname;
         BigDecimal height;
-        Optional<BigDecimal> weight;
+        //Optional<BigDecimal> weight;
         Integer age;
         String loginId;
     }
