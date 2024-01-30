@@ -6,8 +6,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import server.healthyFriends.converter.FriendConverter;
 import server.healthyFriends.converter.ObjectiveConverter;
 import server.healthyFriends.service.objective.ObjectiveSerivce;
+import server.healthyFriends.web.dto.response.FriendResponse;
 import server.healthyFriends.web.dto.response.ObjectiveResponse;
 import server.healthyFriends.domain.entity.Objective;
 import server.healthyFriends.domain.entity.User;
@@ -17,6 +19,10 @@ import server.healthyFriends.repository.UserRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 
 import static server.healthyFriends.converter.ObjectiveConverter.SingleObject;
 
@@ -59,7 +65,22 @@ public class ObjectiveServiceImpl implements ObjectiveSerivce {
         ObjectiveResponse.SingleObjectiveResponse singleObjectiveResponse = SingleObject(existingObjective);
 
         return singleObjectiveResponse;
+    }
 
+    public ObjectiveResponse.SingleObjectiveResponse readMainObjective(Long userId) {
+
+        User User = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 친구 유저가 존재하지 않습니다."));
+
+        List<Objective> sortedObjectives = User.getObjectiveList().stream()
+                .sorted(Comparator.comparing(Objective::getStart_day).reversed())
+                .toList();
+
+        Optional<Objective> latestObjective = sortedObjectives.isEmpty()
+                ? Optional.empty()
+                : Optional.ofNullable(sortedObjectives.get(0));
+
+        return ObjectiveConverter.myObjective(latestObjective);
     }
 
     // 목표 리스트 조회

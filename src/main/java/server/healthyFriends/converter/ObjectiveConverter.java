@@ -5,10 +5,12 @@ import server.healthyFriends.domain.entity.Objective;
 import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.domain.enums.Role;
 import server.healthyFriends.web.dto.request.UserRequest;
+import server.healthyFriends.web.dto.response.FriendResponse;
 import server.healthyFriends.web.dto.response.ObjectiveResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ObjectiveConverter {
@@ -23,6 +25,15 @@ public class ObjectiveConverter {
         return ObjectiveResponse.CreateObjectiveResultDTO.builder()
                 .objectiveId(objective.getId())
                 .createdAt(LocalDateTime.now())
+                .build();
+    }
+
+    public static ObjectiveResponse.SingleObjectiveResponse myObjective(Optional<Objective> latestObjective) {
+        return ObjectiveResponse.SingleObjectiveResponse.builder()
+                .startDay(latestObjective.map(Objective::getStart_day).orElse(null))
+                .endDay(latestObjective.map(Objective::getEnd_day).orElse(null))
+                .body(latestObjective.map(Objective::getBody).orElse(null))
+                .head(latestObjective.map(Objective::getHead).orElse(null))
                 .build();
     }
 

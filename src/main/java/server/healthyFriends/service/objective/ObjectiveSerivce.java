@@ -10,6 +10,7 @@ import java.util.Optional;
 
 public interface ObjectiveSerivce {
     ObjectiveResponse.CreateObjectiveResponse createObjective(Long userId, ObjectiveRequest.CreateObjectiveRequest createObjectiveRequest);
+    ObjectiveResponse.SingleObjectiveResponse readMainObjective(Long userId);
     ObjectiveResponse.SingleObjectiveResponse readObjective(Long objectiveId);
     Page<Objective> readObjectives(Long userId, Integer page);
     void updateObjective(Long objectiveId, ObjectiveRequest.UpdateObjectiveRequest updateObjectiveRequest);

@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import server.healthyFriends.converter.ObjectiveConverter;
+import server.healthyFriends.web.dto.response.FriendResponse;
 import server.healthyFriends.web.dto.response.ObjectiveResponse;
 import server.healthyFriends.domain.entity.Objective;
 import server.healthyFriends.web.dto.request.ObjectiveRequest;
@@ -64,7 +65,24 @@ public class ObjectiveController {
             ObjectiveResponse.SingleObjectiveResponse singleObjectiveResponse = objectiveSerivce.readObjective(objectiveId);
 
             return ResponseUtil.success("목표 조회 성공", singleObjectiveResponse);
+    }
 
+    // 목표 조회
+    @Operation(summary = "수행 중인 목표 조회(프로필 옆에 띄울 목표 제목)")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 목표 조회 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+    })
+    @GetMapping("/main-object")
+    public ResponseDTO<ObjectiveResponse.SingleObjectiveResponse> readMainObjective(
+            Authentication authentication) {
+
+        Long userId=Long.parseLong(authentication.getName());
+
+        ObjectiveResponse.SingleObjectiveResponse mainObjective = objectiveSerivce.readMainObjective(userId);
+
+        return ResponseUtil.success("수행 중인 메인 목표 조회 성공", mainObjective);
     }
 
     // 본인 목표 리스트 조회
