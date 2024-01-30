@@ -29,6 +29,15 @@ public class BodyInfoConverter {
                 .build();
     }
 
+    public static BodyInfoResponse.UpdateBodyInfoResponse bodyInfoUpdateResponse(BodycompositionRecord bodycompositionRecord) {
+        return BodyInfoResponse.UpdateBodyInfoResponse.builder()
+                .body_fat_mass(bodycompositionRecord.getBody_fat_mass())
+                .skeletal_muscle_mass(bodycompositionRecord.getSkeletal_muscle_mass())
+                .weight(bodycompositionRecord.getWeight())
+                .edit_day(bodycompositionRecord.getDate())
+                .build();
+    }
+
     public static BodyInfoResponse.DailyWeightChange dailyWeightChange(List<Tuple> tupleList) {
         List<BodyInfoResponse.WeightChange> weightChangeList = tupleList.stream()
                 .map(tuple -> new BodyInfoResponse.WeightChange(

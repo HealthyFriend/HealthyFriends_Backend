@@ -50,14 +50,14 @@ public class BodyInfoController {
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
     @PutMapping("/{bodyCompositionRecordId}")
-    public ResponseDTO<String> updateBodyInfo(
+    public ResponseDTO<BodyInfoResponse.UpdateBodyInfoResponse> updateBodyInfo(
             @RequestBody @Valid  BodyInfoRequest.UpdateBodyInfoRequest updateBodyInfoRequest,
             @PathVariable("bodyCompositionRecordId") Long bodyCompositionRecordId
     ) {
 
-        bodyInfoService.updateBodyInfo(bodyCompositionRecordId, updateBodyInfoRequest);
+        BodyInfoResponse.UpdateBodyInfoResponse updateBodyInfoResponse = bodyInfoService.updateBodyInfo(bodyCompositionRecordId, updateBodyInfoRequest);
 
-        return ResponseUtil.success("체성분 수정 성공",null);
+        return ResponseUtil.success("체성분 수정 성공",updateBodyInfoResponse);
     }
 
     @Operation(summary = "몸무게 일별 조회(1년간)")

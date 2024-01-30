@@ -18,6 +18,7 @@ import server.healthyFriends.repository.UserRepository;
 import server.healthyFriends.service.bodyCompositionRecord.BodyInfoService;
 import server.healthyFriends.web.dto.request.BodyInfoRequest;
 import server.healthyFriends.web.dto.response.BodyInfoResponse;
+import server.healthyFriends.web.dto.response.UserResponse;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -64,7 +65,7 @@ public class BodyInfoServiceImpl implements BodyInfoService {
         return BodyInfoConverter.bodyInfoCreateResponse(bodycompositionRecord.getId());
     }
 
-    public void updateBodyInfo(Long bodyCompositionRecordId, BodyInfoRequest.UpdateBodyInfoRequest req) {
+    public BodyInfoResponse.UpdateBodyInfoResponse updateBodyInfo(Long bodyCompositionRecordId, BodyInfoRequest.UpdateBodyInfoRequest req) {
 
         BodycompositionRecord bodycompositionRecord=bodyInfoRepository.findById(bodyCompositionRecordId)
                 .orElseThrow(()->new EntityNotFoundException("해당하는 체성분 기록이 없습니다."));
@@ -104,6 +105,8 @@ public class BodyInfoServiceImpl implements BodyInfoService {
         }
 
         bodyInfoRepository.save(bodycompositionRecord);
+
+        return BodyInfoConverter.bodyInfoUpdateResponse(bodycompositionRecord);
     }
 
     /**

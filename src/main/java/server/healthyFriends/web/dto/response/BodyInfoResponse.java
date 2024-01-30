@@ -1,9 +1,9 @@
 package server.healthyFriends.web.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -18,6 +18,17 @@ public class BodyInfoResponse {
     @AllArgsConstructor
     public static class CreateBodyInfoResponse {
         private Long bodyInfoCompositionRecordId;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdateBodyInfoResponse {
+        private BigDecimal weight;
+        private BigDecimal skeletal_muscle_mass;
+        private BigDecimal body_fat_mass;
+        private LocalDate edit_day;
     }
 
     @Getter
