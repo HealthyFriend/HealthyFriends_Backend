@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import org.webjars.NotFoundException;
 import server.healthyFriends.converter.FriendConverter;
+import server.healthyFriends.converter.UserConverter;
 import server.healthyFriends.domain.entity.Objective;
 import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.domain.entity.mapping.FriendMapping;
@@ -85,13 +86,7 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(user);
 
-        return UserResponse.UserInfoResponse.builder()
-                .age(user.getAge())
-                .loginId(user.getLoginId())
-                .name(user.getName())
-                .nickname(user.getNickname())
-                .height(user.getHeight())
-                .build();
+        return UserConverter.userInfoResponse(user);
     }
 
     public Optional<UserResponse.UserInfoResponse> getUserInfo(Long userId) {
@@ -101,14 +96,7 @@ public class UserServiceImpl implements UserService {
 
         //Optional<BigDecimal> weight = userRepository.findLatestWeight(userId);
 
-        UserResponse.UserInfoResponse userInfoResponse = UserResponse.UserInfoResponse.builder()
-                .age(user.getAge())
-                .loginId(user.getLoginId())
-                .name(user.getName())
-                .nickname(user.getNickname())
-                .height(user.getHeight())
-                //.weight(weight)
-                .build();
+        UserResponse.UserInfoResponse userInfoResponse = UserConverter.userInfoResponse(user);
 
         return Optional.of(userInfoResponse);
     }

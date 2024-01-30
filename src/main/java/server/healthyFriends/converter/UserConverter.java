@@ -32,4 +32,14 @@ public class UserConverter {
                 .accessToken(accessToken)
                 .build();
     }
+
+    public static UserResponse.UserInfoResponse userInfoResponse(User user) {
+        return UserResponse.UserInfoResponse.builder()
+                .age(user.getAge())
+                .loginId(user.getLoginId())
+                .name(user.getName())
+                .nickname(user.getNickname())
+                .height(user.getHeight())
+                .build();
+    }
 }
