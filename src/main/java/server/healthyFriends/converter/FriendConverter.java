@@ -5,6 +5,7 @@ import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.web.dto.request.FriendRequest;
 import server.healthyFriends.web.dto.response.FriendResponse;
 
+import java.util.List;
 import java.util.Optional;
 
 public class FriendConverter {
@@ -37,6 +38,12 @@ public class FriendConverter {
                 .friendId(userId)
                 .nickname(nickname)
                 .objectiveHead(objecviteHead)
+                .build();
+    }
+
+    public static FriendResponse.ListFriendResponse friendInfos(List<FriendResponse.FriendInfo> friendInfoList) {
+        return FriendResponse.ListFriendResponse.builder()
+                .friendInfoList(friendInfoList)
                 .build();
     }
 

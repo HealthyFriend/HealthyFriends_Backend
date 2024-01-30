@@ -123,10 +123,12 @@ public class UserServiceImpl implements UserService {
                 })
                 .toList();
 
+        return FriendConverter.friendInfos(friendInfoList);
+        /*
         return FriendResponse.ListFriendResponse.builder()
                 .friendInfoList(friendInfoList)
                 .build();
-
+        */
     }
 }
 
