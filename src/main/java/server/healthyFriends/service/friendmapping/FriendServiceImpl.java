@@ -31,13 +31,15 @@ public class FriendServiceImpl implements FriendService {
     private final UserRepository userRepository;
 
     // LoginId로 친구 찾기
-    public FriendResponse.FindFriendResponse findFriendResponse(String friendLoginId) {
+    public FriendResponse.FindFriendResponse findFriendbyLoginId(String friendLoginId) {
 
         User friendUser = userRepository.findByLoginId(friendLoginId)
                 .orElseThrow(()-> new EntityNotFoundException("해당하는 유저가 없습니다."));
 
         return FriendConverter.findFriendResponse(friendUser);
     }
+
+
 
     // 친구 신청
     public FriendResponse.RequestFriendResponse requestFriend(Long userId, FriendRequest.RequestFriendRequest requestFriendRequest) {

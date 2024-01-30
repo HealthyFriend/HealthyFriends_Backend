@@ -41,7 +41,7 @@ public class FriendController {
     @GetMapping("/friends/{friendLoginId}")
     public ResponseDTO<FriendResponse.FindFriendResponse> findFriend(@RequestParam(name = "friendLoginId") String friendLoginId) {
 
-        FriendResponse.FindFriendResponse findFriendResponse = friendService.findFriendResponse(friendLoginId);
+        FriendResponse.FindFriendResponse findFriendResponse = friendService.findFriendbyLoginId(friendLoginId);
 
         return ResponseUtil.success("친구 찾기 성공", findFriendResponse);
     }
