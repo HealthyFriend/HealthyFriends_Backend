@@ -18,7 +18,6 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-//생성자 접근 수준 protected
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name="User")

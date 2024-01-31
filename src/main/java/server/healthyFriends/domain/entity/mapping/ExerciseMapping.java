@@ -10,7 +10,7 @@ import jakarta.persistence.*;
 @Getter
 @Setter
 @Builder
-@NoArgsConstructor(access= AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 @Entity(name="ExerciseMapping")
 @Table(name="exercise_mapping")
