@@ -27,9 +27,17 @@ public class Exercise extends BaseEntity {
     @Column(nullable = false, length = 15)
     private String exercise_name;
 
-    private Boolean weight;
+    //운동 부위별 코드 ex)하체:1, 가슴:2, 등:3, 어깨:4, 팔:5, 복근:6
+    @Column(nullable = false, length = 3)
+    private Long exercise_code;
 
-    private Boolean cardio;
+    //웨이트 운동 여부
+    @Column(nullable = true)
+    private Boolean isWeight;
+
+    //유산소 운동 여부
+    @Column(nullable = true)
+    private Boolean isCardio;
 
     @OneToMany(mappedBy = "exercise",cascade = CascadeType.ALL)
     private List<ExerciseMapping> exerciseMappingList = new ArrayList<>();
