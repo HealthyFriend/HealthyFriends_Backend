@@ -125,7 +125,7 @@ public class FriendController {
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
     @GetMapping("/friends/{friendId}/weight/daily")
-    public ResponseDTO<BodyInfoResponse.DailyWeightChange> dailyMuscleChange(@PathVariable("friendId")Long friendId,
+    public ResponseDTO<BodyInfoResponse.DailyWeightChange> dailyWeightChange(@PathVariable("friendId")Long friendId,
                                                                              Authentication authentication) {
 
         Long userId = Long.parseLong(authentication.getName());
@@ -141,6 +141,30 @@ public class FriendController {
         }
     }
 
+    @Operation(summary = "친구 몸무게 월별 조회(1년간)")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 친구의 일별 몸무게 조회 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+    })
+    @GetMapping("/friends/{friendId}/weight/monthly")
+    public ResponseDTO<BodyInfoResponse.MonthlyWeightChange> monthlyFriendMuscleChange(@PathVariable("friendId")Long friendId,
+                                                                             Authentication authentication) {
+
+        Long userId = Long.parseLong(authentication.getName());
+
+        Optional<BodyInfoResponse.MonthlyWeightChange> monthlyWeightChangeOptional = friendService.getFriendMonthlyWeightChange(userId, friendId);
+
+        BodyInfoResponse.MonthlyWeightChange monthlyWeightChange = monthlyWeightChangeOptional.orElse(null);
+
+        if (monthlyWeightChange != null) {
+            return ResponseUtil.success("친구의 월별 몸무게 변화 기록 조회 성공", monthlyWeightChange);
+        } else {
+            return ResponseUtil.success("지난 1년간 입력된 몸무게 기록이 없습니다.", null);
+        }
+    }
+
+
     @Operation(summary = "친구 골격근 일별 조회(1년간)")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 친구의 일별 골격근 조회 성공"),
@@ -148,7 +172,7 @@ public class FriendController {
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
     @GetMapping("/friends/{friendId}/muscle/daily")
-    public ResponseDTO<BodyInfoResponse.DailyMuscleChange> dailyWeightChange(@PathVariable("friendId")Long friendId,
+    public ResponseDTO<BodyInfoResponse.DailyMuscleChange> dailyMuscleChange(@PathVariable("friendId")Long friendId,
                                                                              Authentication authentication) {
 
         Long userId = Long.parseLong(authentication.getName());

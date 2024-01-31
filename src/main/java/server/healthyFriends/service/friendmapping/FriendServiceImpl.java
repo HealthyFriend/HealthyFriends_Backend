@@ -4,11 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import server.healthyFriends.converter.BodyInfoConverter;
 import server.healthyFriends.converter.FriendConverter;
 import server.healthyFriends.domain.entity.Objective;
+import server.healthyFriends.repository.BodyInfoRepository;
 import server.healthyFriends.repository.ObjectiveRepository;
 import server.healthyFriends.service.friendmapping.FriendService;
 import server.healthyFriends.web.dto.request.FriendRequest;
+import server.healthyFriends.web.dto.response.BodyInfoResponse;
 import server.healthyFriends.web.dto.response.FriendResponse;
 import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.domain.entity.mapping.FriendMapping;
@@ -18,9 +21,12 @@ import server.healthyFriends.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -29,6 +35,7 @@ public class FriendServiceImpl implements FriendService {
 
     private final FriendRepository friendRepository;
     private final UserRepository userRepository;
+    private final BodyInfoRepository bodyInfoRepository;
 
     // LoginId로 친구 찾기
     public FriendResponse.FindFriendResponse findFriendbyLoginId(String friendLoginId) {
@@ -171,5 +178,60 @@ public class FriendServiceImpl implements FriendService {
     // 친구 체성분 변화 보기(일별)
 
     // 친구 체성분 변화 보기(월별)
+    public Optional<BodyInfoResponse.MonthlyWeightChange> getFriendMonthlyWeightChange(Long userId, Long friendId) {
+
+        existsFriend(userId);
+        isMyFriend(userId, friendId);
+
+        LocalDate earliestDate = bodyInfoRepository.findEarliestWeightRecordDate(friendId);
+
+        if(earliestDate==null) {
+            return Optional.empty();
+        }
+
+        List<Object[]> monthlyWeightList = bodyInfoRepository.findMonthlyWeightChange(friendId, earliestDate);
+
+        List<BodyInfoResponse.WeightChange> weightChanges = monthlyWeightList.stream()
+                .map(result -> {
+                    Integer year = (Integer) result[0];
+                    Integer month = (Integer) result[1];
+                    BigDecimal averageWeight = null;
+                    if (result[2] instanceof Double) {
+                        averageWeight = BigDecimal.valueOf((Double) result[2]);
+                    } else if (result[2] instanceof BigDecimal) {
+                        averageWeight = (BigDecimal) result[2];
+                    }
+                    return BodyInfoResponse.WeightChange.builder()
+                            .date(LocalDate.of(year, month,1))
+                            .weight(averageWeight)
+                            .build();
+                })
+                .collect(Collectors.toList());
+
+        return Optional.of(BodyInfoResponse.MonthlyWeightChange.builder()
+                .monthlyWeightList(Optional.of(weightChanges))
+                .build());
+    }
+
+
+
+    private void existsFriend(Long friendId) {
+        if(userRepository.findById(friendId).isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"해당하는 친구가 없습니다.");
+        }
+    }
+
+    private void existsUser(Long userId) {
+        if(userRepository.findById(userId).isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"해당하는 유저가 없습니다.");
+        }
+    }
+
+    private void isMyFriend(Long userId, Long friendId) {
+        if(!friendRepository.existsByUserIdAndFriendIdAndStatus(userId,friendId,true)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"해당 유저는 본인의 친구가 아닙니다.");
+        }
+    }
+
 
 }
