@@ -24,7 +24,7 @@ public class Exercise extends BaseEntity {
     @Column(nullable = false, length = 3)
     private String exercise_category;
 
-    @Column(nullable = false, length = 15)
+    @Column(nullable = false, length = 20)
     private String exercise_name;
 
     //운동 부위별 코드 ex)하체:1, 가슴:2, 등:3, 어깨:4, 팔:5, 복근:6
