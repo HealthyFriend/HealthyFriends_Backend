@@ -39,7 +39,7 @@ public class FriendController {
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
     @GetMapping("/friends/loginId/{friendLoginId}")
-    public ResponseDTO<FriendResponse.FindFriendResponse> findFriendByLoginId(@RequestParam(name = "friendLoginId") String friendLoginId) {
+    public ResponseDTO<FriendResponse.FindFriendResponse> findFriendByLoginId(@PathVariable(name = "friendLoginId") String friendLoginId) {
 
         FriendResponse.FindFriendResponse findFriendResponse = friendService.findFriendbyLoginId(friendLoginId);
 
@@ -53,7 +53,7 @@ public class FriendController {
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
     @GetMapping("/friends/nickname/{friendNickname}")
-    public ResponseDTO<FriendResponse.FindFriendResponse> findFriendByNickname(@RequestParam(name = "friendNickname") String friendNickname) {
+    public ResponseDTO<FriendResponse.FindFriendResponse> findFriendByNickname(@PathVariable(name = "friendNickname") String friendNickname) {
 
         FriendResponse.FindFriendResponse findFriendResponse = friendService.findFriendbyNickname(friendNickname);
 
