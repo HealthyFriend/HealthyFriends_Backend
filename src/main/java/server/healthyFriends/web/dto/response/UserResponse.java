@@ -34,8 +34,21 @@ public class UserResponse {
         String name;
         String nickname;
         BigDecimal height;
-        //Optional<BigDecimal> weight;
         Integer age;
         String loginId;
+    }
+
+    //프론트 요청으로 만든 Test 용도 Response
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class TestResponse {
+        String name;
+        String nickname;
+        BigDecimal height;
+        Integer age;
+        String loginId;
+        String accessToken;
     }
 }

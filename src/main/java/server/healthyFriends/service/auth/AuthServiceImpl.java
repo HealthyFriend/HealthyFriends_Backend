@@ -39,7 +39,8 @@ public class AuthServiceImpl implements AuthService{
     private final ExerciseService exerciseService;
 
     // 회원가입
-    public UserResponse.JoinResponse join(UserRequest.JoinRequest req) {
+    //public UserResponse.JoinResponse join(UserRequest.JoinRequest req) {
+    public UserResponse.TestResponse join(UserRequest.JoinRequest req) {
 
         User user = UserConverter.toUser(req, encoder.encode(req.getPassword()));
 
@@ -67,11 +68,13 @@ public class AuthServiceImpl implements AuthService{
 
         redisTemplate.opsForValue().set("JWT_TOKEN:" + user.getId(),accessToken);
 
-        return UserConverter.joinResponse(accessToken);
+        return UserConverter.testResponse(user,accessToken);
+        //return UserConverter.joinResponse(accessToken);
     }
 
     // 로그인
-    public UserResponse.LoginResponse login(UserRequest.LoginRequest req) {
+    //public UserResponse.LoginResponse login(UserRequest.LoginRequest req) {
+    public UserResponse.TestResponse login(UserRequest.LoginRequest req) {
         User user = userRepository.findByLoginId(req.getLoginId()).orElseThrow(() -> new EntityNotFoundException("해당하는 유저가 없습니다."));
 
         // 암호화된 password를 디코딩한 값과 입력한 패스워드 값이 다르면 null 반환
@@ -83,7 +86,8 @@ public class AuthServiceImpl implements AuthService{
 
         redisTemplate.opsForValue().set("JWT_TOKEN:" + user.getId(),accessToken);
 
-        return UserConverter.loginResponse(accessToken);
+        return UserConverter.testResponse(user,accessToken);
+        //return UserConverter.loginResponse(accessToken);
     }
 
     //로그아웃

@@ -42,4 +42,15 @@ public class UserConverter {
                 .height(user.getHeight())
                 .build();
     }
+
+    public static UserResponse.TestResponse testResponse(User user, String accessToken) {
+        return UserResponse.TestResponse.builder()
+                .age(user.getAge())
+                .loginId(user.getLoginId())
+                .name(user.getName())
+                .nickname(user.getNickname())
+                .height(user.getHeight())
+                .accessToken(accessToken)
+                .build();
+    }
 }
