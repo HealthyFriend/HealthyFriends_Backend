@@ -314,11 +314,118 @@ public class FriendServiceImpl implements FriendService {
                 .build());
     }
 
+    public Optional<BodyInfoResponse.MonthlyMuscleChange> getFriendMonthlyMuscleChange(Long userId,Long friendId) {
+
+        existsUser(userId);
+        existsFriend(friendId);
+        isMyFriend(userId, friendId);
+
+        LocalDate earliestDate = bodyInfoRepository.findEarliestWeightRecordDate(friendId);
+
+        if(earliestDate==null) {
+            return Optional.empty();
+        }
+
+        List<Object[]> monthlyMuscleList = bodyInfoRepository.findMonthlyMuscleChange(friendId, earliestDate);
+
+        List<BodyInfoResponse.MuscleChange> muscleChanges = monthlyMuscleList.stream()
+                .map(result -> {
+                    Integer year = (Integer) result[0];
+                    Integer month = (Integer) result[1];
+                    BigDecimal averageMuscle = null;
+                    if (result[2] instanceof Double) {
+                        averageMuscle = BigDecimal.valueOf((Double) result[2]);
+                    } else if (result[2] instanceof BigDecimal) {
+                        averageMuscle = (BigDecimal) result[2];
+                    }
+                    return BodyInfoResponse.MuscleChange.builder()
+                            .date(LocalDate.of(year, month,1))
+                            .muscle(averageMuscle)
+                            .build();
+                })
+                .collect(Collectors.toList());
+
+        return Optional.of(BodyInfoResponse.MonthlyMuscleChange.builder()
+                .monthlyMuscleList(Optional.of(muscleChanges))
+                .build());
+    }
+
+    public Optional<BodyInfoResponse.MonthlyFatChange> getFriendMonthlyFatChange(Long userId, Long friendId) {
+
+        existsUser(userId);
+        existsFriend(friendId);
+        isMyFriend(userId, friendId);
+
+        LocalDate earliestDate = bodyInfoRepository.findEarliestFatRecordDate(friendId);
+
+        if(earliestDate==null) {
+            return Optional.empty();
+        }
+
+        List<Object[]> monthlyFatList = bodyInfoRepository.findMonthlyFatChange(friendId, earliestDate);
+
+        List<BodyInfoResponse.FatChange> fatChanges = monthlyFatList.stream()
+                .map(result -> {
+                    Integer year = (Integer) result[0];
+                    Integer month = (Integer) result[1];
+                    BigDecimal averageFat = null;
+                    if (result[2] instanceof Double) {
+                        averageFat = BigDecimal.valueOf((Double) result[2]);
+                    } else if (result[2] instanceof BigDecimal) {
+                        averageFat = (BigDecimal) result[2];
+                    }
+                    return BodyInfoResponse.FatChange.builder()
+                            .date(LocalDate.of(year, month,1))
+                            .fat(averageFat)
+                            .build();
+                })
+                .collect(Collectors.toList());
+
+        return Optional.of(BodyInfoResponse.MonthlyFatChange.builder()
+                .monthlyFatList(Optional.of(fatChanges))
+                .build());
+    }
+
+    public Optional<BodyInfoResponse.MonthlyBmiChange> getFriendMonthlyBmiChange(Long userId, Long friendId) {
+
+        existsUser(userId);
+        existsFriend(friendId);
+        isMyFriend(userId, friendId);
+
+        LocalDate earliestDate = bodyInfoRepository.findEarliestBmiRecordDate(friendId);
+
+        if(earliestDate==null) {
+            return Optional.empty();
+        }
+
+        List<Object[]> monthlyFatList = bodyInfoRepository.findMonthlyBmiChange(friendId, earliestDate);
+
+        List<BodyInfoResponse.BmiChange> bmiChanges = monthlyFatList.stream()
+                .map(result -> {
+                    Integer year = (Integer) result[0];
+                    Integer month = (Integer) result[1];
+                    BigDecimal averageBmi = null;
+                    if (result[2] instanceof Double) {
+                        averageBmi = BigDecimal.valueOf((Double) result[2]);
+                    } else if (result[2] instanceof BigDecimal) {
+                        averageBmi = (BigDecimal) result[2];
+                    }
+                    return BodyInfoResponse.BmiChange.builder()
+                            .date(LocalDate.of(year, month,1))
+                            .bmi(averageBmi)
+                            .build();
+                })
+                .collect(Collectors.toList());
+
+        return Optional.of(BodyInfoResponse.MonthlyBmiChange.builder()
+                .monthlyBmiList(Optional.of(bmiChanges))
+                .build());
+    }
 
 
     private void existsFriend(Long friendId) {
         if(userRepository.findById(friendId).isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"해당하는 친구가 없습니다.");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"해당하는 친구(유저)가 없습니다.");
         }
     }
 

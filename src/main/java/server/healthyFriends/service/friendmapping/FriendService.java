@@ -17,6 +17,9 @@ public interface FriendService {
     Optional<BodyInfoResponse.DailyFatChange> getDailyFriendFatChange(Long userId, Long friendId);
     Optional<BodyInfoResponse.DailyBmiChange> getDailyFriendBmiChange(Long userId, Long friendId);
     Optional<BodyInfoResponse.MonthlyWeightChange> getFriendMonthlyWeightChange(Long userId, Long friendId);
+    Optional<BodyInfoResponse.MonthlyMuscleChange> getFriendMonthlyMuscleChange(Long userId,Long friendId);
+    Optional<BodyInfoResponse.MonthlyFatChange> getFriendMonthlyFatChange(Long userId, Long friendId);
+    Optional<BodyInfoResponse.MonthlyBmiChange> getFriendMonthlyBmiChange(Long userId, Long friendId);
     void rejectFriend(Long friendMappingId);
     void deleteFriend(Long myId, Long friendId);
     FriendResponse.FriendObjective readFriendObjective(Long friendId);

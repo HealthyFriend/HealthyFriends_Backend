@@ -125,7 +125,7 @@ public class FriendController {
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
     @GetMapping("/friends/{friendId}/weight/daily")
-    public ResponseDTO<BodyInfoResponse.DailyWeightChange> dailyWeightChange(@PathVariable("friendId")Long friendId,
+    public ResponseDTO<BodyInfoResponse.DailyWeightChange> dailyFreindWeightChange(@PathVariable("friendId")Long friendId,
                                                                              Authentication authentication) {
 
         Long userId = Long.parseLong(authentication.getName());
@@ -141,14 +141,14 @@ public class FriendController {
         }
     }
 
-    @Operation(summary = "친구 몸무게 월별 조회(1년간)")
+    @Operation(summary = "친구 몸무게 월별 조회")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 친구의 일별 몸무게 조회 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
     @GetMapping("/friends/{friendId}/weight/monthly")
-    public ResponseDTO<BodyInfoResponse.MonthlyWeightChange> monthlyFriendMuscleChange(@PathVariable("friendId")Long friendId,
+    public ResponseDTO<BodyInfoResponse.MonthlyWeightChange> monthlyFriendWeightChange(@PathVariable("friendId")Long friendId,
                                                                              Authentication authentication) {
 
         Long userId = Long.parseLong(authentication.getName());
@@ -160,7 +160,7 @@ public class FriendController {
         if (monthlyWeightChange != null) {
             return ResponseUtil.success("친구의 월별 몸무게 변화 기록 조회 성공", monthlyWeightChange);
         } else {
-            return ResponseUtil.success("지난 1년간 입력된 몸무게 기록이 없습니다.", null);
+            return ResponseUtil.success("입력된 몸무게 기록이 없습니다.", null);
         }
     }
 
@@ -172,7 +172,7 @@ public class FriendController {
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
     @GetMapping("/friends/{friendId}/muscle/daily")
-    public ResponseDTO<BodyInfoResponse.DailyMuscleChange> dailyMuscleChange(@PathVariable("friendId")Long friendId,
+    public ResponseDTO<BodyInfoResponse.DailyMuscleChange> dailyFriendMuscleChange(@PathVariable("friendId")Long friendId,
                                                                              Authentication authentication) {
 
         Long userId = Long.parseLong(authentication.getName());
@@ -188,6 +188,29 @@ public class FriendController {
         }
     }
 
+    @Operation(summary = "친구 골격근 월별 조회")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 친구의 월별 골격근 조회 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+    })
+    @GetMapping("/friends/{friendId}/muscle/monthly")
+    public ResponseDTO<BodyInfoResponse.MonthlyMuscleChange> monthlyFriendMuscleChange(@PathVariable("friendId")Long friendId,
+                                                                             Authentication authentication) {
+
+        Long userId = Long.parseLong(authentication.getName());
+
+        Optional<BodyInfoResponse.MonthlyMuscleChange> monthlyMuscleChangeOptional = friendService.getFriendMonthlyMuscleChange(userId, friendId);
+
+        BodyInfoResponse.MonthlyMuscleChange monthlyMuscleChange = monthlyMuscleChangeOptional.orElse(null);
+
+        if (monthlyMuscleChange != null) {
+            return ResponseUtil.success("친구의 월별 골격근 변화 기록 조회 성공", monthlyMuscleChange);
+        } else {
+            return ResponseUtil.success("입력된 골격근 기록이 없습니다.", null);
+        }
+    }
+
     @Operation(summary = "친구 체지방 일별 조회(1년간)")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 친구의 일별 체지방 조회 성공"),
@@ -195,7 +218,7 @@ public class FriendController {
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
     @GetMapping("/friends/{friendId}/fat/daily")
-    public ResponseDTO<BodyInfoResponse.DailyFatChange> dailyFatChange(@PathVariable("friendId")Long friendId,
+    public ResponseDTO<BodyInfoResponse.DailyFatChange> dailyFriendFatChange(@PathVariable("friendId")Long friendId,
                                                                        Authentication authentication) {
 
         Long userId = Long.parseLong(authentication.getName());
@@ -211,6 +234,29 @@ public class FriendController {
         }
     }
 
+    @Operation(summary = "친구 체지방 월별 조회")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 친구의 월별 체지방 조회 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+    })
+    @GetMapping("/friends/{friendId}/fat/monthly")
+    public ResponseDTO<BodyInfoResponse.MonthlyFatChange> monthlyFriendFatChange(@PathVariable("friendId")Long friendId,
+                                                                       Authentication authentication) {
+
+        Long userId = Long.parseLong(authentication.getName());
+
+        Optional<BodyInfoResponse.MonthlyFatChange> monthlyFatChangeOptional = friendService.getFriendMonthlyFatChange(userId, friendId);
+
+        BodyInfoResponse.MonthlyFatChange monthlyFatChange = monthlyFatChangeOptional.orElse(null);
+
+        if (monthlyFatChange != null) {
+            return ResponseUtil.success("친구의 월별 체지방 변화 기록 조회 성공", monthlyFatChange);
+        } else {
+            return ResponseUtil.success("입력된 체지방 기록이 없습니다.", null);
+        }
+    }
+
     @Operation(summary = "친구 bmi 일별 조회(1년간)")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 친구의 일별 bmi 조회 성공"),
@@ -218,7 +264,7 @@ public class FriendController {
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
     @GetMapping("/friends/{friendId}/bmi/daily")
-    public ResponseDTO<BodyInfoResponse.DailyBmiChange> dailyBmiChange(@PathVariable("friendId")Long friendId,
+    public ResponseDTO<BodyInfoResponse.DailyBmiChange> dailyFriendBmiChange(@PathVariable("friendId")Long friendId,
                                                                        Authentication authentication) {
 
         Long userId = Long.parseLong(authentication.getName());
@@ -231,6 +277,29 @@ public class FriendController {
             return ResponseUtil.success("친구의 일별 bmi 변화 기록 조회 성공", dailyBmiChange);
         } else {
             return ResponseUtil.success("지난 1년간 입력된 bmi 기록이 없습니다.", null);
+        }
+    }
+
+    @Operation(summary = "친구 bmi 월별 조회")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 친구의 월별 bmi 조회 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+    })
+    @GetMapping("/friends/{friendId}/bmi/monthly")
+    public ResponseDTO<BodyInfoResponse.MonthlyBmiChange> monthlyFriendBmiChange(@PathVariable("friendId")Long friendId,
+                                                                       Authentication authentication) {
+
+        Long userId = Long.parseLong(authentication.getName());
+
+        Optional<BodyInfoResponse.MonthlyBmiChange> monthlyBmiChangeOptional = friendService.getFriendMonthlyBmiChange(userId, friendId);
+
+        BodyInfoResponse.MonthlyBmiChange monthlyBmiChange = monthlyBmiChangeOptional.orElse(null);
+
+        if (monthlyBmiChange != null) {
+            return ResponseUtil.success("친구의 월별 bmi 변화 기록 조회 성공", monthlyBmiChange);
+        } else {
+            return ResponseUtil.success("입력된 bmi 기록이 없습니다.", null);
         }
     }
 }
