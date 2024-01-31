@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.util.List;
+
 public class ExerciseResponse {
 
     @Getter
@@ -14,4 +17,29 @@ public class ExerciseResponse {
     public static class addExerciseResponse {
         private Long exerciseId;
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class singleExercise {
+        private String exerciseName;
+        private String exerciseCategory;
+        private Boolean withWeight;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class getExerciseResponse {
+        List<ExerciseResponse.singleExercise> exerciseList;
+        //Integer listSize;
+        //Integer totalPage;
+        //Long totalElements;
+        //Boolean isFirst;
+        //Boolean isLast;
+    }
+
+
 }

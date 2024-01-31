@@ -15,6 +15,8 @@ import server.healthyFriends.service.exercise.ExerciseService;
 import server.healthyFriends.web.dto.request.ExerciseRequest;
 import server.healthyFriends.web.dto.response.ExerciseResponse;
 
+import java.util.List;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -57,5 +59,14 @@ public class ExerciseServiceImpl implements ExerciseService {
         exerciseMappingRepository.save(exerciseMapping);
 
         return ExerciseConverter.addExerciseResponse(exercise);
+    }
+
+    public ExerciseResponse.getExerciseResponse getExerciseResponse(Long userId, Long exerciseCode) {
+        userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 유저가 없습니다."));
+
+        List<Exercise> exercises = exerciseRepository.findByUserIdAndExerciseCode(userId, exerciseCode);
+
+        return ExerciseConverter.getExerciseResponse(exercises);
     }
 }
