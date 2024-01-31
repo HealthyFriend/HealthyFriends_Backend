@@ -175,12 +175,113 @@ public class FriendServiceImpl implements FriendService {
 
     // 친구 운동 달성 기록 보기
 
-    // 친구 체성분 변화 보기(일별)
 
-    // 친구 체성분 변화 보기(월별)
+    /**
+     *  친구 체성분 변화 보기(일별)
+     */
+    public Optional<BodyInfoResponse.DailyWeightChange> getDailyFriendWeightChange(Long userId, Long friendId) {
+
+        existsUser(userId);
+        existsFriend(friendId);
+        isMyFriend(userId, friendId);
+
+        LocalDate earliestDate = bodyInfoRepository.findEarliestWeightRecordDate(friendId);
+
+        if(earliestDate==null) {
+            return Optional.empty();
+        }
+
+        else {
+            LocalDate firstRecordDate = (earliestDate.isBefore(LocalDate.now().minusYears(1)))
+                    ? LocalDate.now().minusYears(1)
+                    : earliestDate;
+
+            List<Object[]> dailyWeightList = bodyInfoRepository.findDailyWeightChange(friendId, firstRecordDate);
+
+            return Optional.of(BodyInfoConverter.convertToDailyWeightChange(dailyWeightList));
+        }
+    }
+
+    public Optional<BodyInfoResponse.DailyMuscleChange> getDailyFriendMuscleChange(Long userId, Long friendId) {
+
+        existsUser(userId);
+        existsFriend(friendId);
+        isMyFriend(userId, friendId);
+
+        LocalDate earliestDate = bodyInfoRepository.findEarliestMuscleRecordDate(friendId);
+
+        if(earliestDate==null) {
+            return Optional.empty();
+        }
+
+        else {
+            LocalDate firstRecordDate = (earliestDate.isBefore(LocalDate.now().minusYears(1)))
+                    ? LocalDate.now().minusYears(1)
+                    : earliestDate;
+
+            List<Object[]> dailyMuscleList = bodyInfoRepository.findDailyMuscleChange(friendId, firstRecordDate);
+
+            return Optional.of(BodyInfoConverter.convertToDailyMuscleChange(dailyMuscleList));
+        }
+
+    }
+
+    public Optional<BodyInfoResponse.DailyFatChange> getDailyFriendFatChange(Long userId, Long friendId) {
+
+        existsUser(userId);
+        existsFriend(friendId);
+        isMyFriend(userId, friendId);
+
+        LocalDate earliestDate = bodyInfoRepository.findEarliestFatRecordDate(friendId);
+
+        if(earliestDate==null) {
+            return Optional.empty();
+        }
+
+        else {
+            LocalDate firstRecordDate = (earliestDate.isBefore(LocalDate.now().minusYears(1)))
+                    ? LocalDate.now().minusYears(1)
+                    : earliestDate;
+
+            List<Object[]> dailyFatList = bodyInfoRepository.findDailyFatChange(friendId, firstRecordDate);
+
+            return Optional.of(BodyInfoConverter.convertToDailyFatChange(dailyFatList));
+        }
+
+    }
+
+    public Optional<BodyInfoResponse.DailyBmiChange> getDailyFriendBmiChange(Long userId, Long friendId) {
+
+        existsUser(userId);
+        existsFriend(friendId);
+        isMyFriend(userId, friendId);
+
+        LocalDate earliestDate = bodyInfoRepository.findEarliestBmiRecordDate(friendId);
+
+        if(earliestDate==null) {
+            return Optional.empty();
+        }
+
+        else {
+            LocalDate firstRecordDate = (earliestDate.isBefore(LocalDate.now().minusYears(1)))
+                    ? LocalDate.now().minusYears(1)
+                    : earliestDate;
+
+            List<Object[]> dailyBmiList = bodyInfoRepository.findDailyBmiChange(friendId, firstRecordDate);
+
+            return Optional.of(BodyInfoConverter.convertToDailyBmiChange(dailyBmiList));
+        }
+
+    }
+
+    /**
+     * 친구 체성분 변화 보기(월별)
+     */
+
     public Optional<BodyInfoResponse.MonthlyWeightChange> getFriendMonthlyWeightChange(Long userId, Long friendId) {
 
-        existsFriend(userId);
+        existsUser(userId);
+        existsFriend(friendId);
         isMyFriend(userId, friendId);
 
         LocalDate earliestDate = bodyInfoRepository.findEarliestWeightRecordDate(friendId);

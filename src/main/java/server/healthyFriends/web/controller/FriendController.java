@@ -130,7 +130,7 @@ public class FriendController {
 
         Long userId = Long.parseLong(authentication.getName());
 
-        Optional<BodyInfoResponse.DailyWeightChange> dailyWeightChangeOptional = bodyInfoService.getDailyFriendWeightChange(userId, friendId);
+        Optional<BodyInfoResponse.DailyWeightChange> dailyWeightChangeOptional = friendService.getDailyFriendWeightChange(userId, friendId);
 
         BodyInfoResponse.DailyWeightChange dailyWeightChange = dailyWeightChangeOptional.orElse(null);
 
@@ -177,7 +177,7 @@ public class FriendController {
 
         Long userId = Long.parseLong(authentication.getName());
 
-        Optional<BodyInfoResponse.DailyMuscleChange> dailyMuscleChangeOptional = bodyInfoService.getDailyFriendMuscleChange(userId, friendId);
+        Optional<BodyInfoResponse.DailyMuscleChange> dailyMuscleChangeOptional = friendService.getDailyFriendMuscleChange(userId, friendId);
 
         BodyInfoResponse.DailyMuscleChange dailyMuscleChange = dailyMuscleChangeOptional.orElse(null);
 
@@ -200,7 +200,7 @@ public class FriendController {
 
         Long userId = Long.parseLong(authentication.getName());
 
-        Optional<BodyInfoResponse.DailyFatChange> dailyFatChangeOptional = bodyInfoService.getDailyFriendFatChange(userId, friendId);
+        Optional<BodyInfoResponse.DailyFatChange> dailyFatChangeOptional = friendService.getDailyFriendFatChange(userId, friendId);
 
         BodyInfoResponse.DailyFatChange dailyFatChange = dailyFatChangeOptional.orElse(null);
 
@@ -223,7 +223,7 @@ public class FriendController {
 
         Long userId = Long.parseLong(authentication.getName());
 
-        Optional<BodyInfoResponse.DailyBmiChange> dailyBmiChangeOptional = bodyInfoService.getDailyFriendBmiChange(userId, friendId);
+        Optional<BodyInfoResponse.DailyBmiChange> dailyBmiChangeOptional = friendService.getDailyFriendBmiChange(userId, friendId);
 
         BodyInfoResponse.DailyBmiChange dailyBmiChange = dailyBmiChangeOptional.orElse(null);
 
