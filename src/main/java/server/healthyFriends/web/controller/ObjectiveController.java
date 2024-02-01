@@ -74,7 +74,7 @@ public class ObjectiveController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @GetMapping("/main-object")
+    @GetMapping("/main-objective")
     public ResponseDTO<ObjectiveResponse.SingleObjectiveResponse> readMainObjective(
             Authentication authentication) {
 
