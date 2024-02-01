@@ -90,11 +90,11 @@ public class FriendServiceImpl implements FriendService {
         );
     }
 
-    // 받은 친구 요청 현황 목록
-    public Optional<List<FriendResponse.MappingFriendResponse>> mappingFriendResponse(Long userId) {
+    // 친구 매핑 현황
+    public Optional<List<FriendResponse.MappingFriendResponse>> mappingFriend(Long userId) {
         existsUser(userId);
 
-        List<FriendMapping> friendMappings = friendRepository.findByUserId(userId);
+        List<FriendMapping> friendMappings = friendRepository.findAllByUserId(userId);
 
         List<FriendResponse.MappingFriendResponse> mappingFriendResponses = friendMappings.stream()
                 .map(friendMapping -> {
@@ -102,6 +102,19 @@ public class FriendServiceImpl implements FriendService {
                             .orElseThrow(() -> new EntityNotFoundException("해당하는 친구가 없습니다."));
                     return FriendConverter.mappingFriendResponse(friendMapping, friend);
                 })
+                .toList();
+
+        return Optional.of(mappingFriendResponses);
+    }
+
+    // 받은 친구 요청 현황 목록
+    public Optional<List<FriendResponse.MappingFriendResponse>> prospectiveFriend(Long userId,Boolean isFriend) {
+        existsUser(userId);
+
+        List<FriendMapping> friendMappings = friendRepository.findAllByFriendIdAndStatus(userId,isFriend);
+
+        List<FriendResponse.MappingFriendResponse> mappingFriendResponses = friendMappings.stream()
+                .map(friendMapping -> FriendConverter.mappingFriendResponse(friendMapping, friendMapping.getUser()))
                 .toList();
 
         return Optional.of(mappingFriendResponses);
