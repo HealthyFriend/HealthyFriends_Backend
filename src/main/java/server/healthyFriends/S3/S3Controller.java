@@ -16,12 +16,11 @@ import server.healthyFriends.apiPayload.ResponseUtil;
 public class S3Controller {
 
     private final S3Service s3Service;
-    @PostMapping(path="/hf",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE} )
+    @PostMapping(path="/S3-Test",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE} )
     public ResponseDTO<String> uploadExample(
-            @RequestPart(value = "name") String name,
             @RequestPart(value = "file", required = false) MultipartFile file) {
 
-        String url = s3Service.uploadExample(name,file);
+        String url = s3Service.uploadExample(file);
         return ResponseUtil.success("업로드 성공",url);
     }
 

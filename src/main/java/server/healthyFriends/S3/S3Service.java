@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class S3Service {
 
     private final S3Uploader s3Uploader;
-    public String uploadExample(String name, MultipartFile file) {
+    public String uploadExample(MultipartFile file) {
         String url = "";
         if(file != null)
         {
