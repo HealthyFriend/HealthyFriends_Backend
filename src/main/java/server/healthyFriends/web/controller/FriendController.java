@@ -96,7 +96,7 @@ public class FriendController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @GetMapping("/{friendId}/profile")
+    @GetMapping("friends/{friendId}/profile")
     public ResponseDTO<Optional<UserResponse.UserInfoResponse>> getUserInfo(@PathVariable("friendId") Long friendId) {
 
         Optional<UserResponse.UserInfoResponse> userInfoResponse = userService.getUserInfo(friendId);
