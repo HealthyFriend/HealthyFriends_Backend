@@ -37,6 +37,7 @@ public class AuthServiceImpl implements AuthService{
     private final JwtTokenUtil jwtTokenUtil;
     private final RedisTemplate<String, Object> redisTemplate;
     private final ExerciseService exerciseService;
+    private static final String defaultImageUrl = "https://hf-bucket-1.s3.ap-northeast-2.amazonaws.com/static/hf-images/74a9ee1b-dc0b-432f-841c-675217f59337";
 
     // 회원가입
     //public UserResponse.JoinResponse join(UserRequest.JoinRequest req) {
@@ -59,6 +60,8 @@ public class AuthServiceImpl implements AuthService{
         if(req.getNickname()==null || req.getNickname().isEmpty()) {
             user.setNickname(generateRandomNickname());
         }
+
+        user.setProfileImageUrl(defaultImageUrl);
 
         User savedUser = userRepository.save(user);
 
