@@ -40,6 +40,7 @@ public class UserConverter {
                 .name(user.getName())
                 .nickname(user.getNickname())
                 .height(user.getHeight())
+                .profileImageUrl(user.getProfileImageUrl())
                 .build();
     }
 
@@ -50,6 +51,7 @@ public class UserConverter {
                 .name(user.getName())
                 .nickname(user.getNickname())
                 .height(user.getHeight())
+                .profileImageUrl(user.getProfileImageUrl())
                 .accessToken(accessToken)
                 .build();
     }

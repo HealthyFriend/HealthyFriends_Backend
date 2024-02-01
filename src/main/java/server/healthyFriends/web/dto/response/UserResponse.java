@@ -36,6 +36,7 @@ public class UserResponse {
         BigDecimal height;
         Integer age;
         String loginId;
+        String profileImageUrl;
     }
 
     //프론트 요청으로 만든 Test 용도 Response
@@ -49,6 +50,7 @@ public class UserResponse {
         BigDecimal height;
         Integer age;
         String loginId;
+        String profileImageUrl;
         String accessToken;
     }
 }
