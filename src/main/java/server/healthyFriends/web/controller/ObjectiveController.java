@@ -68,7 +68,7 @@ public class ObjectiveController {
     }
 
     // 목표 조회
-    @Operation(summary = "수행 중인 목표 조회(프로필 옆에 띄울 목표 제목)")
+    @Operation(summary = "메인 목표 조회(프로필 옆에 띄울 목표 제목)")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 목표 조회 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
@@ -105,13 +105,13 @@ public class ObjectiveController {
     }
 
     // 친구 목표 리스트 조회
-    @Operation(summary = "특정 회원의 목표 리스트 조회")
+    @Operation(summary = "친구(특정 회원)의 목표 리스트 조회")
     @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 목표 리스트 조회 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 친구 목표 리스트 조회 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @GetMapping("/{friendId}/objective-list")
+    @GetMapping("/friends/{friendId}/objective-list")
     public ResponseDTO<ObjectiveResponse.ListObjectiveResponse> readFriendObjectives(
             @PathVariable("friendId") Long userId,
             @RequestParam(name="page") Integer page){
