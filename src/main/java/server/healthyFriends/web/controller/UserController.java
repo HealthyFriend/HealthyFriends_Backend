@@ -208,6 +208,20 @@ public class UserController {
 
         return ResponseUtil.success("프로필 이미지 업로드 성공",userService.uploadProfileImage(userId,file));
     }
+
+    @Operation(summary = "프로필 이미지 수정")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "OK, 프로필 이미지 수정 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+    })
+    @PutMapping(path= "/profile-image", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseDTO<String> editProfileImage(@RequestPart(value = "file", required = false) MultipartFile file,
+                                                  Authentication authentication) {
+        Long userId=Long.parseLong(authentication.getName());
+
+        return ResponseUtil.success("프로필 이미지 업로드 성공",userService.editProfileImage(userId,file));
+    }
 /*
     @Operation(summary = "X")
     @GetMapping("/admin")

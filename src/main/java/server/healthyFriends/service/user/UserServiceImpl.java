@@ -37,6 +37,8 @@ public class UserServiceImpl implements UserService {
     private final FriendRepository friendRepository;
     private final PasswordEncoder encoder;
     private final S3Uploader s3Uploader;
+    private static final String defaultImageUrl = "https://hf-bucket-1.s3.ap-northeast-2.amazonaws.com/static/hf-images/74a9ee1b-dc0b-432f-841c-675217f59337";
+
 
     public User getUser(Long userId)
     {
@@ -138,7 +140,10 @@ public class UserServiceImpl implements UserService {
 
         String imageUrl = "";
         if(profileImage!=null) {
-            imageUrl = s3Uploader.S3upload(profileImage,"static/hf-images");
+            imageUrl = s3Uploader.S3upload(profileImage,"static/hf-profileImages/users/"+userId);
+        }
+        else {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"이미 프로필 이미지가 존재합니다.");
         }
 
         User user=userRepository.findById(userId)
@@ -149,6 +154,34 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         return imageUrl;
+    }
+
+    public String editProfileImage(Long userId, MultipartFile profileImage) {
+
+        User user=userRepository.findById(userId)
+                .orElseThrow(()->new EntityNotFoundException("해당하는 유저가 없습니다."));
+
+        String presentProfileImageUrl = user.getProfileImageUrl();
+        String newProfileImageUrl="";
+
+        //디폴트 프로필 이미지인 경우 새 이미지로 교체만
+        if(presentProfileImageUrl.equals(defaultImageUrl)) {
+            newProfileImageUrl = s3Uploader.S3upload(profileImage,"hf-profileImages/users/"+userId);
+        }
+
+        else {
+            try {
+                s3Uploader.deleteInS3("static/hf-profileImages/users/" + userId);
+                newProfileImageUrl = s3Uploader.S3upload(profileImage, "hf-profileImages/users/" + userId);
+            } catch (Exception e){
+                throw new RuntimeException("프로필 이미지 수정 실패",e);
+            }
+
+        }
+        user.setProfileImageUrl(newProfileImageUrl);
+        userRepository.save(user);
+
+        return newProfileImageUrl;
     }
 
 }

@@ -15,4 +15,5 @@ public interface UserService {
     FriendResponse.ListFriendResponse readFriends(Long userId);
     Optional<UserResponse.UserInfoResponse> getUserInfo(Long userId);
     String uploadProfileImage(Long userId, MultipartFile profileImage);
+    String editProfileImage(Long userId, MultipartFile profileImage);
 }
