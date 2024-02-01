@@ -41,6 +41,19 @@ public class FriendResponse {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
+    public static class MappingFriendResponse {
+        private Long friendId;
+        private Long friendMappingId;
+        private String friendName;
+        private String friendLoginId;
+        private String friendNickname;
+        private Boolean isFriend;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class FriendInfo {
         private Long friendId;
         private String nickname;

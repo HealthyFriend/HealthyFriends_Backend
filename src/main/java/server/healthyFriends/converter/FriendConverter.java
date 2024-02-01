@@ -2,6 +2,7 @@ package server.healthyFriends.converter;
 
 import server.healthyFriends.domain.entity.Objective;
 import server.healthyFriends.domain.entity.User;
+import server.healthyFriends.domain.entity.mapping.FriendMapping;
 import server.healthyFriends.web.dto.request.FriendRequest;
 import server.healthyFriends.web.dto.response.FriendResponse;
 
@@ -30,6 +31,18 @@ public class FriendConverter {
                 .requesterId(requestUserId)
                 .recipientId(recipientUserId)
                 .friendMappingId(mappingFriendId)
+                .build();
+    }
+
+    public static FriendResponse.MappingFriendResponse mappingFriendResponse(FriendMapping friendMapping, User friend) {
+
+        return FriendResponse.MappingFriendResponse.builder()
+                .isFriend(friendMapping.getStatus())
+                .friendId(friendMapping.getFriendId())
+                .friendLoginId(friend.getLoginId())
+                .friendMappingId(friendMapping.getId())
+                .friendName(friend.getName())
+                .friendNickname(friend.getNickname())
                 .build();
     }
 

@@ -4,6 +4,7 @@ import server.healthyFriends.web.dto.request.FriendRequest;
 import server.healthyFriends.web.dto.response.BodyInfoResponse;
 import server.healthyFriends.web.dto.response.FriendResponse;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface FriendService {
@@ -12,6 +13,7 @@ public interface FriendService {
     FriendResponse.FindFriendResponse findFriendbyNickname(String friendNickname);
     FriendResponse.RequestFriendResponse requestFriend(Long userId, FriendRequest.RequestFriendRequest requestFriendRequest);
     FriendResponse.AcceptFriendResponse acceptFriend(Long friendMappingId);
+    Optional<List<FriendResponse.MappingFriendResponse>> mappingFriendResponse(Long userId);
     Optional<BodyInfoResponse.DailyWeightChange> getDailyFriendWeightChange(Long userId, Long friendId);
     Optional<BodyInfoResponse.DailyMuscleChange> getDailyFriendMuscleChange(Long userId, Long friendId);
     Optional<BodyInfoResponse.DailyFatChange> getDailyFriendFatChange(Long userId, Long friendId);

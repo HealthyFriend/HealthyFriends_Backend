@@ -20,6 +20,7 @@ import server.healthyFriends.service.user.UserService;
 import server.healthyFriends.apiPayload.ResponseUtil;
 import server.healthyFriends.web.dto.response.UserResponse;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -88,6 +89,21 @@ public class FriendController {
         friendService.rejectFriend(friendMappingId);
 
         return ResponseUtil.success("친구 거절 성공",null);
+    }
+
+    @Operation(summary = "받은 친구 요청 현황 목록 조회")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "OK, 친구 매핑 조회 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+    })
+
+    @GetMapping("/friend-mapping")
+    public ResponseDTO<Optional<List<FriendResponse.MappingFriendResponse>>> rejectFriend (Authentication authentication) {
+
+        Long userId = Long.parseLong(authentication.getName());
+
+        return ResponseUtil.success("친구 매핑 조회 성공",friendService.mappingFriendResponse(userId));
     }
 
     @Operation(summary = "친구 정보(프로필) 조회")

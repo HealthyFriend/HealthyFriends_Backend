@@ -90,6 +90,23 @@ public class FriendServiceImpl implements FriendService {
         );
     }
 
+    // 받은 친구 요청 현황 목록
+    public Optional<List<FriendResponse.MappingFriendResponse>> mappingFriendResponse(Long userId) {
+        existsUser(userId);
+
+        List<FriendMapping> friendMappings = friendRepository.findByUserId(userId);
+
+        List<FriendResponse.MappingFriendResponse> mappingFriendResponses = friendMappings.stream()
+                .map(friendMapping -> {
+                    User friend = userRepository.findById(friendMapping.getFriendId())
+                            .orElseThrow(() -> new EntityNotFoundException("해당하는 친구가 없습니다."));
+                    return FriendConverter.mappingFriendResponse(friendMapping, friend);
+                })
+                .toList();
+
+        return Optional.of(mappingFriendResponses);
+    }
+
     // 친구 수락
     public FriendResponse.AcceptFriendResponse acceptFriend(Long friendMappingId) {
 

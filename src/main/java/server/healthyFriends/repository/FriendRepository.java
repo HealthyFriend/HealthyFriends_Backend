@@ -15,4 +15,6 @@ public interface FriendRepository extends JpaRepository<FriendMapping, Long> {
     FriendMapping findByUserIdAndFriendIdAndStatus(Long requestUserId, Long recipientUserId, boolean status);
 
     List<FriendMapping> findAllByUserIdAndStatus(Long userId,boolean status);
+
+    List<FriendMapping> findByUserId(Long userId);
 }
