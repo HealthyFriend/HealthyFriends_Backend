@@ -16,4 +16,5 @@ public interface UserService {
     Optional<UserResponse.UserInfoResponse> getUserInfo(Long userId);
     String uploadProfileImage(Long userId, MultipartFile profileImage);
     String editProfileImage(Long userId, MultipartFile profileImage);
+    String deleteProfileImage(Long userId);
 }

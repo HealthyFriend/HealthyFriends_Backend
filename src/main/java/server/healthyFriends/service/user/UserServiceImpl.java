@@ -184,5 +184,33 @@ public class UserServiceImpl implements UserService {
         return newProfileImageUrl;
     }
 
+    public String deleteProfileImage(Long userId) {
+
+        User user=userRepository.findById(userId)
+                .orElseThrow(()->new EntityNotFoundException("해당하는 유저가 없습니다."));
+
+        String presentProfileImageUrl = user.getProfileImageUrl();
+        String newProfileImageUrl="";
+
+        //디폴트 프로필 이미지인 경우 동작 X
+        if(presentProfileImageUrl.equals(defaultImageUrl)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"프로필 이미지 설정을 하지 않았습니다.");
+        }
+
+        else {
+            try {
+                s3Uploader.deleteInS3("static/hf-profileImages/users/" + userId);
+                newProfileImageUrl = defaultImageUrl;
+            } catch (Exception e){
+                throw new RuntimeException("프로필 이미지 삭제 실패",e);
+            }
+
+        }
+        user.setProfileImageUrl(newProfileImageUrl);
+        userRepository.save(user);
+
+        return newProfileImageUrl;
+    }
+
 }
 
