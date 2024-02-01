@@ -16,6 +16,7 @@ public class FriendConverter {
                 .friendLoginId(friendUser.getLoginId())
                 .friendName(friendUser.getName())
                 .friendNickname(friendUser.getNickname())
+                .profileImageUrl(friendUser.getProfileImageUrl())
                 .build();
     }
     public static FriendResponse.RequestFriendResponse requestFrinedResponse(Long requestUserId, Long recipientUserId, Long mappingFriendId) {
@@ -43,14 +44,16 @@ public class FriendConverter {
                 .friendMappingId(friendMapping.getId())
                 .friendName(friend.getName())
                 .friendNickname(friend.getNickname())
+                .profileImageUrl(friend.getProfileImageUrl())
                 .build();
     }
 
-    public static FriendResponse.FriendInfo friendInfo(Long userId, String nickname, String objecviteHead) {
+    public static FriendResponse.FriendInfo friendInfo(Long userId, String nickname, String objecviteHead, String profileImageUrl) {
         return FriendResponse.FriendInfo.builder()
                 .friendId(userId)
                 .nickname(nickname)
                 .objectiveHead(objecviteHead)
+                .profileImageUrl(profileImageUrl)
                 .build();
     }
 

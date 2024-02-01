@@ -16,6 +16,7 @@ public class FriendResponse {
         private String friendLoginId;
         private String friendName;
         private String friendNickname;
+        private String profileImageUrl;
     }
     @Getter
     @Builder
@@ -48,6 +49,7 @@ public class FriendResponse {
         private String friendLoginId;
         private String friendNickname;
         private Boolean isFriend;
+        private String profileImageUrl;
     }
 
     @Getter
@@ -58,6 +60,7 @@ public class FriendResponse {
         private Long friendId;
         private String nickname;
         private String objectiveHead;
+        private String profileImageUrl;
     }
 
     @Getter
