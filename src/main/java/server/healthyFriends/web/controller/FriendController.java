@@ -91,36 +91,6 @@ public class FriendController {
         return ResponseUtil.success("친구 거절 성공",null);
     }
 
-    @Operation(summary = "친구 매핑 현황 조회(나의 친구+내가 요청 보낸 사람)")
-    @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "OK, 친구 매핑 조회 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
-                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
-    })
-
-    @GetMapping("/friend-mapping")
-    public ResponseDTO<Optional<List<FriendResponse.MappingFriendResponse>>> mappingFriend (Authentication authentication) {
-
-        Long userId = Long.parseLong(authentication.getName());
-
-        return ResponseUtil.success("친구 매핑 조회 성공",friendService.mappingFriend(userId));
-    }
-
-    @Operation(summary = "받은 친구 요청 현황 목록 조회")
-    @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "OK, 받은 친구 요청 현황 목록 조회"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
-                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
-    })
-
-    @GetMapping("/prospective-friend")
-    public ResponseDTO<Optional<List<FriendResponse.MappingFriendResponse>>> prospectiveFriend (Authentication authentication) {
-
-        Long userId = Long.parseLong(authentication.getName());
-
-        return ResponseUtil.success("받은 친구 요청 현황 목록 조회",friendService.prospectiveFriend(userId,false));
-    }
-
     @Operation(summary = "친구 정보(프로필) 조회")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 회원 정보 조회 성공"),

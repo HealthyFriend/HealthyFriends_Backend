@@ -95,6 +95,7 @@ public class SecurityConfig {
                         .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers("/swagger-resources/**").permitAll()
                         .requestMatchers("/webjars/**").permitAll()
+                        .requestMatchers("/S3").permitAll()
                         .anyRequest().authenticated()
         );
    /*     //oauth2 설정
