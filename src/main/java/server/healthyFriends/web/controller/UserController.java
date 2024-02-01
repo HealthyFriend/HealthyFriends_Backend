@@ -81,6 +81,34 @@ public class UserController {
         return ResponseUtil.success("회원 정보 조회 성공",userInfoResponse);
     }
 
+    @Operation(summary = "로그인 아이디(이메일)로 유저 찾기")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "OK, 유저 찾기 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+    })
+    @GetMapping("/friend-loginId/{friendLoginId}")
+    public ResponseDTO<FriendResponse.FindFriendResponse> findFriendByLoginId(@PathVariable(name = "friendLoginId") String friendLoginId) {
+
+        FriendResponse.FindFriendResponse findFriendResponse = friendService.findFriendbyLoginId(friendLoginId);
+
+        return ResponseUtil.success("친구 찾기 성공", findFriendResponse);
+    }
+
+    @Operation(summary = "닉네임으로 유저 찾기")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "OK, 유저 찾기 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+    })
+    @GetMapping("/friend-nickname/{friendNickname}")
+    public ResponseDTO<FriendResponse.FindFriendResponse> findFriendByNickname(@PathVariable(name = "friendNickname") String friendNickname) {
+
+        FriendResponse.FindFriendResponse findFriendResponse = friendService.findFriendbyNickname(friendNickname);
+
+        return ResponseUtil.success("친구 찾기 성공", findFriendResponse);
+    }
+
     // 친구 신청
     @Operation(summary = "친구 신청")
     @ApiResponses({
@@ -164,7 +192,7 @@ public class UserController {
     }
 
 
-    @Operation(summary = "안씀")
+    @Operation(summary = "X")
     @GetMapping("/admin")
     public ResponseDTO<String> adminPage() {
         return ResponseUtil.success("관리자 페이지 접근",null);
