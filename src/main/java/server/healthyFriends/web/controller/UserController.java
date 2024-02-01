@@ -195,6 +195,12 @@ public class UserController {
         return ResponseUtil.success("친구 리스트 조회 성공",listFriendResponse);
     }
 
+    @Operation(summary = "프로필 이미지 업로드")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "OK, 프로필 이미지 업로드 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+    })
     @PostMapping(path= "/profile-image", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseDTO<String> uploadProfileImage(@RequestPart(value = "file", required = false) MultipartFile file,
                                                   Authentication authentication) {
