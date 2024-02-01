@@ -5,8 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.webjars.NotFoundException;
+import server.healthyFriends.S3.S3Uploader;
 import server.healthyFriends.converter.FriendConverter;
 import server.healthyFriends.converter.UserConverter;
 import server.healthyFriends.domain.entity.Objective;
@@ -34,6 +36,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final FriendRepository friendRepository;
     private final PasswordEncoder encoder;
+    private final S3Uploader s3Uploader;
 
     public User getUser(Long userId)
     {
@@ -130,5 +133,23 @@ public class UserServiceImpl implements UserService {
                 .build();
         */
     }
+
+    public String uploadProfileImage(Long userId, MultipartFile profileImage) {
+
+        String imageUrl = "";
+        if(profileImage!=null) {
+            imageUrl = s3Uploader.S3upload(profileImage,"static/hf-images");
+        }
+
+        User user=userRepository.findById(userId)
+                .orElseThrow(()->new EntityNotFoundException("해당하는 유저가 없습니다."));
+
+        user.setProfileImageUrl(imageUrl);
+
+        userRepository.save(user);
+
+        return imageUrl;
+    }
+
 }
 

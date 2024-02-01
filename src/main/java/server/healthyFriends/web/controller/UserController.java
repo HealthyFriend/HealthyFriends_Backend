@@ -8,8 +8,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import server.healthyFriends.S3.S3Service;
 import server.healthyFriends.apiPayload.ResponseDTO;
 import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.sercurity.jwt.JwtTokenUtil;
@@ -32,6 +35,7 @@ public class UserController {
 
     private final UserService userService;
     private final FriendService friendService;
+    private final S3Service s3Service;
     @Operation(summary = "회원 탈퇴")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 회원 탈퇴 성공"),
@@ -191,10 +195,19 @@ public class UserController {
         return ResponseUtil.success("친구 리스트 조회 성공",listFriendResponse);
     }
 
+    @PostMapping(path= "/profile-image", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseDTO<String> uploadProfileImage(@RequestPart(value = "file", required = false) MultipartFile file,
+                                                  Authentication authentication) {
+        Long userId=Long.parseLong(authentication.getName());
 
+        return ResponseUtil.success("프로필 이미지 업로드 성공",userService.uploadProfileImage(userId,file));
+    }
+/*
     @Operation(summary = "X")
     @GetMapping("/admin")
     public ResponseDTO<String> adminPage() {
         return ResponseUtil.success("관리자 페이지 접근",null);
     }
+*/
 }
+
