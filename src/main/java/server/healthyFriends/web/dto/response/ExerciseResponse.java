@@ -115,4 +115,12 @@ public class ExerciseResponse {
         private BigDecimal completionRate;
         private Integer dayTotalExerciseNum;
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ExerciseCompletionRateAvg {
+        private BigDecimal completionRateAvg;
+    }
 }

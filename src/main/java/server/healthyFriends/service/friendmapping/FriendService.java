@@ -2,6 +2,7 @@ package server.healthyFriends.service.friendmapping;
 
 import server.healthyFriends.web.dto.request.FriendRequest;
 import server.healthyFriends.web.dto.response.BodyInfoResponse;
+import server.healthyFriends.web.dto.response.ExerciseResponse;
 import server.healthyFriends.web.dto.response.FriendResponse;
 
 import java.util.List;
@@ -26,4 +27,5 @@ public interface FriendService {
     void rejectFriend(Long friendMappingId);
     void deleteFriend(Long myId, Long friendId);
     FriendResponse.FriendObjective readFriendObjective(Long friendId);
+    Optional<ExerciseResponse.ExerciseCompletionRateAvg> getFriendExerciseCompletionRate(Long userId, Long friendId);
 }

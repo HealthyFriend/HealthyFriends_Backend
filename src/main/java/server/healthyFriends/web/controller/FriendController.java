@@ -11,8 +11,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.service.bodyCompositionRecord.BodyInfoService;
+import server.healthyFriends.service.exercise.ExerciseService;
 import server.healthyFriends.web.dto.request.FriendRequest;
 import server.healthyFriends.web.dto.response.BodyInfoResponse;
+import server.healthyFriends.web.dto.response.ExerciseResponse;
 import server.healthyFriends.web.dto.response.FriendResponse;
 import server.healthyFriends.apiPayload.ResponseDTO;
 import server.healthyFriends.service.friendmapping.FriendService;
@@ -273,5 +275,22 @@ public class FriendController {
         } else {
             return ResponseUtil.success("입력된 bmi 기록이 없습니다.", null);
         }
+    }
+
+    @Operation(summary = "친구 일주일 간 운동 수행률 조회")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 친구 일주일 간 운동 수행률 조회 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+    })
+    @GetMapping("/friends/{friendId}/exercise-history")
+    public ResponseDTO<Optional<ExerciseResponse.ExerciseCompletionRateAvg>> weekExerciseComletionRateAvg(@PathVariable("friendId")Long friendId,
+                                                                             Authentication authentication) {
+
+        Long userId = Long.parseLong(authentication.getName());
+
+        Optional<ExerciseResponse.ExerciseCompletionRateAvg> exerciseCompletionRateAvg = friendService.getFriendExerciseCompletionRate(userId, friendId);
+
+        return ResponseUtil.success("친구 일주일 간 운동 수행률 조회 성공", exerciseCompletionRateAvg);
     }
 }

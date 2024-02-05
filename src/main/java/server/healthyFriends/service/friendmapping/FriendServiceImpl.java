@@ -6,22 +6,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import server.healthyFriends.converter.BodyInfoConverter;
 import server.healthyFriends.converter.FriendConverter;
+import server.healthyFriends.domain.entity.DayRecord;
 import server.healthyFriends.domain.entity.Objective;
-import server.healthyFriends.repository.BodyInfoRepository;
-import server.healthyFriends.repository.ObjectiveRepository;
+import server.healthyFriends.repository.*;
 import server.healthyFriends.service.friendmapping.FriendService;
 import server.healthyFriends.web.dto.request.FriendRequest;
 import server.healthyFriends.web.dto.response.BodyInfoResponse;
+import server.healthyFriends.web.dto.response.ExerciseResponse;
 import server.healthyFriends.web.dto.response.FriendResponse;
 import server.healthyFriends.domain.entity.User;
 import server.healthyFriends.domain.entity.mapping.FriendMapping;
-import server.healthyFriends.repository.FriendRepository;
-import server.healthyFriends.repository.UserRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -36,6 +36,7 @@ public class FriendServiceImpl implements FriendService {
     private final FriendRepository friendRepository;
     private final UserRepository userRepository;
     private final BodyInfoRepository bodyInfoRepository;
+    private final DayRecordRepository dayRecordRepository;
 
     // LoginId로 친구 찾기
     public FriendResponse.FindFriendResponse findFriendbyLoginId(String friendLoginId) {
@@ -452,6 +453,30 @@ public class FriendServiceImpl implements FriendService {
                 .build());
     }
 
+    public Optional<ExerciseResponse.ExerciseCompletionRateAvg> getFriendExerciseCompletionRate(Long userId, Long friendId) {
+
+        existsUser(userId);
+        existsFriend(friendId);
+        isMyFriend(userId, friendId);
+
+        LocalDate today = LocalDate.now();
+        LocalDate oneWeekAgo = LocalDate.now().minusWeeks(1);
+
+        List<DayRecord> friendDayRecords = dayRecordRepository.findByUserIdAndDateBetween(friendId, oneWeekAgo, today);
+        BigDecimal totalCompletionRate = friendDayRecords.stream()
+                .map(DayRecord::getCompleteRate)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        int numberOfDays = friendDayRecords.size();
+        BigDecimal averageCompletionRate = numberOfDays > 0 ? totalCompletionRate.divide(BigDecimal.valueOf(numberOfDays), 2, RoundingMode.HALF_UP) : BigDecimal.ZERO;
+
+        ExerciseResponse.ExerciseCompletionRateAvg weekExerciseCompletionRate = ExerciseResponse.ExerciseCompletionRateAvg.builder()
+                .completionRateAvg(averageCompletionRate)
+                .build();
+
+        return Optional.of(weekExerciseCompletionRate);
+
+    }
 
     private void existsFriend(Long friendId) {
         if(userRepository.findById(friendId).isEmpty()) {
