@@ -42,6 +42,8 @@ public class ExerciseRecord extends BaseEntity {
     @Column(precision = 6, scale = 1)
     private BigDecimal total_exercise_weight;
 
+    private Integer total_set_num;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="day_record_id",referencedColumnName = "id")
     private DayRecord dayRecord;
