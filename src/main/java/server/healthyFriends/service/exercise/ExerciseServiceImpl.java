@@ -140,4 +140,12 @@ public class ExerciseServiceImpl implements ExerciseService {
 
         return ExerciseConverter.getExerciseDayRecordResponse(dayRecord);
     }
+
+    public ExerciseResponse.getExerciseDayRecordSummaryResponse getSummaryExerciseDayRecord(Long dayRecordId) {
+
+        DayRecord dayRecord = dayRecordRepository.findById(dayRecordId)
+                .orElseThrow(()->new EntityNotFoundException("해당하는 일자의 운동 기록이 없습니다."));
+
+        return ExerciseConverter.getExerciseDayRecordSummaryResponse(dayRecord);
+    }
 }

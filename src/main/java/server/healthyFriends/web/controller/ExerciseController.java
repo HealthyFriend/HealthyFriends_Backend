@@ -103,4 +103,16 @@ public class ExerciseController {
 
         return ResponseUtil.success("운동 기록 상세 조회 성공",exerciseService.getConcreteExerciseDayRecord(dayRecordId));
     }
+
+    @Operation(summary = "운동 기록 요약 조회")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 운동 기록 요약 조회 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+    })
+    @GetMapping("/exercise-records/summary/{dayRecordId}")
+    public ResponseDTO<ExerciseResponse.getExerciseDayRecordSummaryResponse> getSummaryExerciseDayRecord(@PathVariable("dayRecordId") Long dayRecordId) {
+
+        return ResponseUtil.success("운동 기록 요약 조회 성공",exerciseService.getSummaryExerciseDayRecord(dayRecordId));
+    }
 }

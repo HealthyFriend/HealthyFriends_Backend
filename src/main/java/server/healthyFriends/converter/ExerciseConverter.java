@@ -73,6 +73,7 @@ public class ExerciseConverter {
                     exerciseRecord.setMax_weight(getMaxSetWeight(singleExerciseRecord.getSetInfos()));//exerciseSetRecord의 수행 세트 중 가장 높은 중량 입력
                     exerciseRecord.setTime(singleExerciseRecord.getSetInfos().isEmpty() ? null : singleExerciseRecord.getSetInfos().get(0).getExerciseTime());//exerciseSetRecord의 exerciseTime 입력
                     exerciseRecord.setTotal_exercise_weight(calculateTotalExerciseWeight(singleExerciseRecord.getSetInfos()));
+                    exerciseRecord.setTotal_set_num(getTotalSetNum(singleExerciseRecord.getSetInfos()));
                     exerciseRecord.setDayRecord(dayRecord);
 
                     List<ExerciseSet> exerciseSets = singleExerciseRecord.getSetInfos().stream()
@@ -96,6 +97,7 @@ public class ExerciseConverter {
         dayRecord.setTotal_weight(calculateTotalDayWeight(request.getDayExerciseRecord()));
         dayRecord.setCompleteRate(getCompletionRate(request.getDayExerciseRecord()));
         dayRecord.setExerciseRecordList(exerciseRecords);
+        dayRecord.setTotal_exercise_num(request.getDayExerciseRecord().size());
         dayRecord.setUser(user);
 
         return dayRecord;
@@ -112,6 +114,7 @@ public class ExerciseConverter {
                     exerciseRecord.setMax_weight(getMaxSetWeight(singleExerciseRecord.getSetInfos()));//exerciseSetRecord의 수행 세트 중 가장 높은 중량 입력
                     exerciseRecord.setTime(singleExerciseRecord.getSetInfos().isEmpty() ? null : singleExerciseRecord.getSetInfos().get(0).getExerciseTime());//exerciseSetRecord의 exerciseTime 입력
                     exerciseRecord.setTotal_exercise_weight(calculateTotalExerciseWeight(singleExerciseRecord.getSetInfos()));
+                    exerciseRecord.setTotal_set_num(getTotalSetNum(singleExerciseRecord.getSetInfos()));
                     exerciseRecord.setDayRecord(dayRecord);
 
                     List<ExerciseSet> exerciseSets = singleExerciseRecord.getSetInfos().stream()
@@ -135,6 +138,7 @@ public class ExerciseConverter {
         dayRecord.setCompleteRate(getCompletionRate(request.getDayExerciseRecord()));
         dayRecord.setTotal_time(request.getDayExerciseTime());
         dayRecord.setExerciseRecordList(exerciseRecords);
+        dayRecord.setTotal_exercise_num(request.getDayExerciseRecord().size());
 
         return dayRecord;
     }
@@ -162,7 +166,29 @@ public class ExerciseConverter {
                 .dayExerciseTime(dayRecord.getTotal_time())
                 .dayTotalWeight(dayRecord.getTotal_weight())
                 .completionRate(dayRecord.getCompleteRate())
+                .dayTotalExerciseNum(dayRecord.getTotal_exercise_num())
                 .dayRecordId(dayRecord.getId())
+                .build();
+    }
+
+    public static ExerciseResponse.getExerciseDayRecordSummaryResponse getExerciseDayRecordSummaryResponse(DayRecord dayRecord) {
+        List<ExerciseResponse.SingleExerciseRecordSummaryResponse> singleExerciseRecordsSummary = dayRecord.getExerciseRecordList().stream()
+                .map(exerciseRecord -> ExerciseResponse.SingleExerciseRecordSummaryResponse.builder()
+                        .exerciseCategory(exerciseRecord.getExercise_category())
+                        .exerciseName(exerciseRecord.getExercise_name())
+                        .exerciseTotalWeight(exerciseRecord.getTotal_exercise_weight())
+                        .maxWeightRep(exerciseRecord.getMax_weight_rep())
+                        .maxWeight(exerciseRecord.getMax_weight())
+                        .totalSetNum(exerciseRecord.getTotal_set_num())
+                        .build())
+                .collect(Collectors.toList());
+
+        return ExerciseResponse.getExerciseDayRecordSummaryResponse.builder()
+                .dayExerciseRecord(singleExerciseRecordsSummary)
+                .completionRate(dayRecord.getCompleteRate())
+                .dayTotalWeight(dayRecord.getTotal_weight())
+                .dayExerciseTime(dayRecord.getTotal_time())
+                .dayTotalExerciseNum(dayRecord.getTotal_exercise_num())
                 .build();
     }
 
@@ -193,6 +219,13 @@ public class ExerciseConverter {
                 .max(Comparator.comparing(ExerciseRequest.exerciseSetRecord::getSetWeight))
                 .map(ExerciseRequest.exerciseSetRecord::getRep)
                 .orElse(null);
+    }
+
+    public static Integer getTotalSetNum(List<ExerciseRequest.exerciseSetRecord> setInfos) {
+        return setInfos.stream()
+                .filter(ExerciseRequest.exerciseSetRecord::getIsComplete)
+                .mapToInt(setInfo -> 1)
+                .sum();
     }
 
     private static BigDecimal getCompletionRate(List<ExerciseRequest.singleExerciseRecord> exerciseRecords) {

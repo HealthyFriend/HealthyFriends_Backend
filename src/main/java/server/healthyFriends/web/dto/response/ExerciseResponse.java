@@ -62,8 +62,8 @@ public class ExerciseResponse {
         private LocalTime dayExerciseTime;
         private BigDecimal dayTotalWeight;
         private BigDecimal completionRate;
+        private Integer dayTotalExerciseNum;
         private Long dayRecordId;
-
     }
 
     @Getter
@@ -88,5 +88,31 @@ public class ExerciseResponse {
         private Integer rep;
         private LocalTime exerciseTime;
         private Boolean isComplete;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class SingleExerciseRecordSummaryResponse {
+        private String exerciseCategory;
+        private String exerciseName;
+        private Boolean withWeight;
+        private BigDecimal exerciseTotalWeight;
+        private Integer maxWeightRep;
+        private BigDecimal maxWeight;
+        private Integer totalSetNum;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class getExerciseDayRecordSummaryResponse {
+        private List<SingleExerciseRecordSummaryResponse> dayExerciseRecord;
+        private LocalTime dayExerciseTime;
+        private BigDecimal dayTotalWeight;
+        private BigDecimal completionRate;
+        private Integer dayTotalExerciseNum;
     }
 }

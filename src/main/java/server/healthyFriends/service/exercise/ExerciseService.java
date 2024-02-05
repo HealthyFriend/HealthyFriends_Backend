@@ -10,4 +10,5 @@ public interface ExerciseService {
     ExerciseResponse.getExerciseDayRecordResponse updateExerciseDayRecord(Long userId, ExerciseRequest.exerciseRecordRequest request);
     void deleteExerciseDayRecord(Long dayRecordId);
     ExerciseResponse.getExerciseDayRecordResponse getConcreteExerciseDayRecord(Long dayRecordId);
+    ExerciseResponse.getExerciseDayRecordSummaryResponse getSummaryExerciseDayRecord(Long dayRecordId);
 }
