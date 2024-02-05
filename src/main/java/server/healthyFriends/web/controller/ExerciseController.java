@@ -33,8 +33,7 @@ public class ExerciseController {
     })
     @PostMapping("/exercises/exercise-add")
     public ResponseDTO<ExerciseResponse.addExerciseResponse> addExercises(@RequestBody @Valid ExerciseRequest.addExerciseRequest request
-            , Authentication authentication)
-    {
+            , Authentication authentication) {
         Long userId=Long.parseLong(authentication.getName());
 
         return ResponseUtil.success("운동 추가 성공",exerciseService.addExercise(userId,request));
@@ -47,8 +46,7 @@ public class ExerciseController {
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
     @GetMapping("/exercises/category")
-    public ResponseDTO<ExerciseResponse.getExerciseResponse> getExercises(@RequestParam("exerciseCoded") Long exerciseCode, Authentication authentication)
-    {
+    public ResponseDTO<ExerciseResponse.getExerciseResponse> getExercises(@RequestParam("exerciseCoded") Long exerciseCode, Authentication authentication) {
         Long userId=Long.parseLong(authentication.getName());
 
         return ResponseUtil.success("부위별 운동 조회 성공",exerciseService.getExerciseResponse(userId,exerciseCode));
@@ -62,8 +60,7 @@ public class ExerciseController {
     })
     @PostMapping("/exercises/record")
     public ResponseDTO<ExerciseResponse.addExerciseDayRecordResponse> addExerciseDayRecord(@RequestBody @Valid ExerciseRequest.exerciseRecordRequest request,
-                                                                                     Authentication authentication)
-    {
+                                                                                     Authentication authentication) {
         Long userId=Long.parseLong(authentication.getName());
 
         return ResponseUtil.success("운동 기록 등록 성공",exerciseService.addExerciseDayRecord(userId,request));
@@ -77,8 +74,7 @@ public class ExerciseController {
     })
     @PutMapping("/exercises-records/{dayRecordId}")
     public ResponseDTO<ExerciseResponse.getExerciseDayRecordResponse> updateExerciseDayRecord(@RequestBody @Valid ExerciseRequest.exerciseRecordRequest request
-            , @PathVariable("dayRecordId") Long dayRecordId)
-    {
+            , @PathVariable("dayRecordId") Long dayRecordId) {
 
         return ResponseUtil.success("운동 기록 수정 성공",exerciseService.updateExerciseDayRecord(dayRecordId, request));
     }
@@ -90,10 +86,21 @@ public class ExerciseController {
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
     @DeleteMapping("/exercises-records/{dayRecordId}")
-    public ResponseDTO<String> deleteExerciseDayRecord(@PathVariable("dayRecordId") Long dayRecordId)
-    {
+    public ResponseDTO<String> deleteExerciseDayRecord(@PathVariable("dayRecordId") Long dayRecordId) {
         exerciseService.deleteExerciseDayRecord(dayRecordId);
 
         return ResponseUtil.success("운동 기록 삭제 성공",null);
+    }
+
+    @Operation(summary = "운동 기록 상세 조회")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 운동 기록 상세 조회 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+    })
+    @GetMapping("/exercise-records/concrete/{dayRecordId}")
+    public ResponseDTO<ExerciseResponse.getExerciseDayRecordResponse> getConcreteExerciseDayRecord(@PathVariable("dayRecordId") Long dayRecordId) {
+
+        return ResponseUtil.success("운동 기록 상세 조회 성공",exerciseService.getConcreteExerciseDayRecord(dayRecordId));
     }
 }

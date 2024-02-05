@@ -9,4 +9,5 @@ public interface ExerciseService {
     ExerciseResponse.addExerciseDayRecordResponse addExerciseDayRecord(Long userId, ExerciseRequest.exerciseRecordRequest request);
     ExerciseResponse.getExerciseDayRecordResponse updateExerciseDayRecord(Long userId, ExerciseRequest.exerciseRecordRequest request);
     void deleteExerciseDayRecord(Long dayRecordId);
+    ExerciseResponse.getExerciseDayRecordResponse getConcreteExerciseDayRecord(Long dayRecordId);
 }
