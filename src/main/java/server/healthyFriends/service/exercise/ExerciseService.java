@@ -6,4 +6,5 @@ import server.healthyFriends.web.dto.response.ExerciseResponse;
 public interface ExerciseService {
     ExerciseResponse.addExerciseResponse addExercise(Long userId, ExerciseRequest.addExerciseRequest request);
     ExerciseResponse.getExerciseResponse getExerciseResponse(Long userId, Long exerciseCode);
+    ExerciseResponse.addExerciseRecordResponse addExerciseRecord(Long userId, ExerciseRequest.exerciseRecordRequest request);
 }

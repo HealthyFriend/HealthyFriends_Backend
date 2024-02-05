@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor(access= AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Entity(name="DayRecord")
 @Table(name="day_record")
 public class DayRecord extends BaseEntity {
@@ -29,8 +29,8 @@ public class DayRecord extends BaseEntity {
     @Column(precision=7, scale=1)
     private BigDecimal total_weight;
 
-    @Column(precision=4, scale=2)
-    private BigDecimal complete;
+    @Column(precision=5, scale=2)
+    private BigDecimal completeRate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id",referencedColumnName = "id")

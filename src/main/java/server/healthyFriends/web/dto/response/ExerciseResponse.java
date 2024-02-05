@@ -41,5 +41,13 @@ public class ExerciseResponse {
         //Boolean isLast;
     }
 
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class addExerciseRecordResponse {
+        private Long dayExerciseRecordId;
+    }
+
 
 }

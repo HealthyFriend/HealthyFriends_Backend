@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor(access= AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Entity(name="ExerciseRecord")
 @Table(name="exercise_record")
 public class ExerciseRecord extends BaseEntity {
@@ -31,7 +31,8 @@ public class ExerciseRecord extends BaseEntity {
     @Column(length = 15)
     private String exercise_name;
 
-    private Integer total_rep;
+    //최대 중량인 세트의 반복 횟수
+    private Integer max_weight_rep;
 
     @Column(precision = 4,scale = 1)
     private BigDecimal max_weight;

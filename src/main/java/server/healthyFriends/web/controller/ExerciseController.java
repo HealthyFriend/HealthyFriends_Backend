@@ -52,4 +52,19 @@ public class ExerciseController {
 
         return ResponseUtil.success("부위별 운동 조회 성공",exerciseService.getExerciseResponse(userId,exerciseCode));
     }
+
+    @Operation(summary = "운동 기록 저장")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 부운동 기록 저장 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+    })
+    @PostMapping("/exercises/record")
+    public ResponseDTO<ExerciseResponse.addExerciseRecordResponse> addExerciseRecord(@RequestBody @Valid ExerciseRequest.exerciseRecordRequest request,
+                                                                                     Authentication authentication)
+    {
+        Long userId=Long.parseLong(authentication.getName());
+
+        return ResponseUtil.success("운동 기록 등록 성공",exerciseService.addExerciseRecord(userId,request));
+    }
 }

@@ -12,7 +12,7 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor(access= AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Entity(name="ExerciseSet")
 @Table(name="exercise_set")
 public class ExerciseSet extends BaseEntity {
@@ -36,9 +36,9 @@ public class ExerciseSet extends BaseEntity {
     @Column(precision = 4,scale = 1)
     private BigDecimal weight;
 
-    private Boolean status;
+    private Boolean isComplete;
 
-    private LocalTime time;
+    private LocalTime exerciseTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="exercise_record_id",referencedColumnName = "id")
