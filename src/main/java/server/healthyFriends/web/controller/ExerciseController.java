@@ -82,4 +82,18 @@ public class ExerciseController {
 
         return ResponseUtil.success("운동 기록 수정 성공",exerciseService.updateExerciseDayRecord(dayRecordId, request));
     }
+
+    @Operation(summary = "운동 기록 삭제")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 운동 기록 삭제 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+    })
+    @DeleteMapping("/exercises-records/{dayRecordId}")
+    public ResponseDTO<String> deleteExerciseDayRecord(@PathVariable("dayRecordId") Long dayRecordId)
+    {
+        exerciseService.deleteExerciseDayRecord(dayRecordId);
+
+        return ResponseUtil.success("운동 기록 삭제 성공",null);
+    }
 }
