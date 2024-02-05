@@ -77,7 +77,7 @@ public class ExerciseServiceImpl implements ExerciseService {
         return ExerciseConverter.getExerciseResponse(exercises);
     }
 
-    public ExerciseResponse.addExerciseRecordResponse addExerciseRecord(Long userId, ExerciseRequest.exerciseRecordRequest request) {
+    public ExerciseResponse.addExerciseDayRecordResponse addExerciseDayRecord(Long userId, ExerciseRequest.exerciseRecordRequest request) {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("해당하는 유저가 없습니다."));
@@ -91,7 +91,7 @@ public class ExerciseServiceImpl implements ExerciseService {
             exerciseSetRepository.saveAll(exerciseRecord.getExerciseSetList());
         });
 
-        return ExerciseConverter.addExerciseRecordResponse(dayRecord);
+        return ExerciseConverter.addExerciseDayRecordResponse(dayRecord);
 
        /*
         dayRecordRepository.save(dayRecord);
@@ -103,6 +103,21 @@ public class ExerciseServiceImpl implements ExerciseService {
 
     }
 
+    public ExerciseResponse.getExerciseDayRecordResponse updateExerciseDayRecord(Long dayRecordId, ExerciseRequest.exerciseRecordRequest request) {
 
+        DayRecord dayRecord = dayRecordRepository.findById(dayRecordId)
+                .orElseThrow(()->new EntityNotFoundException("해당하는 일자의 운동 기록이 없습니다."));
+
+        DayRecord newDayRecord = ExerciseConverter.updateDayRecord(dayRecord,request);
+
+        newDayRecord = dayRecordRepository.save(newDayRecord);
+
+        newDayRecord.getExerciseRecordList().forEach(exerciseRecord -> {
+            exerciseRecord = exerciseRecordRepository.save(exerciseRecord);
+            exerciseSetRepository.saveAll(exerciseRecord.getExerciseSetList());
+        });
+
+        return ExerciseConverter.getExerciseDayRecordResponse(newDayRecord);
+    }
 
 }

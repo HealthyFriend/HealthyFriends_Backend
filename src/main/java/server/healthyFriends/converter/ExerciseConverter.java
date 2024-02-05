@@ -53,8 +53,8 @@ public class ExerciseConverter {
 
     }
 
-    public static ExerciseResponse.addExerciseRecordResponse addExerciseRecordResponse(DayRecord dayRecord) {
-        return ExerciseResponse.addExerciseRecordResponse.builder()
+    public static ExerciseResponse.addExerciseDayRecordResponse addExerciseDayRecordResponse(DayRecord dayRecord) {
+        return ExerciseResponse.addExerciseDayRecordResponse.builder()
                 .dayExerciseRecordId(dayRecord.getId())
                 .build();
     }
@@ -101,7 +101,70 @@ public class ExerciseConverter {
         return dayRecord;
     }
 
-    // 계산식들 isComplete=true인 경우만 하도록 수정
+    public static DayRecord updateDayRecord(DayRecord dayRecord, ExerciseRequest.exerciseRecordRequest request) {
+
+        List<ExerciseRecord> exerciseRecords = request.getDayExerciseRecord().stream()
+                .map(singleExerciseRecord -> {
+                    ExerciseRecord exerciseRecord = new ExerciseRecord();
+                    exerciseRecord.setExercise_category(singleExerciseRecord.getExerciseCategory());
+                    exerciseRecord.setExercise_name(singleExerciseRecord.getExerciseName());
+                    exerciseRecord.setMax_weight_rep(getMaxSetWeightRep(singleExerciseRecord.getSetInfos()));//exerciseSetRecord의 가장 큰 중량을 든 세트의 반복획수
+                    exerciseRecord.setMax_weight(getMaxSetWeight(singleExerciseRecord.getSetInfos()));//exerciseSetRecord의 수행 세트 중 가장 높은 중량 입력
+                    exerciseRecord.setTime(singleExerciseRecord.getSetInfos().isEmpty() ? null : singleExerciseRecord.getSetInfos().get(0).getExerciseTime());//exerciseSetRecord의 exerciseTime 입력
+                    exerciseRecord.setTotal_exercise_weight(calculateTotalExerciseWeight(singleExerciseRecord.getSetInfos()));
+                    exerciseRecord.setDayRecord(dayRecord);
+
+                    List<ExerciseSet> exerciseSets = singleExerciseRecord.getSetInfos().stream()
+                            .map(setInfo -> {
+                                ExerciseSet exerciseSet = new ExerciseSet();
+                                exerciseSet.setExercise_category(singleExerciseRecord.getExerciseCategory());
+                                exerciseSet.setExercise_name(singleExerciseRecord.getExerciseName());
+                                exerciseSet.setSet_number(setInfo.getSetNumber());
+                                exerciseSet.setRepetitions(setInfo.getRep());
+                                exerciseSet.setWeight(setInfo.getSetWeight());
+                                exerciseSet.setIsComplete(setInfo.getIsComplete());
+                                exerciseSet.setExerciseTime(setInfo.getExerciseTime());
+                                exerciseSet.setExerciseRecord(exerciseRecord);
+                                return exerciseSet;
+                            }).collect(Collectors.toList());
+                    exerciseRecord.setExerciseSetList(exerciseSets);
+                    return exerciseRecord;
+                }).collect(Collectors.toList());
+
+        dayRecord.setTotal_weight(calculateTotalDayWeight(request.getDayExerciseRecord()));
+        dayRecord.setCompleteRate(getCompletionRate(request.getDayExerciseRecord()));
+        dayRecord.setTotal_time(request.getDayExerciseTime());
+        dayRecord.setExerciseRecordList(exerciseRecords);
+
+        return dayRecord;
+    }
+
+    public static ExerciseResponse.getExerciseDayRecordResponse getExerciseDayRecordResponse(DayRecord dayRecord) {
+        List<ExerciseResponse.SingleExerciseRecordResponse> singleExerciseRecords = dayRecord.getExerciseRecordList().stream()
+                .map(exerciseRecord -> ExerciseResponse.SingleExerciseRecordResponse.builder()
+                        .exerciseCategory(exerciseRecord.getExercise_category())
+                        .exerciseName(exerciseRecord.getExercise_name())
+                        .exerciseTotalWeight(exerciseRecord.getTotal_exercise_weight())
+                        .setInfos(exerciseRecord.getExerciseSetList().stream()
+                                .map(setInfo -> ExerciseResponse.ExerciseSetRecordResponse.builder()
+                                        .setNumber(setInfo.getSet_number())
+                                        .setWeight(setInfo.getWeight())
+                                        .rep(setInfo.getRepetitions())
+                                        .exerciseTime(setInfo.getExerciseTime())
+                                        .isComplete(setInfo.getIsComplete())
+                                        .build())
+                                .collect(Collectors.toList()))
+                        .build())
+                .collect(Collectors.toList());
+
+        return ExerciseResponse.getExerciseDayRecordResponse.builder()
+                .dayExerciseRecord(singleExerciseRecords)
+                .dayExerciseTime(dayRecord.getTotal_time())
+                .dayTotalWeight(dayRecord.getTotal_weight())
+                .completionRate(dayRecord.getCompleteRate())
+                .dayRecordId(dayRecord.getId())
+                .build();
+    }
 
     private static BigDecimal calculateTotalExerciseWeight(List<ExerciseRequest.exerciseSetRecord> setInfos) {
         return setInfos.stream()

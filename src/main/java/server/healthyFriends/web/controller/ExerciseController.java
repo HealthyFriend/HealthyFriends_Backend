@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import server.healthyFriends.apiPayload.ResponseDTO;
 import server.healthyFriends.apiPayload.ResponseUtil;
+import server.healthyFriends.domain.entity.DayRecord;
 import server.healthyFriends.service.exercise.ExerciseService;
 import server.healthyFriends.service.user.UserService;
 import server.healthyFriends.web.dto.request.ExerciseRequest;
@@ -55,16 +56,30 @@ public class ExerciseController {
 
     @Operation(summary = "운동 기록 저장")
     @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 부운동 기록 저장 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 운동 기록 저장 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
     @PostMapping("/exercises/record")
-    public ResponseDTO<ExerciseResponse.addExerciseRecordResponse> addExerciseRecord(@RequestBody @Valid ExerciseRequest.exerciseRecordRequest request,
+    public ResponseDTO<ExerciseResponse.addExerciseDayRecordResponse> addExerciseDayRecord(@RequestBody @Valid ExerciseRequest.exerciseRecordRequest request,
                                                                                      Authentication authentication)
     {
         Long userId=Long.parseLong(authentication.getName());
 
-        return ResponseUtil.success("운동 기록 등록 성공",exerciseService.addExerciseRecord(userId,request));
+        return ResponseUtil.success("운동 기록 등록 성공",exerciseService.addExerciseDayRecord(userId,request));
+    }
+
+    @Operation(summary = "운동 기록 수정")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 운동 기록 수정 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+    })
+    @PutMapping("/exercises-records/{dayRecordId}")
+    public ResponseDTO<ExerciseResponse.getExerciseDayRecordResponse> updateExerciseDayRecord(@RequestBody @Valid ExerciseRequest.exerciseRecordRequest request
+            , @PathVariable("dayRecordId") Long dayRecordId)
+    {
+
+        return ResponseUtil.success("운동 기록 수정 성공",exerciseService.updateExerciseDayRecord(dayRecordId, request));
     }
 }
