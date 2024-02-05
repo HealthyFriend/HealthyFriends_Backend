@@ -58,7 +58,7 @@ public class ExerciseConverter {
                 .dayExerciseRecordId(dayRecord.getId())
                 .build();
     }
-    public static DayRecord getDayRecord(User user, ExerciseRequest.exerciseRecordRequest request) {
+    public static DayRecord enrollDayRecord(User user, ExerciseRequest.exerciseRecordRequest request) {
         DayRecord dayRecord = new DayRecord();
         dayRecord.setDate(LocalDate.now());
         dayRecord.setTotal_time(request.getDayExerciseTime());

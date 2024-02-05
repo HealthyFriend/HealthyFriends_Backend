@@ -82,7 +82,7 @@ public class ExerciseServiceImpl implements ExerciseService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("해당하는 유저가 없습니다."));
 
-        DayRecord dayRecord = ExerciseConverter.getDayRecord(user,request);
+        DayRecord dayRecord = ExerciseConverter.enrollDayRecord(user,request);
 
         dayRecord = dayRecordRepository.save(dayRecord);
 
