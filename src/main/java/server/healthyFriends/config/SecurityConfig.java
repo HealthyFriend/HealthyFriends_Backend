@@ -90,6 +90,7 @@ public class SecurityConfig {
                         .requestMatchers("/join").permitAll()
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/login/**").permitAll()
+                        .requestMatchers("/logout").permitAll()
                         .requestMatchers("/oauth/**").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
