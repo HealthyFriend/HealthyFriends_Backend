@@ -34,36 +34,6 @@ public class FriendController {
     private final FriendService friendService;
     private final UserService userService;
 
-    @Operation(summary = "친구 요청 수락")
-    @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "OK, 친구 요청 수락 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
-                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
-    })
-    @PostMapping("/friend-acceptance/{friendMappingId}")
-    public ResponseDTO<FriendResponse.AcceptFriendResponse> acceptFriend (
-            @PathVariable("friendMappingId") Long friendMappingId) {
-
-        FriendResponse.AcceptFriendResponse acceptFriendResponse = friendService.acceptFriend(friendMappingId);
-
-        return ResponseUtil.success("친구 요청을 수락했습니다.",acceptFriendResponse);
-    }
-
-    @Operation(summary = "친구 요청 거절")
-    @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "OK, 친구 요청 거절 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
-                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
-    })
-
-    @DeleteMapping("/friend-rejection/{friendMappingId}")
-    public ResponseDTO<String> rejectFriend (
-            @PathVariable("friendMappingId") Long friendMappingId) {
-        friendService.rejectFriend(friendMappingId);
-
-        return ResponseUtil.success("친구 거절 성공",null);
-    }
-
     @Operation(summary = "친구 정보(프로필) 조회")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200",description = "OK, 회원 정보 조회 성공"),
