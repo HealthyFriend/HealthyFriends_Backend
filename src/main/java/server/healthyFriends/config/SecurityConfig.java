@@ -10,12 +10,14 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.config.annotation.web.configurers.RememberMeConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import server.healthyFriends.sercurity.OAuth.CustomOauth2UserService;
 import server.healthyFriends.sercurity.handler.JwtAccessDeniedHandler;
 import server.healthyFriends.sercurity.handler.JwtAuthenticationEntryPoint;
@@ -40,7 +42,7 @@ public class SecurityConfig {
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final JwtTokenFilter jwtRequestFilter;
     private final CustomOauth2UserService customOauth2UserService;
-
+    private final CorsConfig corsConfig;
     private final UserService userService;
 /*
     @Bean
@@ -63,8 +65,8 @@ public class SecurityConfig {
          * 권한 규칙 구성 종료
          */
         //CSRF(Cross-Site Request Forgery) 보호 비활성화
-        httpSecurity.csrf(AbstractHttpConfigurer::disable);
-        httpSecurity.cors(Customizer.withDefaults());
+        httpSecurity.csrf(AbstractHttpConfigurer::disable)
+                    .rememberMe(RememberMeConfigurer::disable);
 
         //HTTP 기본 인증 비활성화
         httpSecurity.formLogin(AbstractHttpConfigurer::disable);
@@ -82,8 +84,8 @@ public class SecurityConfig {
         );
 
         //JwtTokenFilter를 UsernamePasswordAuthenticationFilter 앞에 추가
-        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-
+        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+                    .addFilter(corsConfig.corsFilter());
         //권한 규칙 구성 시작
         httpSecurity.authorizeHttpRequests(
                 authorize -> authorize
@@ -95,42 +97,12 @@ public class SecurityConfig {
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers("/swagger-resources/**").permitAll()
-                        .requestMatchers("/webjars/**").permitAll()
+                        //.requestMatchers("/webjars/**").permitAll()
                         .requestMatchers("/S3").permitAll()
                         .anyRequest().authenticated()
         );
-   /*     //oauth2 설정
-        httpSecurity.oauth2Login(oauth2 -> oauth2
-                //.successHandler()
-                //.failureHandler()
-                .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
-                        .userService(customOauth2UserService))); //userService 설정
-         */
 
         return httpSecurity.build();
-
-
-                /*
-                SrpingBoot 2.7x
-                return httpSecurity
-                //HTTP 기본 인증 비활성화
-                .httpBasic().disable()
-                //CSRF(Cross-Site Request Forgery) 보호 비활성화
-                .csrf().disable()
-                //세션 관리 상태 없음으로 구성, Spring Security가 세션 생성 or 사용 X
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                //보안 구성 결합
-                .and()
-                //JwtTokenFilter를 UsernamePasswordAuthenticationFilter 앞에 추가
-                .addFilterBefore(new JwtTokenFilter(userService, secretKey), UsernamePasswordAuthenticationFilter.class)
-                //권한 규칙 구성 시작
-                .authorizeRequests()
-                ///jwt-login/info 엔드포인트에 대한 인증 필요
-                //.antMatchers("/").authenticated()
-                //ADMIN 권한 가진 사용자에게 /jwt-login/admin/ 하우의 모든 URL에 액세스할 권한 필요
-                .antMatchers("/users/admin/**").hasAuthority(Role.ADMIN.name())
-                .and().build();
-                */
 
     }
 }
