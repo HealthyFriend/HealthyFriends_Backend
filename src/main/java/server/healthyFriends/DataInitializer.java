@@ -1,3 +1,4 @@
+/*
 package server.healthyFriends;
 
 import lombok.RequiredArgsConstructor;
@@ -74,3 +75,4 @@ public class DataInitializer implements CommandLineRunner {
         bodyInfoRepository.save(testBodycompositionRecord);
     }
 }
+*/
