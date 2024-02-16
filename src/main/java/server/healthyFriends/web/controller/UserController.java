@@ -156,7 +156,7 @@ public class UserController {
     })
 
     @GetMapping("/prospective-friend")
-    public ResponseDTO<Optional<List<FriendResponse.MappingFriendResponse>>> prospectiveFriend (Authentication authentication) {
+    public ResponseDTO<Optional<List<FriendResponse.ProspectiveFriendResponse>>> prospectiveFriend (Authentication authentication) {
 
         Long userId = Long.parseLong(authentication.getName());
 

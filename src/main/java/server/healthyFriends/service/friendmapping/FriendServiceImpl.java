@@ -101,7 +101,18 @@ public class FriendServiceImpl implements FriendService {
                 .map(friendMapping -> {
                     User friend = userRepository.findById(friendMapping.getFriendId())
                             .orElseThrow(() -> new EntityNotFoundException("해당하는 친구가 없습니다."));
-                    return FriendConverter.mappingFriendResponse(friendMapping, friend);
+
+                    List<Objective> sortedObjectives = friend.getObjectiveList().stream()
+                            .sorted(Comparator.comparing(Objective::getStart_day).reversed())
+                            .toList();
+
+                    Optional<Objective> latestObjective = sortedObjectives.isEmpty()
+                            ? Optional.empty()
+                            : Optional.ofNullable(sortedObjectives.get(0));
+
+                    String objectiveHead = latestObjective.map(Objective::getHead).orElse("");
+
+                    return FriendConverter.mappingFriendResponse(friendMapping, friend,objectiveHead);
                 })
                 .toList();
 
@@ -109,16 +120,17 @@ public class FriendServiceImpl implements FriendService {
     }
 
     // 받은 친구 요청 현황 목록
-    public Optional<List<FriendResponse.MappingFriendResponse>> prospectiveFriend(Long userId,Boolean isFriend) {
+    public Optional<List<FriendResponse.ProspectiveFriendResponse>> prospectiveFriend(Long userId,Boolean isFriend) {
+
         existsUser(userId);
 
         List<FriendMapping> friendMappings = friendRepository.findAllByFriendIdAndStatus(userId,isFriend);
 
-        List<FriendResponse.MappingFriendResponse> mappingFriendResponses = friendMappings.stream()
-                .map(friendMapping -> FriendConverter.mappingFriendResponse(friendMapping, friendMapping.getUser()))
+        List<FriendResponse.ProspectiveFriendResponse> prospectiveFriendResponses = friendMappings.stream()
+                .map(friendMapping -> FriendConverter.prospectiveFriendResponse(friendMapping, friendMapping.getUser()))
                 .toList();
 
-        return Optional.of(mappingFriendResponses);
+        return Optional.of(prospectiveFriendResponses);
     }
 
     // 친구 수락

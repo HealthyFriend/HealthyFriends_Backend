@@ -50,6 +50,21 @@ public class FriendResponse {
         private String friendNickname;
         private Boolean isFriend;
         private String profileImageUrl;
+        private String objectiveHead;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ProspectiveFriendResponse {
+        private Long friendId;
+        private Long friendMappingId;
+        private String friendName;
+        private String friendLoginId;
+        private String friendNickname;
+        private Boolean isFriend;
+        private String profileImageUrl;
     }
 
     @Getter
