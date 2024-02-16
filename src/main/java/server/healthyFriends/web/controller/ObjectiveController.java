@@ -137,7 +137,7 @@ public class ObjectiveController {
 
             objectiveSerivce.updateObjective(objectiveId, updateObjectiveRequest);
 
-            return ResponseUtil.success("목표 수정 성공", null);
+            return ResponseUtil.success("목표 수정 성공", "success");
 
     }
 
@@ -152,12 +152,12 @@ public class ObjectiveController {
     public ResponseDTO<String> deleteObjective(@PathVariable("objectiveId")Long objectiveId) {
 
             if(objectiveSerivce.findById(objectiveId)==null) {
-                return ResponseUtil.notFound("해당하는 목표가 없습니다.",null);
+                return ResponseUtil.notFound("해당하는 목표가 없습니다.","not exist");
             }
 
             objectiveSerivce.deleteObjective(objectiveId);
 
-            return ResponseUtil.success("목표 삭제 성공",null);
+            return ResponseUtil.success("목표 삭제 성공","success");
 
     }
 

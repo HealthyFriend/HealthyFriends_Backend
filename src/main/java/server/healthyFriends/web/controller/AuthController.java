@@ -105,7 +105,7 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseDTO<String> logout() {
         authService.logout();
-        return ResponseUtil.success("로그아웃 성공",null);
+        return ResponseUtil.success("로그아웃 성공","success");
     }
 
     @Operation(summary = "네이버 로그인")
