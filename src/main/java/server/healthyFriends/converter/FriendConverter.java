@@ -35,9 +35,23 @@ public class FriendConverter {
                 .build();
     }
 
-    public static FriendResponse.MappingFriendResponse mappingFriendResponse(FriendMapping friendMapping, User friend) {
+    public static FriendResponse.MappingFriendResponse mappingFriendResponse(FriendMapping friendMapping, User friend, String objectiveHead) {
 
         return FriendResponse.MappingFriendResponse.builder()
+                .isFriend(friendMapping.getStatus())
+                .friendId(friendMapping.getFriendId())
+                .friendLoginId(friend.getLoginId())
+                .friendMappingId(friendMapping.getId())
+                .friendName(friend.getName())
+                .friendNickname(friend.getNickname())
+                .profileImageUrl(friend.getProfileImageUrl())
+                .objectiveHead(objectiveHead)
+                .build();
+    }
+
+    public static FriendResponse.ProspectiveFriendResponse prospectiveFriendResponse(FriendMapping friendMapping, User friend) {
+
+        return FriendResponse.ProspectiveFriendResponse.builder()
                 .isFriend(friendMapping.getStatus())
                 .friendId(friendMapping.getFriendId())
                 .friendLoginId(friend.getLoginId())

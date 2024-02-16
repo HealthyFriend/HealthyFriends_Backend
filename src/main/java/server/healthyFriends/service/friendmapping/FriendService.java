@@ -15,7 +15,7 @@ public interface FriendService {
     FriendResponse.RequestFriendResponse requestFriend(Long userId, FriendRequest.RequestFriendRequest requestFriendRequest);
     FriendResponse.AcceptFriendResponse acceptFriend(Long friendMappingId);
     Optional<List<FriendResponse.MappingFriendResponse>> mappingFriend(Long userId);
-    Optional<List<FriendResponse.MappingFriendResponse>> prospectiveFriend(Long userId,Boolean isFriend);
+    Optional<List<FriendResponse.ProspectiveFriendResponse>> prospectiveFriend(Long userId,Boolean isFriend);
     Optional<BodyInfoResponse.DailyWeightChange> getDailyFriendWeightChange(Long userId, Long friendId);
     Optional<BodyInfoResponse.DailyMuscleChange> getDailyFriendMuscleChange(Long userId, Long friendId);
     Optional<BodyInfoResponse.DailyFatChange> getDailyFriendFatChange(Long userId, Long friendId);
