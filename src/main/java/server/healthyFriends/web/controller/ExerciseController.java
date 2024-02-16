@@ -89,7 +89,7 @@ public class ExerciseController {
     public ResponseDTO<String> deleteExerciseDayRecord(@PathVariable("dayRecordId") Long dayRecordId) {
         exerciseService.deleteExerciseDayRecord(dayRecordId);
 
-        return ResponseUtil.success("운동 기록 삭제 성공",null);
+        return ResponseUtil.success("운동 기록 삭제 성공","success");
     }
 
     @Operation(summary = "운동 기록 상세 조회")

@@ -49,7 +49,7 @@ public class UserController {
 
         userService.withdrawal(userId, req);
 
-        return ResponseUtil.success("회원 탈퇴 성공",null);
+        return ResponseUtil.success("회원 탈퇴 성공","success");
     }
 
     @Operation(summary = "회원 정보 수정")
@@ -159,7 +159,7 @@ public class UserController {
             @PathVariable("friendMappingId") Long friendMappingId) {
         friendService.rejectFriend(friendMappingId);
 
-        return ResponseUtil.success("친구 거절 성공",null);
+        return ResponseUtil.success("친구 거절 성공","success");
     }
 
     @Operation(summary = "내가 보낸 친구 요청 철회")
@@ -218,7 +218,7 @@ public class UserController {
 
         friendService.deleteFriend(userId,friendId);
 
-        return ResponseUtil.success("친구 삭제 성공",null);
+        return ResponseUtil.success("친구 삭제 성공","success");
     }
 
     @Operation(summary = "친구 리스트 조회")

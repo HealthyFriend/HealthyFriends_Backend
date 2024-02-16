@@ -60,11 +60,22 @@ public class S3Uploader {
                 CannedAccessControlList.PublicRead));
         return amazonS3Client.getUrl(bucket, fileName).toString();
     }
+/*
+    public void deleteInS3(String filePath) {
+        try {
+            amazonS3Client.deleteObject(bucket, filePath);
+            log.info("[S3Uploader] : S3에 있는 파일 삭제");
+        } catch (AmazonServiceException e) {
+            log.error("S3 파일 삭제 중 오류 발생: {}", e.getErrorMessage());
+            throw new RuntimeException("S3 파일 삭제 중 오류 발생", e);
+        }
+    }
+*/
 
-    /**
-     * S3에 있는 파일 삭제
-     * 영어 파일만 삭제 가능 -> 한글 이름 파일은 안됨
-     */
+
+     //S3에 있는 파일 삭제
+     //영어 파일만 삭제 가능 -> 한글 이름 파일은 안됨
+
     public void deleteInS3(String filePath) throws Exception {
         try{
             String key = filePath.substring(56); // 폴더/파일.확장자
