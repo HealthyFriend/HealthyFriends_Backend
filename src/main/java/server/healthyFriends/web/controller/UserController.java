@@ -30,7 +30,6 @@ import java.util.Optional;
 @Tag(name="UserController",description = "기능 구분 : 회원")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -42,7 +41,7 @@ public class UserController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @DeleteMapping("/withdrawal")
+    @DeleteMapping("/users/withdrawal")
     public ResponseDTO<String> withdrawal(@RequestBody @Valid UserRequest.WithdrawalRequest req,
                                           Authentication authentication) {
 
@@ -59,7 +58,7 @@ public class UserController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @PutMapping("/edit-profile")
+    @PutMapping("/users/edit-profile")
     public ResponseDTO<UserResponse.UserInfoResponse> modifyUserInfo(@RequestBody @Valid UserRequest.ModifyUserInfoRequest req,
                                                Authentication authentication) {
         Long userId=Long.parseLong(authentication.getName());
@@ -75,7 +74,7 @@ public class UserController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code",description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @GetMapping("/profile")
+    @GetMapping("/users/profile")
     public ResponseDTO<Optional<UserResponse.UserInfoResponse>> getUserInfo(Authentication authentication) {
 
         User user = userService.getUser(Long.parseLong(authentication.getName()));
@@ -91,7 +90,7 @@ public class UserController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @GetMapping("/friend-loginId/{friendLoginId}")
+    @GetMapping("/users/friend-loginId/{friendLoginId}")
     public ResponseDTO<FriendResponse.FindFriendResponse> findFriendByLoginId(@PathVariable(name = "friendLoginId") String friendLoginId) {
 
         FriendResponse.FindFriendResponse findFriendResponse = friendService.findFriendbyLoginId(friendLoginId);
@@ -105,7 +104,7 @@ public class UserController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @GetMapping("/friend-nickname/{friendNickname}")
+    @GetMapping("/users/friend-nickname/{friendNickname}")
     public ResponseDTO<FriendResponse.FindFriendResponse> findFriendByNickname(@PathVariable(name = "friendNickname") String friendNickname) {
 
         FriendResponse.FindFriendResponse findFriendResponse = friendService.findFriendbyNickname(friendNickname);
@@ -120,7 +119,7 @@ public class UserController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @PostMapping("/friend-request")
+    @PostMapping("/users/friend-request")
     public ResponseDTO<FriendResponse.RequestFriendResponse> requestFriend(
             @RequestBody @Valid FriendRequest.RequestFriendRequest requestFriendRequest,
             Authentication authentication) {
@@ -163,6 +162,19 @@ public class UserController {
         return ResponseUtil.success("친구 거절 성공",null);
     }
 
+    @Operation(summary = "내가 보낸 친구 요청 철회")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "OK, 친구 요청 거절 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
+                    content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
+    })
+    @DeleteMapping("/users/friend-withdrawal/{friendMappingId}")
+    public ResponseDTO<String> withdrawFriendRequest (@PathVariable("friendMappingId") Long friendMappingId) {
+
+        friendService.withdrawFriendRequest(friendMappingId);
+
+        return ResponseUtil.success("내가 보낸 친구 요청 철회","success");
+    }
 
     @Operation(summary = "친구 매핑 현황 조회(나의 친구+내가 요청 보낸 사람)")
     @ApiResponses({
@@ -170,8 +182,7 @@ public class UserController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-
-    @GetMapping("/friend-mapping")
+    @GetMapping("/users/friend-mapping")
     public ResponseDTO<Optional<List<FriendResponse.MappingFriendResponse>>> mappingFriend (Authentication authentication) {
 
         Long userId = Long.parseLong(authentication.getName());
@@ -186,7 +197,7 @@ public class UserController {
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
 
-    @GetMapping("/prospective-friend")
+    @GetMapping("/users/prospective-friend")
     public ResponseDTO<Optional<List<FriendResponse.ProspectiveFriendResponse>>> prospectiveFriend (Authentication authentication) {
 
         Long userId = Long.parseLong(authentication.getName());
@@ -200,7 +211,7 @@ public class UserController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @DeleteMapping("/friends/{friendId}")
+    @DeleteMapping("/users/friends/{friendId}")
     public ResponseDTO<String> deleteFriend (Authentication authentication,
                                              @PathVariable("friendId") Long friendId) {
         Long userId=Long.parseLong(authentication.getName());
@@ -216,7 +227,7 @@ public class UserController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @GetMapping("/friends")
+    @GetMapping("/users/friends")
     public ResponseDTO<FriendResponse.ListFriendResponse> readFriends(Authentication authentication) {
 
         Long userId = Long.parseLong(authentication.getName());
@@ -232,7 +243,7 @@ public class UserController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @PostMapping(path= "/profile-image", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(path= "/users/profile-image", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseDTO<String> uploadProfileImage(@RequestPart(value = "file", required = false) MultipartFile file,
                                                   Authentication authentication) {
         Long userId=Long.parseLong(authentication.getName());
@@ -246,7 +257,7 @@ public class UserController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @PutMapping(path= "/profile-image", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PutMapping(path= "/users/profile-image", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseDTO<String> editProfileImage(@RequestPart(value = "file", required = false) MultipartFile file,
                                                   Authentication authentication) {
         Long userId=Long.parseLong(authentication.getName());
@@ -260,7 +271,7 @@ public class UserController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "Error Code", description = "Error message",
                     content = @Content(schema = @Schema(implementation = ResponseDTO.class))),
     })
-    @PutMapping(path= "/profile-image/default", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PutMapping(path= "/users/profile-image/default", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseDTO<String> deleteProfileImage(@RequestPart(value = "file", required = false) MultipartFile file,
                                                 Authentication authentication) {
         Long userId=Long.parseLong(authentication.getName());

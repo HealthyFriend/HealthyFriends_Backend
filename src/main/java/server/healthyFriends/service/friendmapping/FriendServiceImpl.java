@@ -178,14 +178,12 @@ public class FriendServiceImpl implements FriendService {
     }
 
     // 친구 삭제
-    public void deleteFriend(Long myId, Long friendId) {
-        User myUser = userRepository.findById(myId)
-                .orElseThrow(()->new EntityNotFoundException("해당하는 유저가 없습니다."));
-        User friend = userRepository.findById(friendId)
-                .orElseThrow(()->new EntityNotFoundException("해당하는 친구 유저가 없습니다."));
+    public void deleteFriend(Long userId, Long friendId) {
+        existsUser(userId);
+        existsFriend(friendId);
 
-        FriendMapping friendMapping1 = friendRepository.findByUserIdAndFriendIdAndStatus(myId,friendId,true);
-        FriendMapping friendMapping2 = friendRepository.findByUserIdAndFriendIdAndStatus(friendId,myId,true);
+        FriendMapping friendMapping1 = friendRepository.findByUserIdAndFriendIdAndStatus(userId,friendId,true);
+        FriendMapping friendMapping2 = friendRepository.findByUserIdAndFriendIdAndStatus(friendId,userId,true);
 
         if(friendMapping1==null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"해당하는 친구 관계가 없습니다.");
@@ -199,6 +197,20 @@ public class FriendServiceImpl implements FriendService {
         friendRepository.delete(friendMapping2);
 
     }
+
+    // 보낸 친구 요청 철회
+    public void withdrawFriendRequest(Long friendMappingId) {
+
+        FriendMapping friendMapping = friendRepository.findById(friendMappingId).orElseThrow(()-> new ResponseStatusException(HttpStatus.BAD_REQUEST,"내가 보낸 요청이 아닙니다."));
+
+        if(friendMapping.getStatus())
+        {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"친구 관계에 있는 유저입니다.");
+        }
+
+        friendRepository.delete(friendMapping);
+    }
+
     // 친구 목표 보기
     public FriendResponse.FriendObjective readFriendObjective(Long friendId) {
 
